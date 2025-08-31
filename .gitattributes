@@ -1,0 +1,4 @@
+고양이 filter=lfs diff=lfs merge=lfs -text
+인공위성 filter=lfs diff=lfs merge=lfs -text
+@.fbx filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
