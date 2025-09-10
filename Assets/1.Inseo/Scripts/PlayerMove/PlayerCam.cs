@@ -67,9 +67,13 @@ namespace Controller
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
+        // Ãß°¡ 
         void LateUpdate()
         {
+            var brain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+            if (brain != null && (brain.ActiveVirtualCamera != null || brain.IsBlending))
+                return;
+
             m_CurrentState?.OnUpdate();
         }
 
@@ -121,7 +125,7 @@ namespace Controller
 
         public void SetSlideState(bool isSliding)
         {
-                TransitionToState(new NormalCameraState()); 
+            TransitionToState(new NormalCameraState());
         }
     }
 }

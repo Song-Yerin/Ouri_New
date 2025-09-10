@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Playables; // 꼭 필요!
 
@@ -28,7 +30,28 @@ public class PipePuzzleManager : MonoBehaviour
     public List<Valve> valves;  
     public List<Pipe> pipes;    
 
-    void Awake() { foreach (var v in valves) v.puzzleManager = this; }
+
+    // ---------- [UI] 파이프 성공 아이콘 ----------
+    [Header("UI - Pipe Success Icons (pipes 순서와 동일)")]
+    public List<Image> pipeSuccessIcons;       // 파이프 개수만큼 넣기
+    public Color iconOffColor = new Color(1f, 1f, 1f, 0.25f);
+    public Color iconOnColor = Color.white;
+    [Range(1f, 1.5f)] public float pulseScale = 1.12f;
+    [Range(0.05f, 0.3f)] public float pulseTime = 0.12f;
+    // ------------------------------------------------
+
+    void Awake()
+    {
+        foreach (var v in valves) v.puzzleManager = this;
+        InitUI();
+    }
+
+    void InitUI()
+    {
+        // 처음엔 전부 OFF
+        for (int i = 0; i < pipeSuccessIcons.Count; i++)
+            SetIcon(i, false, true);
+    }
 
     // Valve가 호출
     public void CheckValve(Valve clicked)
@@ -46,6 +69,7 @@ public class PipePuzzleManager : MonoBehaviour
                 activated.Add(pipeIdx))
             {
                 pipes[pipeIdx].PlaySuccessFX();
+                SetIcon(pipeIdx, true);
             }
 
             step++;
@@ -82,12 +106,17 @@ public class PipePuzzleManager : MonoBehaviour
     // 전체 FX OFF + 진행 변수 초기화 
     private void ResetAllFX()
     {
-        foreach (var p in pipes) p.ResetFX();
+        for (int i = 0; i < pipes.Count; i++)
+        {
+            pipes[i].ResetFX();
+            SetIcon(i, false, true);  
+        }
 
         activated.Clear();
         step = 0;
         lastValve = -1;
         Debug.Log("초기화: 모든 성공 FX OFF");
+
     }
 
     // 성공 FX OFF + 진행 변수 초기화 
@@ -96,7 +125,7 @@ public class PipePuzzleManager : MonoBehaviour
         for (int i = 0; i < pipes.Count; i++)
         {
             pipes[i].ResetFX();
-
+            SetIcon(i, false, true);
             // 잘못 누른 현재 valve의 기본 가스만 다시 켬
             if (valves[i].valveIndex == wrongValveIndex)
                 pipes[i].PlayTurnFXOnly();
@@ -107,4 +136,26 @@ public class PipePuzzleManager : MonoBehaviour
         lastValve = -1;
         Debug.Log($"잘못된 입력 ➜ Valve {wrongValveIndex}, 해당 기본 가스 FX만 다시 ON");
     }
+
+    // ---------- UI 헬퍼 ----------
+    void SetIcon(int idx, bool on, bool instant = false)
+    {
+        if (idx < 0 || idx >= pipeSuccessIcons.Count) return;
+        var img = pipeSuccessIcons[idx];
+        if (!img) return;
+
+        img.color = on ? iconOnColor : iconOffColor;
+        if (on && !instant) StartCoroutine(Pulse(img.transform));
+    }
+
+    IEnumerator Pulse(Transform t)
+    {
+        Vector3 a = Vector3.one, b = Vector3.one * pulseScale;
+        float t1 = 0f;
+        while (t1 < pulseTime) { t1 += Time.unscaledDeltaTime; t.localScale = Vector3.Lerp(a, b, t1 / pulseTime); yield return null; }
+        t1 = 0f;
+        while (t1 < pulseTime) { t1 += Time.unscaledDeltaTime; t.localScale = Vector3.Lerp(b, a, t1 / pulseTime); yield return null; }
+        t.localScale = Vector3.one;
+    }
+    // ----------------------------
 }
