@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -63,17 +64,30 @@ public class DialogueTriggerZone : MonoBehaviour
     public List<Transform> checkpointPoints = new List<Transform>();
     public Transform player; // 이동시킬 플레이어(인스펙터에서 연결)
 
+    [Header("NPC 이동 관련")]
+    public Transform npc; // 이동시킬 NPC (인스펙터에서 연결)
 
     void Awake()
     {
         VD.OnNodeChange += HandleNodeChange;
         VD.OnActionNode += OnActionNodeTriggered;
+        VD.OnEnd += OnDialogueEnd;
+    }
+
+    private void OnDialogueEnd(VD.NodeData data)
+    {
+        // 특정 진행도에서만 이동 실행
+        if (nightMapProgress == 4 || nightMapProgress == 5)
+        {
+            nextsection();
+        }
     }
 
     void OnDestroy()
     {
         VD.OnNodeChange -= HandleNodeChange;
         VD.OnActionNode -= OnActionNodeTriggered;
+        VD.OnEnd -= OnDialogueEnd;
     }
 
     void Start()
@@ -265,6 +279,14 @@ public class DialogueTriggerZone : MonoBehaviour
         {
             SetProgress(2, false);
         }
+        if (data.nodeID == 46)
+        {
+            SetProgress(4, false);
+        }
+        if(data.nodeID == 35)
+        {
+            SetProgress(5, false);
+        }
     }
 
     void OnActionNodeTriggered(int nodeID)
@@ -304,7 +326,6 @@ public class DialogueTriggerZone : MonoBehaviour
             return;
         }
 
-        // nightMapProgress 값을 인덱스로 사용
         int index = nightMapProgress;
 
         if (index < 0 || index >= targetPoints.Count)
@@ -322,13 +343,26 @@ public class DialogueTriggerZone : MonoBehaviour
 
         Vector3 dest = t.position + positionOffset;
 
+        // 트리거 존 이동
         if (matchRotation)
             transform.SetPositionAndRotation(dest, t.rotation);
         else
             transform.position = dest;
 
-        Debug.Log($"▶ NextSection: nightMapProgress={index}, 타겟 '{t.name}'로 순간이동 완료. dest={dest}");
+        // NPC도 같은 좌표로 이동
+        if (npc != null)
+        {
+            if (matchRotation)
+                npc.SetPositionAndRotation(dest, t.rotation);
+            else
+                npc.position = dest;
+
+            Debug.Log($"▶ NPC도 동일 좌표로 이동 완료 (index={index}, target={t.name})");
+        }
+
+        Debug.Log($"▶ NextSection: 트리거 존과 NPC 모두 nightMapProgress={index}, 타겟 '{t.name}'로 이동 완료. dest={dest}");
     }
+
 
     // 추가: 시작 노드 기반 자동 시작 토글 동기화
     void SyncAutoStartFromStartNode()
@@ -375,6 +409,33 @@ public class DialogueTriggerZone : MonoBehaviour
                 }
                 hasTriggered = false;
                 Debug.Log("진행도 2: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 3:
+                nextsection();
+                myDialogue.overrideStartNode = 28;
+                dialogueManager.defaultNPCName = "부엉이";
+                autoStartOnEnter = true; // 추가: 자동 시작 끔
+                hasTriggered = false;
+                Debug.Log("진행도 3: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 4:
+                nextsection();
+                myDialogue.overrideStartNode = 29;
+                dialogueManager.defaultNPCName = "부엉이";
+                autoStartOnEnter = false; // 추가: 자동 시작 끔
+                hasTriggered = false;
+                Debug.Log("진행도 4: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 5:
+                nextsection();
+                myDialogue.overrideStartNode = 47;
+                dialogueManager.defaultNPCName = "부엉이";
+                autoStartOnEnter = false; // 추가: 자동 시작 끔
+                hasTriggered = false;
+                Debug.Log("진행도 5: 다음 이벤트 상태 반영 완료");
                 break;
 
             default:

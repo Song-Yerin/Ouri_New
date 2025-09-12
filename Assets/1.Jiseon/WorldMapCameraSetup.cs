@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using System.Linq;
+using System;
 
 [RequireComponent(typeof(Camera))]
 public class WorldMapCameraSetup : MonoBehaviour
@@ -20,7 +24,7 @@ public class WorldMapCameraSetup : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-
+        SetupWorldMapCamera_DisableAllVolumes();
         // 씬에 있는 모든 Terrain 기준으로 경계 계산
         CalculateTerrainBounds();
 
@@ -49,6 +53,15 @@ public class WorldMapCameraSetup : MonoBehaviour
        
         
     }
+
+    void SetupWorldMapCamera_DisableAllVolumes()
+    {
+        var ucam = GetComponent<UniversalAdditionalCameraData>();
+        if (!ucam) ucam = gameObject.AddComponent<UniversalAdditionalCameraData>();
+        ucam.renderPostProcessing = false;
+        ucam.volumeLayerMask = 0; // Nothing
+    }
+
 
     void CalculateTerrainBounds()
     {

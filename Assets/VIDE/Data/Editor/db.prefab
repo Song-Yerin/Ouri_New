@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268dc70b105993846a123be43345df63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileIndex: 8
+  fileIndex: 9
   skinIndex: 0
   loadTag: 
   startID: 0
@@ -52,15 +52,15 @@ MonoBehaviour:
   currentID: 46559
   autosave: 1
   previewPanning: 0
-  currentDiag: 8
+  currentDiag: 9
   locEdit: 0
   pNodeID: 18
   aNodeID: 2
   S_playerDiags:
   - commentCount: 1
     s_comment:
-    - text: "\uC624\uB298 \uBCC4\uC774 \uC9C4\uC9DC \uC608\uC058\uB2E4\u2026 \uC800
-        \uBC18\uC9DD\uC774\uB294 \uB370\uC5D0\uB294 \uBB50\uAC00\uC788\uC744\uAE4C?"
+    - text: "\uC5B4? \uC800\uAC8C \uBB50\uC57C?! \uD558\uB298\uC5D0\uC11C \uBB54\uAC00
+        \uB5A8\uC5B4\uC84C\uC5B4!"
       extraData: "\uB2E4\uB78C"
       inputSetIndex: 0
       outputNodeIndex: 1
@@ -78,8 +78,8 @@ MonoBehaviour:
     ID: 0
     rect:
       serializedVersion: 2
-      x: 400
-      y: 190
+      x: 110
+      y: 160
       width: 348
       height: 246.66666
     pTag: 
@@ -92,8 +92,7 @@ MonoBehaviour:
     isPlayer: 1
   - commentCount: 1
     s_comment:
-    - text: "\uC5B4? \uC800\uAC8C \uBB50\uC57C?! \uD558\uB298\uC5D0\uC11C \uBB54\uAC00
-        \uB5A8\uC5B4\uC84C\uC5B4! \uBD88\uB369\uC774 \uAC19\uC740\uB370\u2026 \uC800\uCABD\uC5D0\uC11C
+    - text: "\uBD88\uB369\uC774 \uAC19\uC740\uB370\u2026 \uC800\uCABD\uC5D0\uC11C
         \uC5F0\uAE30\uAC00 \uB098!"
       extraData: ExtraData
       inputSetIndex: 1
@@ -105,17 +104,17 @@ MonoBehaviour:
         x: 301
         y: 61
         width: 30
-        height: 46
+        height: 32
       sprites: {fileID: 0}
       audios: {fileID: 0}
       visible: 1
     ID: 1
     rect:
       serializedVersion: 2
-      x: 850
-      y: 190
+      x: 520
+      y: 160
       width: 348
-      height: 149.33333
+      height: 134.66666
     pTag: 
     expand: 0
     sprite: {fileID: 0}
@@ -132,18 +131,18 @@ MonoBehaviour:
       showmore: 0
       outRect:
         serializedVersion: 2
-        x: 301
-        y: 61
-        width: 30
-        height: 22
+        x: 0
+        y: 0
+        width: 0
+        height: 0
       sprites: {fileID: 0}
       audios: {fileID: 0}
       visible: 1
     ID: 2
     rect:
       serializedVersion: 2
-      x: 1280
-      y: 180
+      x: 940
+      y: 160
       width: 348
       height: 125
     pTag: 
@@ -154,7 +153,7 @@ MonoBehaviour:
     isPlayer: 1
   - commentCount: 1
     s_comment:
-    - text: "\u2026\uC0B4\uB824\uC918\u2026 \uC81C\uBC1C\u2026\r"
+    - text: "\u2026\uC0B4\uC558\uB2E4\u2026 \uB4DC\uB514\uC5B4\u2026"
       extraData: ExtraData
       inputSetIndex: 3
       outputNodeIndex: 4
@@ -184,8 +183,8 @@ MonoBehaviour:
     isPlayer: 0
   - commentCount: 1
     s_comment:
-    - text: "(\uD798\uAECF \uC794\uD574\uB97C \uCE58\uC6B0\uBA70) \u2026\uB410\uB2E4!
-        \uB098\uC640, \uAD1C\uCC2E\uC544?\r"
+    - text: "\uAC07\uD600 \uC788\uC5C8\uB358 \uAC70\uC57C?! \uAD1C\uCC2E\uC544? \uB2E4\uCE5C
+        \uB370\uB294 \uC5C6\uC5B4?"
       extraData: ExtraData
       inputSetIndex: 4
       outputNodeIndex: 5
@@ -203,7 +202,7 @@ MonoBehaviour:
     ID: 5
     rect:
       serializedVersion: 2
-      x: 970
+      x: 930
       y: 550
       width: 348
       height: 134.66666
@@ -215,8 +214,10 @@ MonoBehaviour:
     isPlayer: 1
   - commentCount: 1
     s_comment:
-    - text: "\uACE0\u2026 \uACE0\uB9C8\uC6CC\u2026 \uB09C \uADF8\uB0E5\u2026 \uC5EC\uAE30\uC11C
-        \uB05D\uB098\uB294 \uC904 \uC54C\uC558\uC5B4\u2026"
+    - text: "\uB2E4\uD589\uD788 \uD070 \uC0C1\uCC98\uB294 \uC5C6\uC5B4. \uB09C\u2026
+        \uC2E4\uD5D8\uC2E4\uC5D0\uC11C \uC2E4\uD5D8\uC6A9\uC73C\uB85C \uC7A1\uD600
+        \uC788\uC5C8\uC5B4. \uC774\uC720\uB3C4 \uBAA8\uB978 \uCC44\u2026 \uC6B0\uC8FC
+        \uADA4\uB3C4\uB97C \uB3CC\uB358 \uC911\uC5D0 \uC704\uC131\uC774 \uCD94\uB77D\uD574\uBC84\uB838\uC5B4."
       extraData: ExtraData
       inputSetIndex: 5
       outputNodeIndex: 6
@@ -227,17 +228,17 @@ MonoBehaviour:
         x: 301
         y: 61
         width: 30
-        height: 32
+        height: 61
       sprites: {fileID: 0}
       audios: {fileID: 0}
       visible: 1
     ID: 6
     rect:
       serializedVersion: 2
-      x: 1410
-      y: 550
+      x: 1320
+      y: 530
       width: 348
-      height: 134.66666
+      height: 164
     pTag: 
     expand: 0
     sprite: {fileID: 0}
@@ -246,8 +247,9 @@ MonoBehaviour:
     isPlayer: 0
   - commentCount: 1
     s_comment:
-    - text: "\uBAB8\uC740 \uAD1C\uCC2E\uC544? \uC5B4\uB514 \uB2E4\uCE5C \uB370\uB294
-        \uC5C6\uC5B4? "
+    - text: "\uADF8\uB807\uAD6C\uB098\u2026 \uADFC\uB370 \uC774\uAC74 \uBB50\uC9C0?
+        \uC6B0\uC640\u2026 \uC9C0\uAD6C \uC0AC\uC9C4\uC774\uC57C? \uC800\uAE30 \uC800
+        \uD478\uB978\uC0C9\u2026 \uC9C4\uC9DC \uC774\uB807\uAC8C \uC0DD\uACBC\uAD6C\uB098."
       extraData: ExtraData
       inputSetIndex: 6
       outputNodeIndex: 7
@@ -258,17 +260,17 @@ MonoBehaviour:
         x: 301
         y: 61
         width: 30
-        height: 22
+        height: 46
       sprites: {fileID: 0}
       audios: {fileID: 0}
       visible: 1
     ID: 7
     rect:
       serializedVersion: 2
-      x: 1850
-      y: 540
+      x: 110
+      y: 730
       width: 348
-      height: 125
+      height: 149.33333
     pTag: 
     expand: 0
     sprite: {fileID: 0}
@@ -277,35 +279,36 @@ MonoBehaviour:
     isPlayer: 1
   - commentCount: 1
     s_comment:
-    - text: "\uB09C\u2026 \uC2E4\uD5D8\uC2E4\uC5D0\uC11C \uACC4\uC18D \uC7A1\uD600
-        \uC788\uC5C8\uC5B4"
+    - text: "\uB098, \uBCC4\uB9CC \uBC14\uB77C\uBCF4\uAE30\uB9CC \uD588\uC9C0 \uC800
+        \uC704\uAC00 \uC5B4\uB5A4 \uC138\uC0C1\uC778\uC9C0\uB294 \uC0C1\uC0C1\uB3C4
+        \uBABB\uD588\uC5B4. \uC774\uB807\uAC8C \uC544\uB984\uB2F5\uB2E4\uB2C8\u2026"
       extraData: ExtraData
       inputSetIndex: 7
-      outputNodeIndex: -1
+      outputNodeIndex: 9
       outActionIndex: -1
       showmore: 0
       outRect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
+        x: 301
+        y: 61
+        width: 30
+        height: 46
       sprites: {fileID: 0}
       audios: {fileID: 0}
       visible: 1
     ID: 8
     rect:
       serializedVersion: 2
-      x: 2300
-      y: 520
+      x: 520
+      y: 740
       width: 348
-      height: 125
+      height: 149.33333
     pTag: 
     expand: 0
     sprite: {fileID: 0}
     vars: []
     varKeys: []
-    isPlayer: 0
+    isPlayer: 1
   - commentCount: 1
     s_comment:
     - text: "\uB410\uB2E4! \uBB38 \uC5F4\uB838\uB2E4!"
@@ -336,5 +339,1308 @@ MonoBehaviour:
     vars: []
     varKeys: []
     isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uC5B4? \uC774\uAC74 \uC124\uACC4\uB3C4\uC57C? \uC6B0\uC8FC\uC120 \uC870\uB9BD
+        \uC124\uBA85\uC11C \uAC19\uC740\uB370? \uC774\uAC8C \uC5EC\uAE30 \uC65C \uC788\uB294
+        \uAC70\uC9C0?"
+      extraData: ExtraData
+      inputSetIndex: 9
+      outputNodeIndex: 10
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 9
+    rect:
+      serializedVersion: 2
+      x: 930
+      y: 730
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\u2026\uADF8\uAC74, \uB0B4\uAC00 \uC54C\uAE30\uB85C \uC5B4\uB290 \uAC70\uB300\uD55C
+        \uD504\uB85C\uC81D\uD2B8 \uC77C\uBD80\uC57C. \uC6B0\uC8FC\uC120\uC744 \uB9CC\uB4E4\uACE0,
+        \uC9C0\uAD6C\uB97C \uB5A0\uB0A0 \uC900\uBE44\uB97C \uD558\uB358 \uACC4\uD68D\uC774
+        \uC788\uC5C8\uC5B4."
+      extraData: ExtraData
+      inputSetIndex: 10
+      outputNodeIndex: 11
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 61
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uB09C \uADF8\uC800 \uADF8 \uD504\uB85C\uC81D\uD2B8\uC5D0 \uD544\uC694\uD55C\u2026
+        \uC791\uC740 \uC2E4\uD5D8\uCCB4\uC600\uC744 \uBFD0\uC774\uC57C."
+      extraData: ExtraData
+      inputSetIndex: 10
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 10
+    rect:
+      serializedVersion: 2
+      x: 1340
+      y: 710
+      width: 348
+      height: 196.66667
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC6B0\uC8FC\uC120\uC744\u2026 \uC9C1\uC811 \uB9CC\uB4E4 \uC218 \uC788\uB2E4\uACE0?
+        \uC124\uACC4\uB3C4\uC758 \uB098\uBA38\uC9C0\uB97C \uB2E4 \uCC3E\uC73C\uBA74\u2026
+        \uB098\uB3C4 \uC800 \uBCC4\uB4E4\uAE4C\uC9C0 \uAC08 \uC218 \uC788\uB294 \uAC70\uC57C?"
+      extraData: ExtraData
+      inputSetIndex: 11
+      outputNodeIndex: 12
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 11
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 930
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\u2026\uAC00\uB2A5\uD560\uC9C0\uB3C4 \uBAB0\uB77C. \uD558\uC9C0\uB9CC
+        \uC704\uD5D8\uD560 \uAC70\uC57C. \uAC70\uAE34 \uB108 \uAC19\uC740 \uC791\uC740
+        \uBAB8\uC73C\uB860 \uBC84\uD2F0\uAE30 \uD798\uB4E0 \uACF3\uC77C \uC218\uB3C4
+        \uC788\uC5B4."
+      extraData: ExtraData
+      inputSetIndex: 12
+      outputNodeIndex: 13
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 12
+    rect:
+      serializedVersion: 2
+      x: 520
+      y: 930
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC0C1\uAD00\uC5C6\uC5B4! \uB450\uB835\uB354\uB77C\uB3C4 \uD3EC\uAE30\uD558\uC9C0
+        \uC54A\uC744 \uAC70\uC57C. \uC9C0\uAD6C \uBC16\uC5D0\uC11C \uC138\uC0C1\uC744
+        \uBC14\uB77C\uBCF4\uB294 \uAC70, \uB0B4 \uC624\uB79C \uAFC8\uC774\uC5C8\uC5B4!"
+      extraData: ExtraData
+      inputSetIndex: 13
+      outputNodeIndex: 14
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 13
+    rect:
+      serializedVersion: 2
+      x: 930
+      y: 930
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\u2026\uADF8\uB807\uB2E4\uBA74 \uB098\uB3C4 \uB370\uB824\uAC00 \uC918.
+        \uC2E4\uD5D8\uC2E4\uB85C \uB3CC\uC544\uAC00\uAE34 \uC2EB\uC5B4. \uB0B4\uAC00
+        \uAC00\uC9C4 \uC9C0\uC2DD\uB3C4 \uC4F8\uBAA8\uAC00 \uC788\uC744 \uAC70\uC57C."
+      extraData: ExtraData
+      inputSetIndex: 14
+      outputNodeIndex: 15
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 14
+    rect:
+      serializedVersion: 2
+      x: 1340
+      y: 930
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC88B\uC544! \uC6B0\uB9AC \uB458\uC774\uB77C\uBA74 \uD560 \uC218 \uC788\uC744
+        \uAC70\uC57C. \uC124\uACC4\uB3C4\uC758 \uB098\uBA38\uC9C0\uB97C \uCC3E\uC790!
+        \uAF2D \uC800 \uBCC4\uB4E4\uAE4C\uC9C0 \uAC00\uB294 \uAC70\uC57C!"
+      extraData: ExtraData
+      inputSetIndex: 15
+      outputNodeIndex: 16
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 15
+    rect:
+      serializedVersion: 2
+      x: 130
+      y: 1140
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\u2026\uADF8\uB798. \uAC19\uC774 \uAC00\uC790."
+      extraData: ExtraData
+      inputSetIndex: 16
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\u2026\uC9C0\uAE08\uC740 \uB9D0\uC774\uC9C0."
+      extraData: ExtraData
+      inputSetIndex: 16
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 16
+    rect:
+      serializedVersion: 2
+      x: 550
+      y: 1140
+      width: 348
+      height: 148
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uBD80\uC5C9\uC774 \uC120\uC0DD\uB2D8 \uACC4\uC138\uC694? \uC7A0\uAE50
+        \uC870\uC5B8 \uC880 \uAD6C\uD558\uACE0 \uC2F6\uC5B4\uC694."
+      extraData: ExtraData
+      inputSetIndex: 17
+      outputNodeIndex: 18
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 17
+    rect:
+      serializedVersion: 2
+      x: 130
+      y: 1400
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uC774 \uBC24\uC911\uC5D0 \uBB34\uC2A8 \uC77C\uC774\uB0D0, \uC791\uC740
+        \uB0A0\uB2E4\uB78C\uC950\uC57C. \uD45C\uC815\uC774 \uC2EC\uAC01\uD558\uAD6C\uB098."
+      extraData: ExtraData
+      inputSetIndex: 18
+      outputNodeIndex: 19
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 18
+    rect:
+      serializedVersion: 2
+      x: 560
+      y: 1400
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC624\uB298 \uC232 \uADFC\uCC98\uC5D0 \uC778\uACF5\uC704\uC131\uC774
+        \uB5A8\uC5B4\uC84C\uC5B4\uC694! \uC548\uC5D0 \uAC07\uD600 \uC788\uB358 \uCE5C\uAD6C\uB97C
+        \uAD6C\uD588\uB294\uB370\u2026 \uC774\uAC78 \uBC1C\uACAC\uD588\uC5B4\uC694.
+        \uC6B0\uC8FC\uC120 \uC870\uB9BD \uC124\uBA85\uC11C \uAC19\uC544\uC694."
+      extraData: ExtraData
+      inputSetIndex: 19
+      outputNodeIndex: 20
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 61
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 19
+    rect:
+      serializedVersion: 2
+      x: 970
+      y: 1380
+      width: 348
+      height: 164
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uD760, \uB9DE\uB124. \uC774\uAC74 \uC6B0\uC8FC\uC120 \uBD80\uD488 \uC124\uACC4\uB3C4\uC758
+        \uC77C\uBD80\uC57C. \uC5B4\uB514\uC11C \uCC3E\uC558\uC9C0?"
+      extraData: ExtraData
+      inputSetIndex: 20
+      outputNodeIndex: 21
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 20
+    rect:
+      serializedVersion: 2
+      x: 1370
+      y: 1380
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC704\uC131 \uC548\uC774\uC5D0\uC694. \uC0AC\uC2E4\u2026 \uC800 \uC608\uC804\uBD80\uD130
+        \uBCC4\uC744 \uC88B\uC544\uD588\uAC70\uB4E0\uC694. \uC774\uAC78 \uC644\uC131\uD558\uBA74
+        \uC9C4\uC9DC \uC6B0\uC8FC\uC5D0 \uAC08 \uC218\uB3C4 \uC788\uC9C0 \uC54A\uC744\uAE4C
+        \uC2F6\uC5B4\uC694."
+      extraData: ExtraData
+      inputSetIndex: 21
+      outputNodeIndex: 22
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 61
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 21
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 1610
+      width: 348
+      height: 164
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\uB124 \uB9C8\uC74C\uC740 \uC798 \uC54C\uACA0\uB2E4. \uD558\uC9C0\uB9CC
+        \uC124\uACC4\uB3C4 \uD55C \uC7A5\uB9CC\uC73C\uB85C\uB294 \uBD80\uC871\uD558\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 22
+      outputNodeIndex: 23
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uB098\uBA38\uC9C0 \uC870\uAC01\uC744 \uC804\uBD80 \uBAA8\uC544\uC57C
+        \uD558\uC9C0."
+      extraData: ExtraData
+      inputSetIndex: 22
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 22
+    rect:
+      serializedVersion: 2
+      x: 500
+      y: 1610
+      width: 348
+      height: 157.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uD639\uC2DC \uC5B4\uB514 \uC788\uB294\uC9C0 \uC544\uC138\uC694?"
+      extraData: ExtraData
+      inputSetIndex: 23
+      outputNodeIndex: 24
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 22
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 23
+    rect:
+      serializedVersion: 2
+      x: 910
+      y: 1600
+      width: 348
+      height: 125
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\uB0B4\uAC00 \uC5B4\uC82F\uBC24\uC5D0 \uC232\uC744 \uB458\uB7EC\uBCF4\uB2E4
+        \uBCF4\uB2C8, \uB0A8\uC740 \uC870\uAC01\uB4E4\uC774 \uC232 \uAE4A\uC740 \uACF3\uC5D0
+        \uD769\uC5B4\uC838 \uC788\uB354\uAD6C\uB098."
+      extraData: ExtraData
+      inputSetIndex: 24
+      outputNodeIndex: 25
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uADF8\uB7F0\uB370 \uADF8\uACF3\uC73C\uB85C \uAC00\uB824\uBA74 \uC808\uBCBD\uC744
+        \uB118\uC5B4\uC57C \uD574. \uD65C\uAC15\uC744 \uC775\uD788\uC9C0 \uC54A\uC73C\uBA74
+        \uC704\uD5D8\uD560 \uAC70\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 24
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 24
+    rect:
+      serializedVersion: 2
+      x: 1330
+      y: 1600
+      width: 348
+      height: 196.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uD65C\uAC15\uC740 \uC790\uC2E0 \uC5C6\uC5B4\uC694. \uBC14\uB78C \uBD88\uBA74
+        \uAE08\uBC29 \uD718\uCCAD\uAC70\uB824\uC11C\u2026"
+      extraData: ExtraData
+      inputSetIndex: 25
+      outputNodeIndex: 26
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 25
+    rect:
+      serializedVersion: 2
+      x: 110
+      y: 1820
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\uADF8\uB7FC \uC9C0\uAE08\uC774 \uC5F0\uC2B5\uD560 \uAE30\uD68C\uB2E4.
+        \uB0B4\uAC00 \uB3C4\uC640\uC904 \uD14C\uB2C8 \uC808\uBCBD\uC5D0\uC11C \uD65C\uAC15
+        \uC5F0\uC2B5\uC744 \uD558\uBA74\uC11C \uC232\uC744 \uD0D0\uD5D8\uD558\uC790."
+      extraData: ExtraData
+      inputSetIndex: 26
+      outputNodeIndex: 27
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uADF8 \uACFC\uC815\uC5D0\uC11C \uC870\uAC01\uB4E4\uB3C4 \uD568\uAED8
+        \uCC3E\uC744 \uC218 \uC788\uC744 \uAC70\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 26
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 26
+    rect:
+      serializedVersion: 2
+      x: 550
+      y: 1820
+      width: 348
+      height: 182
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC815\uB9D0\uC694? \uAC10\uC0AC\uD569\uB2C8\uB2E4! \uC800 \uC5F4\uC2EC\uD788
+        \uD574\uBCFC\uAC8C\uC694."
+      extraData: ExtraData
+      inputSetIndex: 27
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 27
+    rect:
+      serializedVersion: 2
+      x: 940
+      y: 1820
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\uB192\uC740 \uACF3\uC73C\uB85C \uB098\uC544\uAC00\uB824\uBA74 \uBC14\uB78C\uC744
+        \uC77D\uACE0 \uB0A0\uC544\uC57C \uD55C\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 28
+      outputNodeIndex: 29
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uB0B4\uAC00 \uC606\uC5D0\uC11C \uBD10\uC904 \uD14C\uB2C8 \uD55C \uBC88
+        \uC5F0\uC2B5\uD574\uBCF4\uC790."
+      extraData: ExtraData
+      inputSetIndex: 28
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 29
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 2510
+      width: 348
+      height: 167.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uB124! \uC5B4\uB5BB\uAC8C \uC2DC\uC791\uD558\uC8E0?"
+      extraData: ExtraData
+      inputSetIndex: 29
+      outputNodeIndex: 30
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 22
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 30
+    rect:
+      serializedVersion: 2
+      x: 510
+      y: 2510
+      width: 348
+      height: 125
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 2
+    s_comment:
+    - text: "\uC800 \uC808\uBCBD \uC544\uB798\uB85C \uAC15\uD55C \uBC14\uB78C\uC774
+        \uC62C\uB77C\uC628\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 30
+      outputNodeIndex: 31
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    - text: "\uD558\uC9C0\uB9CC \uADF8 \uBC14\uB78C\uC740 \uC544\uBB34 \uB54C\uB098
+        \uC624\uC9C0 \uC54A\uB294\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 30
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 31
+    rect:
+      serializedVersion: 2
+      x: 920
+      y: 2490
+      width: 348
+      height: 167.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uB9E5\uBC15\uCC98\uB7FC\uC694?"
+      extraData: ExtraData
+      inputSetIndex: 31
+      outputNodeIndex: 32
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 22
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 32
+    rect:
+      serializedVersion: 2
+      x: 1390
+      y: 2480
+      width: 348
+      height: 125
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uADF8\uB798. \uBC14\uB78C\uC774 \uB4F1\uC744 \uBC00\uC5B4\uC904 \uB54C
+        \uB0A0\uAC1C\uB97C \uD3BC\uCCD0\uB77C. "
+      extraData: ExtraData
+      inputSetIndex: 32
+      outputNodeIndex: 33
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 33
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 2740
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\u2026\uC9C0\uAE08 \uB0A0\uC544\uAC00\uB294 \uAC74\uAC00!"
+      extraData: ExtraData
+      inputSetIndex: 33
+      outputNodeIndex: 34
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 22
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 34
+    rect:
+      serializedVersion: 2
+      x: 550
+      y: 2740
+      width: 348
+      height: 125
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uB9DE\uB2E4. \uADF8 \uAC10\uAC01\uC744 \uAE30\uC5B5\uD574 \uB450\uC5B4\uB77C.
+        \uC55E\uC73C\uB85C \uB124 \uAE38\uC5D0 \uD070 \uB3C4\uC6C0\uC774 \uB420 \uAC83\uC774\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 34
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 35
+    rect:
+      serializedVersion: 2
+      x: 950
+      y: 2730
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uB4DC\uB514\uC5B4\u2026 \uC124\uACC4\uB3C4 \uC870\uAC01\uC774 \uB2E4
+        \uBAA8\uC600\uB2E4! \uC774\uC81C \uBD80\uC5C9\uC774 \uC120\uC0DD\uB2D8 \uB9D0\uC500\uB300\uB85C
+        \uC6B0\uC8FC\uC120 \uC644\uC131\uD560 \uC218 \uC788\uC5B4!"
+      extraData: ExtraData
+      inputSetIndex: 35
+      outputNodeIndex: 36
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 36
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 2940
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uD558\u2026 \uADF8\uAC74 \uB0B4 \uAC70\uC57C. \uB124\uAC00 \uAC08 \uACF3\uC774
+        \uC544\uB2C8\uB77C\uACE0, \uC6B0\uC8FC\uB294."
+      extraData: ExtraData
+      inputSetIndex: 36
+      outputNodeIndex: 37
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 37
+    rect:
+      serializedVersion: 2
+      x: 530
+      y: 2950
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uBB50\uB77C\uACE0? \uC6B0\uB9AC\u2026 \uD568\uAED8 \uAC00\uC790\uACE0
+        \uC57D\uC18D\uD588\uC796\uC544!"
+      extraData: ExtraData
+      inputSetIndex: 37
+      outputNodeIndex: 38
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 38
+    rect:
+      serializedVersion: 2
+      x: 970
+      y: 2940
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uC57D\uC18D \uAC19\uC740 \uAC74 \uC911\uC694\uD558\uC9C0 \uC54A\uC544.
+        \uC6B0\uC8FC\uC5D0 \uAC00\uB294 \uAC74 \uACB0\uAD6D \uAC00\uC9C4 \uC790\uAC00
+        \uACB0\uC815\uD558\uB294 \uAC70\uC57C. \uB108\uD55C\uD150 \uADF8 \uD798\uC774
+        \uC5C6\uC5B4."
+      extraData: ExtraData
+      inputSetIndex: 38
+      outputNodeIndex: 39
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 39
+    rect:
+      serializedVersion: 2
+      x: 1420
+      y: 2920
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC65C \uADF8\uB798\u2026 \uC6B0\uB9AC \uB458\uC774 \uAC19\uC774 \uAC04\uB2E4\uACE0
+        \uD588\uC796\uC544. \uC774\uAC74 \uC6B0\uB9AC \uAFC8\uC774\uC5C8\uC5B4!"
+      extraData: ExtraData
+      inputSetIndex: 39
+      outputNodeIndex: 40
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 40
+    rect:
+      serializedVersion: 2
+      x: 50
+      y: 3180
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uADF8\uAC74 \uB124 \uAFC8\uC77C \uBFD0\uC774\uC57C. \uB09C \uB124 \uC606\uC5D0\uC11C
+        \uC2DC\uAC04\uC744 \uBC84\uB9B4 \uC0DD\uAC01 \uC5C6\uC5B4. \uC774\uC81C\uBD80\uD130\uB294
+        \uB098 \uD63C\uC790 \uAC04\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 40
+      outputNodeIndex: 41
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 46
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 41
+    rect:
+      serializedVersion: 2
+      x: 480
+      y: 3170
+      width: 348
+      height: 149.33333
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC57C! \uB0B4 \uC124\uACC4\uB3C4 \uB3CC\uB824\uC918! \uC774\uAC74 \uC6B0\uB9AC
+        \uB458\uC758 \uAC70\uB77C\uACE0!"
+      extraData: ExtraData
+      inputSetIndex: 41
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 42
+    rect:
+      serializedVersion: 2
+      x: 920
+      y: 3170
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uAE38\uC740 \uAC04\uB2E8\uD558\uB2E4. \uD1B5\uB098\uBB34\uB97C \uB118\uACE0,
+        \uC5F0\uBABB\uAC00\uB97C \uB530\uB77C, \uC808\uBCBD \uC704\uB85C."
+      extraData: ExtraData
+      inputSetIndex: 42
+      outputNodeIndex: 43
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 28
+    rect:
+      serializedVersion: 2
+      x: 120
+      y: 2100
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uC54C\uACA0\uC5B4\uC694. \uD45C\uC2DD \uC5C6\uC774\uB3C4 \uCC3E\uC744
+        \uC218 \uC788\uACA0\uC8E0?"
+      extraData: ExtraData
+      inputSetIndex: 43
+      outputNodeIndex: 44
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 43
+    rect:
+      serializedVersion: 2
+      x: 550
+      y: 2100
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uAC71\uC815 \uB9C8\uB77C. \uC815\uC0C1\uC5D0 \uD65C\uACF5 \uC5F0\uC2B5\uC7A5\uC774
+        \uC788\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 44
+      outputNodeIndex: 45
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 32
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 44
+    rect:
+      serializedVersion: 2
+      x: 950
+      y: 2100
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
+  - commentCount: 1
+    s_comment:
+    - text: "\uAC70\uAE30\uC11C \uB9CC\uB098\uBA74 \uB418\uC8E0?"
+      extraData: ExtraData
+      inputSetIndex: 45
+      outputNodeIndex: 46
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 301
+        y: 61
+        width: 30
+        height: 22
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 45
+    rect:
+      serializedVersion: 2
+      x: 150
+      y: 2270
+      width: 348
+      height: 125
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 1
+  - commentCount: 1
+    s_comment:
+    - text: "\uADF8\uB798. \uB3C4\uCC29\uD558\uBA74 \uD65C\uACF5\uBC95\uC744 \uBAB8\uC5D0
+        \uC775\uD788\uAC8C \uD574 \uC8FC\uACA0\uB2E4."
+      extraData: ExtraData
+      inputSetIndex: 46
+      outputNodeIndex: -1
+      outActionIndex: -1
+      showmore: 0
+      outRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      sprites: {fileID: 0}
+      audios: {fileID: 0}
+      visible: 1
+    ID: 46
+    rect:
+      serializedVersion: 2
+      x: 590
+      y: 2260
+      width: 348
+      height: 134.66666
+    pTag: 
+    expand: 0
+    sprite: {fileID: 0}
+    vars: []
+    varKeys: []
+    isPlayer: 0
   S_actionNodes: []
   S_selNodes: []

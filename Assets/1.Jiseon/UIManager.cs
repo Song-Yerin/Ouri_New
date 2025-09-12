@@ -91,24 +91,15 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        // ★ 테스트용: 숫자 키 0,1,2 눌러서 nightMapProgress 저장
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        for (int i = 0; i <= 5; i++)
         {
-            PlayerPrefs.SetInt("nightMapProgress", 0);
-            PlayerPrefs.Save();
-            Debug.Log("nightMapProgress = 0 (저장 완료)");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            PlayerPrefs.SetInt("nightMapProgress", 1);
-            PlayerPrefs.Save();
-            Debug.Log("nightMapProgress = 1 (저장 완료)");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            PlayerPrefs.SetInt("nightMapProgress", 2);
-            PlayerPrefs.Save();
-            Debug.Log("nightMapProgress = 2 (저장 완료)");
+            KeyCode key = KeyCode.Alpha0 + i;  // KeyCode.Alpha0 ~ Alpha9 순차적으로 대응
+            if (Input.GetKeyDown(key))
+            {
+                PlayerPrefs.SetInt("nightMapProgress", i);
+                PlayerPrefs.Save();
+                Debug.Log($"nightMapProgress = {i} (저장 완료)");
+            }
         }
     }
 
@@ -168,7 +159,7 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log("nightMapProgress = 0 (저장 완료)");
 
-        LoadingSceneManager.LoadScene("YR3");
+        LoadingSceneManager.LoadScene("FirstCutScene");
         // SceneManager.LoadScene("dialogue");
     }
 
@@ -179,13 +170,16 @@ public class UIManager : MonoBehaviour
         switch (progress)
         {
             case 0: // 기본
-                LoadingSceneManager.LoadScene("YR3");
+                LoadingSceneManager.LoadScene("FirstCutScene");
                 break;
             case 1: //인공위성 내부 
-                SceneManager.LoadScene("YR2");
+                SceneManager.LoadScene("PipeScene");
                 break;
             case 2: // 부엉이와 대화 시작~~
                 SceneManager.LoadScene("YJ_Forest_Night");
+                break;
+            case 3 or 4 or 5: // 부엉이와 대화 후
+                SceneManager.LoadScene("Practice");
                 break;
             default:
                 break;
