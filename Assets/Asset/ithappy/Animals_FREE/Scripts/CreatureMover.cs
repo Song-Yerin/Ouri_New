@@ -206,7 +206,30 @@ namespace Controller
         }
         // ---------------------------------------------
 
-        //�߰�
+        // 추가
+        public void ResetKinetics(bool stopSlide = true, bool stopClimb = true, bool clearGlide = true)
+        {
+            // 상태 플래그/버퍼 정리
+            _jumpRequested = false;
+            m_IsMoving = false;
+
+            if (clearGlide)
+            {
+                m_IsGlide = false;
+                m_GlideBonusVelocity = Vector3.zero;
+                m_GlidePitchVelY = 0f;
+            }
+
+            if (stopSlide && m_IsSliding)
+                StopNewSlideMode();
+
+            if (stopClimb && m_IsClimbing)
+                SetClimbMode(false, Vector3.zero);
+
+            // 이동 관련 내부 속도들 0으로
+            m_Movement.ResetVelocities();
+        }
+
         public void AddGlideImpulse(Vector3 worldDir, float impulse)
         {
             worldDir.y = 0f;
@@ -377,6 +400,13 @@ namespace Controller
             _controller = c; _transform = t; _animation = a;
             _groundLayer = gl; _groundCheckDistance = dist; _groundCheckRadius = radius;
             _lastForward = t.forward;
+        }
+
+        // 추가
+        public void ResetVelocities()
+        {
+            _normalMoveVelocity = Vector3.zero;
+            _slideVelocity = Vector3.zero;
         }
 
         public void SetNormalMovementStats(float w, float r, float rot, float j, float g, Space space)

@@ -2,6 +2,7 @@
 using Controller; // CreatureMover 네임스페이스
 using System;
 using System.Collections.Generic;
+using UnityEngine.Playables;
 
 public class GimmickSegment : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GimmickSegment : MonoBehaviour
 
     [Header("Options")]
     [SerializeField] private float graceAfterRespawn = 0.3f;
+
+    [Header("Cutscene")]
+    [SerializeField] private PlayableDirector endCutscene;
 
     // ===== Rings =====
     [Serializable]
@@ -205,14 +209,25 @@ public class GimmickSegment : MonoBehaviour
     {
         if (!active) return;
 
-        bool allCleared = (ClearedCount >= TotalRings); // 순서 무시 집계
-        if (allCleared)
+        bool success = (extraLives > 0);
+    if (success)
         {
             completed = true;
             active = false;
             PlayExitSfx();
             StopSegmentLoop(true);
             uiBinder?.Show(false);
+
+            uiBinder?.ShowClearResult(ClearedCount);
+
+
+            // === 컷씬 재생 ===
+            if (endCutscene)
+            {
+                endCutscene.time = 0;          // 처음부터
+                endCutscene.Play();            // 실행
+            }
+
         }
         else
         {
@@ -247,6 +262,8 @@ public class GimmickSegment : MonoBehaviour
 
         yield return null; // 다음 프레임
         if (controller) controller.enabled = true;
+
+        if (mover) mover.ResetKinetics(stopSlide: true, stopClimb: true, clearGlide: true);
 
         graceTimer = Mathf.Max(extraGrace, graceAfterRespawn);
         suppressGroundFailUntilStart = true;

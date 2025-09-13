@@ -7,6 +7,7 @@ public class SegmentUIBinder : MonoBehaviour
     [SerializeField] private GameObject group;          // UI 그룹 (켜고 끄기 용)
     [SerializeField] private TextMeshProUGUI ringText;  // "0/0" 표시할 텍스트
     [SerializeField] private TextMeshProUGUI lifeText;     // "x1" 형태
+    [SerializeField] private TextMeshProUGUI resultText; // 축제용
 
     private void OnEnable()
     {
@@ -32,7 +33,7 @@ public class SegmentUIBinder : MonoBehaviour
 
     private void HandleRings(int cleared, int total)
     {
-        if (ringText) ringText.text = $"{cleared}/{total}";
+        if (ringText) ringText.text = $"{cleared*2}/{total*2}";
     }
 
     private void HandleLives(int left, int total)
@@ -44,5 +45,15 @@ public class SegmentUIBinder : MonoBehaviour
     public void Show(bool on)
     {
         if (group) group.SetActive(on);
+    }
+
+    public void ShowClearResult(int cleared)
+    {
+        if (group) group.SetActive(true);
+        if (resultText)
+        {
+            resultText.gameObject.SetActive(true);
+            resultText.text = $"CLEAR입니다. 얻은 코인: {cleared}";
+        }
     }
 }
