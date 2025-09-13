@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Controller
 {
-    // --- [¼öÁ¤] ¸ðµç Å¬·¡½º¸¦ µ¶¸³ÀûÀ¸·Î ºÐ¸® ---
+    // --- [ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¸ï¿½ ---
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
     [DisallowMultipleComponent]
     public class CreatureMover : MonoBehaviour
     {
-        #region º¯¼ö ¼±¾ðºÎ (¼öÁ¤ ¾øÀ½)
+        #region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         [Header("Ground Check Settings")]
         [SerializeField] private LayerMask m_GroundLayer;
         [SerializeField] private float m_GroundCheckDistance = 0.3f;
@@ -21,7 +21,7 @@ namespace Controller
         [SerializeField] private Space m_Space = Space.Self;
         [SerializeField] private float m_JumpHeight = 5f;
         [SerializeField] private float m_GlideGravity = -1f;
-        //Ãß°¡
+        //ï¿½ß°ï¿½
         [Header("Glide Bonus")]
         [SerializeField] private float m_GlideBonusDamp = 2.5f;
         [SerializeField] private float m_GlideMaxBonusSpeed = 500f;
@@ -51,7 +51,7 @@ namespace Controller
         [SerializeField] private float m_VisualRotationSpeed = 15f;
         #endregion
 
-        // --- ³»ºÎ »óÅÂ º¯¼öµé ---
+        // --- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ---
         private Transform m_Transform;
         private CharacterController m_Controller;
         private Animator m_Animator;
@@ -77,7 +77,7 @@ namespace Controller
         {
             m_WalkSpeed = Mathf.Max(m_WalkSpeed, 0f);
             m_RunSpeed = Mathf.Max(m_RunSpeed, m_WalkSpeed);
-            // Awake Àü¿¡´Â m_Movement°¡ nullÀÏ ¼ö ÀÖÀ¸¹Ç·Î null Ã¼Å© Ãß°¡
+            // Awake ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ m_Movementï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ null Ã¼Å© ï¿½ß°ï¿½
             m_Movement?.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_RotateSpeed, m_JumpHeight, m_GlideGravity, m_Space);
         }
 
@@ -101,18 +101,21 @@ namespace Controller
 
         private void Update()
         {
-            // Update ·ÎÁ÷Àº ±âÁ¸°ú µ¿ÀÏ : Èçµé¸®´Â°Å¶§¸Å ¿Å±è
+            // Update ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½é¸®ï¿½Â°Å¶ï¿½ï¿½ï¿½ ï¿½Å±ï¿½
             //m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, Time.deltaTime * m_IkSmoothSpeed);
         }
 
         private void FixedUpdate()
         {
-            // --- Glide ·ÎÁ÷ ---
+            //ê²Œìž„ ì‹œìž‘ ì „
+            // if (!MiniGameManager._instance.GameStart) return;
+
+            // --- Glide ï¿½ï¿½ï¿½ï¿½ ---
             if (_glideToggleRequested && !m_Controller.isGrounded) { m_IsGlide = !m_IsGlide; }
             _glideToggleRequested = false;
             if (m_Controller.isGrounded) { m_IsGlide = false; }
 
-            // Áö»ó¿¡ ´êÀ¸¸é ±Û¶óÀÌµå ¹«Á¶°Ç ÇØÁ¦ (Ãß°¡)
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¶ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ß°ï¿½)
             if (_isActuallyGrounded)
             {
                 m_IsGlide = false;
@@ -120,12 +123,12 @@ namespace Controller
                 m_GlidePitchVelY = 0f;
             }
 
-            // --- ÀÌµ¿ Ã³¸® ---
+            // --- ï¿½Ìµï¿½ Ã³ï¿½ï¿½ ---
             m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, out _currentAnimAxis);
             _isActuallyGrounded = m_Controller.isGrounded;
             _jumpRequested = false;
 
-            //Ãß°¡
+            //ï¿½ß°ï¿½
             if (m_IsGlide)
             {
                 AlignGlideToView(Time.fixedDeltaTime);
@@ -151,13 +154,13 @@ namespace Controller
                 Vector3 slideDir = m_Controller.velocity;
                 if (slideDir.sqrMagnitude > 0.01f)
                 {
-                    // yÃà¸¸ È¸Àü À¯ÁöÇÒ ¶§
+                    // yï¿½à¸¸ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                     Vector3 flatDir = new Vector3(slideDir.x, 0, slideDir.z);
                     if (flatDir.sqrMagnitude > 0.01f)
                     {
                         Quaternion target = Quaternion.LookRotation(flatDir, Vector3.up);
                         transform.rotation = Quaternion.Slerp(
-                            transform.rotation, target, Time.fixedDeltaTime * 10f // 10Àº È¸Àü ¼Óµµ, ±âÈ£¿¡ µû¶ó Á¶Á¤
+                            transform.rotation, target, Time.fixedDeltaTime * 10f // 10ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½, ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         );
                     }
                 }
@@ -167,17 +170,17 @@ namespace Controller
 
         private void LateUpdate()
         {
-            // LateUpdate ·ÎÁ÷Àº ±âÁ¸°ú µ¿ÀÏ
+            // LateUpdate ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             m_Animation.Animate(in _currentAnimAxis, m_IsRun ? 1f : 0f, _isActuallyGrounded, m_IsGlide, m_IsClimbing, Time.deltaTime);
             ApplyVisualRootBoneRotation();
-            //Èçµé¸² º¸°£
+            //ï¿½ï¿½é¸² ï¿½ï¿½ï¿½ï¿½
             float smoothFactor = 1.0f - Mathf.Pow(0.5f, Time.deltaTime * m_IkSmoothSpeed);
             m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, smoothFactor);
         }
 
         private void OnAnimatorIK()
         {
-            // OnAnimatorIK ·ÎÁ÷Àº ±âÁ¸°ú µ¿ÀÏ
+            // OnAnimatorIK ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (!m_UseIk || m_IsSliding || m_IsClimbing)
             {
                 m_Animator.SetLookAtWeight(0);
@@ -186,7 +189,7 @@ namespace Controller
             m_Animation.AnimateIK(in m_SmoothedLookAtPos, m_LookWeight);
         }
 
-        // --- [ÇÙ½É Ãß°¡] Sliding.cs¿¡¼­ È£ÃâÇÒ ÇÔ¼öµé ---
+        // --- [ï¿½Ù½ï¿½ ï¿½ß°ï¿½] Sliding.csï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ---
         public void StartNewSlideMode(Vector3 slideNormal, float friction, float gravityForce, float controlForce)
         {
             if (m_IsClimbing) return;
@@ -203,7 +206,7 @@ namespace Controller
         }
         // ---------------------------------------------
 
-        //Ãß°¡
+        //ï¿½ß°ï¿½
         public void AddGlideImpulse(Vector3 worldDir, float impulse)
         {
             worldDir.y = 0f;
@@ -278,7 +281,7 @@ namespace Controller
 
             m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, targetYSpeed, accel * dt);
         }
-        #region ±âÅ¸ ¸Þ¼­µå (±âÁ¸°ú °ÅÀÇ µ¿ÀÏ)
+        #region ï¿½ï¿½Å¸ ï¿½Þ¼ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         public void RequestJump() { _jumpRequested = true; }
         public void RequestGlideToggle() { _glideToggleRequested = true; }
         public bool IsActuallyGrounded => _isActuallyGrounded;
@@ -289,7 +292,7 @@ namespace Controller
             m_Target = target;
             m_IsRun = isRun;
 
-            if (m_IsClimbing || m_IsSliding) { m_Axis = axis; } // µî¹Ý, ½½¶óÀÌµå Áß¿¡µµ ÀÔ·ÂÀº ¹Þµµ·Ï ¼öÁ¤
+            if (m_IsClimbing || m_IsSliding) { m_Axis = axis; } // ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Þµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else { m_Axis = axis; }
 
             if (m_Axis.sqrMagnitude < Mathf.Epsilon) { m_IsMoving = false; }
@@ -345,24 +348,24 @@ namespace Controller
         private Transform _transform;
         private AnimationHandler _animation;
 
-        // ¶¥ ÆÇÁ¤
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         private LayerMask _groundLayer;
         private float _groundCheckDistance;
         private float _groundCheckRadius;
 
-        // ÀÏ¹Ý ÀÌµ¿
+        // ï¿½Ï¹ï¿½ ï¿½Ìµï¿½
         private float _walkSpeed, _runSpeed, _rotateSpeed, _jumpHeight, _glideGravity;
         private Vector3 _normalMoveVelocity;
-        private Space _space; // Ãß°¡
-        private Vector3 _lastForward; // Ãß°¡
-        private float _targetAngle; // Ãß°¡
-        private bool _isRotating; // Ãß°¡
+        private Space _space; // ï¿½ß°ï¿½
+        private Vector3 _lastForward; // ï¿½ß°ï¿½
+        private float _targetAngle; // ï¿½ß°ï¿½
+        private bool _isRotating; // ï¿½ß°ï¿½
 
-        // µî¹Ý
+        // ï¿½ï¿½ï¿½
         private bool _isClimbing;
         private Vector3 _climbNormal;
 
-        // ½½¶óÀÌµå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
         private Vector3 _slideVelocity;
         private Vector3 _slideNormal;
         private float _slideFriction;
@@ -442,10 +445,10 @@ namespace Controller
 
         private void SlideMove(float deltaTime, Vector2 axis, out Vector2 animAxis)
         {
-            // 1. ¹Ø¿¡ ÀÖ´Â ¶¥ÀÇ NormalÀ» ¸Å ÇÁ·¹ÀÓ °»½Å (SphereCast µî È°¿ë)
+            // 1. ï¿½Ø¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ Normalï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (SphereCast ï¿½ï¿½ È°ï¿½ï¿½)
             Vector3 rayOrigin = _transform.position + _controller.center;
             float rayLength = (_controller.height / 2f) + 0.1f;
-            Vector3 updatedNormal = _slideNormal; // ±âº»°ªÀº ±âÁ¸ normal
+            Vector3 updatedNormal = _slideNormal; // ï¿½âº»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ normal
 
             if (Physics.SphereCast(rayOrigin, _controller.radius, Vector3.down, out RaycastHit hit, rayLength, LayerMask.GetMask("Default","Slide")))
             {
@@ -453,14 +456,14 @@ namespace Controller
             }
             _slideNormal = updatedNormal;
 
-            // 2. ½ÇÁ¦ ½½¶óÀÌµå ¹°¸® Ã³¸® (±âÁ¸°ú µ¿ÀÏ)
+            // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             if (!_controller.isGrounded) { _slideVelocity.y += Physics.gravity.y * deltaTime; }
             else { _slideVelocity.y = Mathf.Max(_slideVelocity.y, -2f); }
 
             Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, _slideNormal).normalized * _slideGravityForce;
             _slideVelocity += slopeForce * deltaTime;
 
-            // ÄÁÆ®·Ñ ÀÔ·Â ¹× ±âÅ¸ ±âÁ¸ ÄÚµå...
+            // ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½...
             Transform camTransform = Camera.main.transform;
             Vector3 forward = camTransform.forward; forward.y = 0; forward.Normalize();
             Vector3 right = camTransform.right; right.y = 0; right.Normalize();

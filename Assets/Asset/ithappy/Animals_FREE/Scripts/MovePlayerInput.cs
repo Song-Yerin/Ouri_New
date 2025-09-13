@@ -25,9 +25,9 @@ namespace Controller
         private CreatureMover m_Mover;
         private Vector2 m_Axis;
         private bool m_IsRun;
-        // private bool m_IsJump; // m_IsJump´Â ÀÌÁ¦ CreatureMover°¡ Á÷Á¢ °ü¸®ÇÕ´Ï´Ù.
+        // private bool m_IsJump; // m_IsJumpï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ CreatureMoverï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
         private bool m_IsGlide;
-        private bool m_GlideToggleRequested = false; // ÀÌ ÇÁ·¹ÀÓ¿¡ ±Û¶óÀÌµå Åä±Û ¿äÃ»
+        private bool m_GlideToggleRequested = false; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½Û¶ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»
         private Vector3 m_Target;
         private Vector2 m_MouseDelta;
         private float m_Scroll;
@@ -37,12 +37,13 @@ namespace Controller
         }
         private void Update()
         {
+            
             m_Axis = new Vector2(Input.GetAxis(m_HorizontalAxis), Input.GetAxis(m_VerticalAxis));
             m_IsRun = Input.GetKey(m_RunKey);
 
             if (Input.GetButtonDown(m_JumpButton))
             {
-                if (!IsGrounded()) // ¹Ýµå½Ã CreatureMover ÅëÇÕ Áö»ó ÆÇÁ¤ È°¿ëÀÌ ´õ ÁÁÀ½
+                if (!IsGrounded()) // ï¿½Ýµï¿½ï¿½ CreatureMover ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     m_GlideToggleRequested = true;
                 m_Mover.RequestJump();
             }
@@ -53,10 +54,10 @@ namespace Controller
 
             if (m_Mover != null)
             {
-                // glide ÀÔ·ÂÀ» Á÷Á¢ Àü´ÞÇÏÁö ¾Ê°í(²Ú ´©¸§¡æÀ¯Áö X), ¾Æ·¡Ã³·³ Åä±Û ¸í·É¸¸ Àü´Þ
+                // glide ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½(ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ X), ï¿½Æ·ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 m_Mover.SetInput(in m_Axis, in m_Target, in m_IsRun, in m_MouseDelta, m_Scroll);
 
-                // ±Û¶óÀÌµå Åä±Û ¿äÃ»ÀÌ ÀÖÀ» ¶§¸¸ È£Ãâ(ÇÑ ÇÁ·¹ÀÓ¸¸)
+                // ï¿½Û¶ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½(ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½)
                 if (m_GlideToggleRequested)
                 {
                     m_Mover.RequestGlideToggle();
@@ -67,7 +68,7 @@ namespace Controller
 
         private bool IsGrounded()
         {
-            return m_Mover != null && m_Mover.IsActuallyGrounded; // CreatureMover °ø°³ ÇÁ·ÎÆÛÆ¼ 
+            return m_Mover != null && m_Mover.IsActuallyGrounded; // CreatureMover ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ 
         }
 
         public void BindMover(CreatureMover mover)

@@ -5,7 +5,7 @@ namespace Controller
 {
     public class PlayerCam : MonoBehaviour
     {
-        [Header("°øÅë Å¸°Ù ¼³Á¤")]
+        [Header("ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
         [SerializeField]
         protected Transform m_Player;
         [SerializeField]
@@ -13,24 +13,24 @@ namespace Controller
         [SerializeField]
         protected float TargetDistance = 5f;
 
-        [Header("Ä«¸Þ¶ó ¼³Á¤")]
-        [Tooltip("Ä«¸Þ¶ó°¡ ¹Ù¶óº¼ ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡ ¿ÀÇÁ¼ÂÀÔ´Ï´Ù.")]
+        [Header("Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+        [Tooltip("Ä«ï¿½Þ¶ï¿½ ï¿½Ù¶ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.")]
         [SerializeField]
         private Vector3 m_LookAtOffset = new Vector3(0f, 1.5f, 0f);
 
-        [Header("Ä«¸Þ¶ó ÀÔ·Â °¨µµ")]
+        [Header("Ä«ï¿½Þ¶ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½")]
         [SerializeField]
         private Vector2 m_Sensitivity = new Vector2(3f, 2f);
 
-        [Header("Ä«¸Þ¶ó Ãæµ¹ ¼³Á¤")]
-        [Tooltip("Ä«¸Þ¶ó°¡ Ãæµ¹À» °¨ÁöÇÒ ·¹ÀÌ¾î¸¦ ¼±ÅÃÇÕ´Ï´Ù. Player ·¹ÀÌ¾î´Â Á¦¿ÜÇØÁÖ¼¼¿ä.")]
+        [Header("Ä«ï¿½Þ¶ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½")]
+        [Tooltip("Ä«ï¿½Þ¶ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. Player ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.")]
         [SerializeField]
         private LayerMask m_CollisionLayers = ~0;
 
-        // --- [ÇÙ½É ¼öÁ¤ 1] ---
-        [Tooltip("Ä«¸Þ¶óÀÇ Ãæµ¹ °¨Áö ¹Ý°æÀÔ´Ï´Ù. ÀÌ °ª¸¸Å­ º®¿¡¼­ ¹Ì¸® ¶³¾îÁý´Ï´Ù.")]
+        // --- [ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1] ---
+        [Tooltip("Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý°ï¿½ï¿½Ô´Ï´ï¿½. ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.")]
         [SerializeField]
-        private float m_CollisionRadius = 0.2f; // ±âÁ¸ PaddingÀ» ´ëÃ¼ÇÏ´Â ´õ Á¤È®ÇÑ ¹æ½Ä
+        private float m_CollisionRadius = 0.2f; // ï¿½ï¿½ï¿½ï¿½ Paddingï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½ï¿½ï¿½
         // --------------------
 
         private ICameraState m_CurrentState;
@@ -49,7 +49,7 @@ namespace Controller
 
             if (m_Player == null)
             {
-                Debug.LogError("PlayerCam¿¡ ÇÃ·¹ÀÌ¾î°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+                Debug.LogError("PlayerCamï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ò´ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½!");
                 this.enabled = false;
                 return;
             }
@@ -64,10 +64,10 @@ namespace Controller
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // Cursor.lockState = CursorLockMode.Locked;
+            // Cursor.visible = false;
         }
-        // Ãß°¡ 
+        // ï¿½ß°ï¿½ 
         void LateUpdate()
         {
             var brain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
@@ -93,23 +93,23 @@ namespace Controller
             Angles = angles;
         }
 
-        // --- [ÇÙ½É ¼öÁ¤ 2] ---
+        // --- [ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2] ---
         public void PositionCameraWithCollision(Vector3 desiredPosition, Vector3 lookPoint)
         {
             Vector3 pivotPoint = m_Player.position + LookAtOffset;
             Vector3 direction = desiredPosition - pivotPoint;
             float desiredDistance = direction.magnitude;
 
-            // ¼öÁ¤: Raycast ´ë½Å SphereCast¸¦ »ç¿ëÇÏ¿© Ä«¸Þ¶óÀÇ ºÎÇÇ¸¦ °¨¾ÈÇÑ Ãæµ¹À» °¨ÁöÇÕ´Ï´Ù.
+            // ï¿½ï¿½ï¿½ï¿½: Raycast ï¿½ï¿½ï¿½ SphereCastï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
             if (Physics.SphereCast(pivotPoint, m_CollisionRadius, direction.normalized, out RaycastHit hit, desiredDistance, m_CollisionLayers))
             {
-                // Ãæµ¹ÀÌ °¨ÁöµÇ¸é, Ä«¸Þ¶ó¸¦ Ãæµ¹ ÁöÁ¡±îÁö¸¸ ÀÌµ¿½ÃÅµ´Ï´Ù.
-                // SphereCastÀÇ hit.distance´Â Ç¥¸é±îÁöÀÇ °Å¸®ÀÌ¹Ç·Î, ÆÐµùÀÌ ÇÊ¿ä ¾ø½À´Ï´Ù.
+                // ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½, Ä«ï¿½Þ¶ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Åµï¿½Ï´ï¿½.
+                // SphereCastï¿½ï¿½ hit.distanceï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½Ì¹Ç·ï¿½, ï¿½Ðµï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
                 m_Transform.position = pivotPoint + direction.normalized * hit.distance;
             }
             else
             {
-                // Ãæµ¹ÀÌ ¾øÀ¸¸é ¿øÇÏ´Â À§Ä¡·Î ±×´ë·Î ÀÌµ¿ÇÕ´Ï´Ù.
+                // ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Õ´Ï´ï¿½.
                 m_Transform.position = desiredPosition;
             }
 
