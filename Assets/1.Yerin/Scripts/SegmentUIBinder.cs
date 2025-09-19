@@ -33,7 +33,7 @@ public class SegmentUIBinder : MonoBehaviour
 
     private void HandleRings(int cleared, int total)
     {
-        if (ringText) ringText.text = $"{cleared*2}/{total*2}";
+        if (ringText) ringText.text = $"{cleared}/{total}";
     }
 
     private void HandleLives(int left, int total)
