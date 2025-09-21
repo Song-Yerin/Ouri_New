@@ -1,12 +1,8 @@
 fileFormatVersion: 2
-<<<<<<<< Updated upstream:Assets/POLY_cosmodrome/DemoScene/0/Profile.asset.meta
 guid: 9659936b4392abe4794ee80db22ccd9c
-========
-guid: 25387ce6d8a255a4a8aad1a9cc73fd08
->>>>>>>> Stashed changes:Assets/1.Inseo/Scenes/waterway/Materials/Materials/Gemini_Generated_Image_5mo2yb5mo2yb5mo2.mat.meta
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 2100000
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
