@@ -30994,7 +30994,7 @@ VideoPlayer:
   m_VideoClip: {fileID: 32900000, guid: 804b6d00039ae2b43a272140b64fb597, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 1309929718}
+  m_TargetCamera: {fileID: 898996680}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
@@ -78089,6 +78089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 437843711}
   - component: {fileID: 437843710}
+  - component: {fileID: 437843712}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -78132,6 +78133,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437843712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437843709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d31ae2c070d944458c1758ab92663a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 3832011365056884192}
+  player: {fileID: 1569356597}
+  cutsceneVideoPlayer: {fileID: 176622439}
+  playerResetPosition: {fileID: 1322609246}
+  enemyResetPosition: {fileID: 258946573}
 --- !u!1001 &437924596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -158544,6 +158562,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 898496208}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &898996680 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5182761482800200265, guid: 552b8c25a5138734fb9c72bfcee0babb,
+    type: 3}
+  m_PrefabInstance: {fileID: 993313687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &899872433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174431,6 +174455,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1036658560713323328, guid: 552b8c25a5138734fb9c72bfcee0babb,
+        type: 3}
+      propertyPath: m_VolumeTrigger
+      value: 
+      objectReference: {fileID: 706897927}
     - target: {fileID: 1431512482312526200, guid: 552b8c25a5138734fb9c72bfcee0babb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -174439,7 +174468,7 @@ PrefabInstance:
     - target: {fileID: 1431512482312526200, guid: 552b8c25a5138734fb9c72bfcee0babb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.56168556
+      value: 0.633
       objectReference: {fileID: 0}
     - target: {fileID: 1431512482312526200, guid: 552b8c25a5138734fb9c72bfcee0babb,
         type: 3}
@@ -174489,11 +174518,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3454177262601287682, guid: 552b8c25a5138734fb9c72bfcee0babb,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1569356588}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 552b8c25a5138734fb9c72bfcee0babb, type: 3}
 --- !u!1001 &993538133
 PrefabInstance:
@@ -226349,10 +226374,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d31ae2c070d944458c1758ab92663a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutsceneVideoPlayer: {fileID: 176622439}
   enemy: {fileID: 3832011365056884192}
   player: {fileID: 301019184}
-  enemyAnimationTrigger: isRunning
+  cutsceneVideoPlayer: {fileID: 176622439}
   playerResetPosition: {fileID: 1322609246}
   enemyResetPosition: {fileID: 258946573}
 --- !u!20 &1309929718 stripped
@@ -274543,30 +274567,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1569235148}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1569356587 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3454177262601287682, guid: 552b8c25a5138734fb9c72bfcee0babb,
-    type: 3}
-  m_PrefabInstance: {fileID: 993313687}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1569356588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569356587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d31ae2c070d944458c1758ab92663a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cutsceneVideoPlayer: {fileID: 176622439}
-  enemy: {fileID: 3832011365056884192}
-  player: {fileID: 1569356597}
-  enemyAnimationTrigger: isRunning
-  playerResetPosition: {fileID: 1322609246}
-  enemyResetPosition: {fileID: 258946573}
 --- !u!4 &1569356597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1431512482312526200, guid: 552b8c25a5138734fb9c72bfcee0babb,
@@ -331689,6 +331689,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1911897173}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 10d20e3791000e64c9e438b670cc7b43,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1911897175}
   m_SourcePrefab: {fileID: 100100000, guid: 10d20e3791000e64c9e438b670cc7b43, type: 3}
 --- !u!1 &1911897170 stripped
 GameObject:
@@ -331729,12 +331733,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81fc594c2122d6d4faa3151bd3604e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0, z: 0}
-  Chasing: 0
-  moveSpeed: 5
-  isFailed: 0
-  isSuccess: 0
-  startChasingModule: {fileID: 1309929714}
+--- !u!143 &1911897175
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911897170}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1912171445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372633,6 +372657,65 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8836523856735845728}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &4496240201039476573
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832011365056884192}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.76, z: 0}
+--- !u!114 &4496240201039476574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832011365056884192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ba7775979cd3994da3b3259e3460b08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1569356597}
+  moveSpeed: 4
+  stoppingDistance: 0.5
+  jumpForce: 5
+  maxJumpHeight: 3
+  jumpCooldown: 2
+  structureLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundCheckDistance: 0.5
+  obstacleDetectDistance: 4
+  obstacleDetectHeight: 1
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  runningBool: isRunning
+  jumpTrigger: Jump
+  isAirborneBool: isAirborne
+  isFallingBool: isFalling
+  landTrigger: Land
+  verticalSpeedFloat: VerticalSpeed
 --- !u!1001 &8836523856735845728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372641,11 +372724,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 869911078333824537, guid: 6816efd63edfb8040a6901baa2890401,
+        type: 3}
+      propertyPath: m_Name
+      value: mouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225947447619732188, guid: 6816efd63edfb8040a6901baa2890401,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6136451
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765447615524984778, guid: 6816efd63edfb8040a6901baa2890401,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4765447615524984778, guid: 6816efd63edfb8040a6901baa2890401,
         type: 3}
       propertyPath: startChasingModule
       value: 
-      objectReference: {fileID: 1569356588}
+      objectReference: {fileID: 0}
     - target: {fileID: 6044675897499723423, guid: 6816efd63edfb8040a6901baa2890401,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -372704,7 +372802,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6388584905108257829, guid: 6816efd63edfb8040a6901baa2890401,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4496240201039476573}
+    - targetCorrespondingSourceObject: {fileID: 6388584905108257829, guid: 6816efd63edfb8040a6901baa2890401,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4496240201039476574}
   m_SourcePrefab: {fileID: 100100000, guid: 6816efd63edfb8040a6901baa2890401, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

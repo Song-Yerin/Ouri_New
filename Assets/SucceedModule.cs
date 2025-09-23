@@ -16,7 +16,7 @@ public class SucceedModule : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player has reached the end point!");
-            other.GetComponent<StartChasingModule>().StopChase();
+            other.GetComponent<StartChasingModule>().StopChaseOnSuccess();
 
 
         }

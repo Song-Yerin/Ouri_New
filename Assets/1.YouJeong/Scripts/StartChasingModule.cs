@@ -1,147 +1,132 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Playables;
-using UnityEngine.UIElements.Experimental;
 using UnityEngine.Video;
 
-using System.Collections;
-using System.Collections.Generic;
 public class StartChasingModule : MonoBehaviour
 {
-    //// Start is called before the first frame update
-
-    bool hasTriggered = false;
-    bool startChase = false;
-
-    //public PlayableDirector cutsceneDirector; // Timeline 컨트롤러
-    public VideoPlayer cutsceneVideoPlayer; //VideoPlayer 참조
-
-    float cutsceneDuration = 5f; // 컷씬이 끝난 후 Enemy가 이동을 시작하기 전 대기 시간
-
+    [Header("참조 설정")]
+    [Tooltip("추격을 시작할 Enemy 오브젝트")]
     public GameObject enemy;
+    [Tooltip("추격 대상인 Player 오브젝트")]
     public Transform player;
-    public string enemyAnimationTrigger = "isRunning";
+    [Tooltip("재생할 컷씬 비디오 플레이어")]
+    public VideoPlayer cutsceneVideoPlayer;
 
-    SetDestinationModule setDestinationModule;
-
+    [Header("리셋 위치")]
     public Transform playerResetPosition;
     public Transform enemyResetPosition;
 
+    // 내부 변수
+    private SmartChaseAI smartChaseAI;
+    private bool hasTriggered = false;
+
     void Start()
     {
-        setDestinationModule = enemy.GetComponent<SetDestinationModule>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(startChase)
+        if (enemy == null)
         {
-            EnemyChase();
+            Debug.LogError("Enemy가 할당되지 않았습니다!");
+            this.enabled = false;
+            return;
         }
-    }
 
+        // Enemy에서 SmartChaseAI 컴포넌트를 가져옵니다.
+        smartChaseAI = enemy.GetComponent<SmartChaseAI>();
+
+        if (smartChaseAI == null)
+        {
+            Debug.LogError("Enemy 오브젝트에 SmartChaseAI 스크립트가 없습니다!");
+            this.enabled = false;
+            return;
+        }
+
+        // 시작 시에는 AI를 비활성화하여 멋대로 움직이지 않게 합니다.
+        smartChaseAI.enabled = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasTriggered) return;
-        Debug.Log("1");
-     
+        // 플레이어만 감지하고, 한 번만 실행되도록 합니다.
+        if (hasTriggered || !other.CompareTag("Player")) return;
+
         hasTriggered = true;
-        Debug.Log("컷씬 시작");
-        StartCoroutine(StartCutscene());
-      
+        StartCoroutine(StartCutsceneAndChase());
     }
-    private IEnumerator StartCutscene()
+
+    /// <summary>
+    /// 컷씬을 재생하고, 끝난 뒤 추격을 시작하는 전체 시퀀스입니다.
+    /// </summary>
+    private IEnumerator StartCutsceneAndChase()
     {
-        Debug.Log("컷씬 재생");
-
-        //// 컷씬 재생 (Timeline)
-        //if (cutsceneDirector != null)
-        //{
-        //    cutsceneDirector.Play();
-        //    // Timeline의 길이를 기다리거나 지정된 cutsceneDuration 사용
-        //    yield return new WaitForSeconds((float)cutsceneDirector.duration);
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("cutsceneDirector가 할당되지 않음");
-        //    yield return new WaitForSeconds(cutsceneDuration);
-        //}
-
-        //Debug.Log("컷씬 종료, Enemy 이동 시작");
+        // 컷씬 재생
         if (cutsceneVideoPlayer != null)
         {
-
+            cutsceneVideoPlayer.enabled = true;
             cutsceneVideoPlayer.Play();
-
-            // 영상 끝날 때까지 대기
-            while (cutsceneVideoPlayer.isPlaying)
-            {
-                yield return null;
-            }
+            // 영상이 끝날 때까지 대기
+            yield return new WaitUntil(() => !cutsceneVideoPlayer.isPlaying && cutsceneVideoPlayer.time > 0);
+            cutsceneVideoPlayer.Stop();
+            cutsceneVideoPlayer.enabled = false;
         }
 
-        cutsceneVideoPlayer.Stop();                    // 영상 멈추고
-        cutsceneVideoPlayer.enabled = false;           // 영상 플레이어 비활성화
-
-        StartEnemyAction();
+        // 컷씬이 끝난 후, AI의 추격을 시작시킵니다.
+        StartEnemyChase();
     }
-    private void StartEnemyAction()
+
+    /// <summary>
+    /// SmartChaseAI 스크립트를 활성화하여 추격을 시작합니다.
+    /// </summary>
+    private void StartEnemyChase()
     {
-        Debug.Log("적 anim bool 시작");
-        if (enemy == null || player == null) return;
-
-        Animator anim = enemy.GetComponent<Animator>();
-
-        if (anim != null)
+        if (smartChaseAI != null)
         {
-            anim.SetBool(enemyAnimationTrigger,true);
+            Debug.Log("추격 시작!");
+            smartChaseAI.enabled = true;
         }
-        startChase = true;
-        setDestinationModule.Chasing = true;
     }
-    
-    private void EnemyChase()
+
+    /// <summary>
+    /// 외부에서 호출하여 추격을 성공적으로 중지시킵니다. (예: 도착 지점 도달 시)
+    /// </summary>
+    public void StopChaseOnSuccess()
     {
-        if (enemy != null)
+        if (smartChaseAI != null)
         {
-            setDestinationModule.SetDestination(player.position);
+            smartChaseAI.enabled = false;
         }
-
     }
 
-    public void StopChase() // 성공의 경우
+    /// <summary>
+    /// 외부에서 호출하여 플레이어와 적을 리셋하는 시퀀스를 시작합니다. (예: 플레이어 사망 시)
+    /// </summary>
+    public void TriggerResetSequence()
     {
-        startChase = false;
-        setDestinationModule.Chasing = false;
-        setDestinationModule.isSuccess = true;
+        StartCoroutine(ResetRoutine());
+    }
 
-        Animator anim = enemy.GetComponent<Animator>();
-        if (anim != null)
+    /// <summary>
+    /// 플레이어와 적을 리셋하고, 2초 후 추격을 재개하는 루틴입니다.
+    /// </summary>
+    private IEnumerator ResetRoutine()
+    {
+        // 1. 추격 즉시 중지
+        if (smartChaseAI != null)
         {
-            anim.SetBool(enemyAnimationTrigger, false);
+            smartChaseAI.enabled = false;
         }
-    }
 
-    public void ResetPosition()
-    {
-        // 초기화 로직
-        setDestinationModule.Chasing = false;
-        // 위치 초기화
-        this.transform.position = playerResetPosition.position;
-        enemy.transform.position = enemyResetPosition.position;
-    }
-    public IEnumerator Reset()
-    {
+        // 2. 플레이어와 적의 위치 및 상태 리셋
+        player.position = playerResetPosition.position;
+        // 플레이어도 CharacterController를 쓴다면 비활성화/활성화 처리가 필요할 수 있습니다.
 
-        // 대기
+        if (smartChaseAI != null)
+        {
+            smartChaseAI.ResetAIAndTeleport(enemyResetPosition.position, enemyResetPosition.rotation);
+        }
+
+        // 3. 2초 대기
         yield return new WaitForSeconds(2f);
 
-        //게임 재개
-        setDestinationModule.Chasing = true;
-        setDestinationModule.ResetAnim();
-
+        // 4. 추격 재개
+        StartEnemyChase();
     }
 }
