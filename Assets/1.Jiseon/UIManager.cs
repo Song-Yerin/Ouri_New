@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i <= 5; i++)
+        for (int i = 0; i <= 7; i++)
         {
             KeyCode key = KeyCode.Alpha0 + i;  // KeyCode.Alpha0 ~ Alpha9 순차적으로 대응
             if (Input.GetKeyDown(key))
@@ -173,13 +173,20 @@ public class UIManager : MonoBehaviour
                 LoadingSceneManager.LoadScene("FirstCutScene");
                 break;
             case 1: //인공위성 내부 
-                SceneManager.LoadScene("PipeScene");
+                SceneManager.LoadScene("PipeScene 1");
                 break;
-            case 2: // 부엉이와 대화 시작~~
+            case 2: // 부엉이와 첫 대화
                 SceneManager.LoadScene("YJ_Forest_Night");
                 break;
             case 3 or 4 or 5: // 부엉이와 대화 후
                 SceneManager.LoadScene("Practice");
+                break;
+            case 6: // 두 번째 조각 찾은 후
+                SceneManager.LoadScene("YJ _Forest_Day");
+                break;
+
+            case 7:
+                SceneManager.LoadScene("CityGliding");
                 break;
             default:
                 break;

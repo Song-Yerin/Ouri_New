@@ -72,6 +72,8 @@ public class DialogueTriggerZone : MonoBehaviour
         VD.OnNodeChange += HandleNodeChange;
         VD.OnActionNode += OnActionNodeTriggered;
         VD.OnEnd += OnDialogueEnd;
+
+        Debug.Log(myDialogue.overrideStartNode);
     }
 
     private void OnDialogueEnd(VD.NodeData data)
@@ -80,6 +82,7 @@ public class DialogueTriggerZone : MonoBehaviour
         if (nightMapProgress == 4 || nightMapProgress == 5)
         {
             nextsection();
+            ApplyProgress();
         }
     }
 
@@ -287,6 +290,14 @@ public class DialogueTriggerZone : MonoBehaviour
         {
             SetProgress(5, false);
         }
+        if (data.nodeID == 50)
+        {
+            SetProgress(6, false);
+        }
+        if (data.nodeID == 42)
+        {
+            SetProgress(7, false);
+        }
     }
 
     void OnActionNodeTriggered(int nodeID)
@@ -436,6 +447,23 @@ public class DialogueTriggerZone : MonoBehaviour
                 autoStartOnEnter = false; // 추가: 자동 시작 끔
                 hasTriggered = false;
                 Debug.Log("진행도 5: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 6:
+                nextsection();
+                myDialogue.overrideStartNode = 36;
+                dialogueManager.defaultNPCName = "실험용쥐";
+                autoStartOnEnter = false; // 추가: 자동 시작 끔
+                hasTriggered = false;
+                Debug.Log("진행도 6: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 7:
+                nextsection();
+                myDialogue.overrideStartNode = 51;
+                autoStartOnEnter = true; 
+                hasTriggered = false;
+                Debug.Log("진행도 7: 다음 이벤트 상태 반영 완료");
                 break;
 
             default:

@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class MinimapMarker : MonoBehaviour
 {
-    public Transform target;          // 추적할 오브젝트 (보물/NPC)
-    public RectTransform markerUI;    // 아이콘(UI)
-    public Camera minimapCamera;      // 미니맵 카메라
-    public RectTransform minimapUI;   // RawImage (RectTransform)
+    public Transform target;
+    public RectTransform markerUI;
+    public Camera minimapCamera;
+    public RectTransform minimapUI;
 
     public float blinkSpeed = 2f;
     private Image markerImage;
@@ -18,7 +18,6 @@ public class MinimapMarker : MonoBehaviour
 
     void Update()
     {
-        // 월드 → 뷰포트 (0~1)
         Vector3 viewportPos = minimapCamera.WorldToViewportPoint(target.position);
 
         // 뷰포트 → UI localPosition
@@ -28,9 +27,18 @@ public class MinimapMarker : MonoBehaviour
             (viewportPos.y - 0.5f) * minimapSize.y
         );
 
+        // Clamp 처리 (네모 바깥으로 안 나가게)
+        float halfX = minimapSize.x / 2f;
+        float halfY = minimapSize.y / 2f;
+
+        uiPos.x = Mathf.Clamp(uiPos.x, -halfX, halfX);
+        uiPos.y = Mathf.Clamp(uiPos.y, -halfY, halfY);
+
         markerUI.localPosition = uiPos;
 
+        // 깜빡임 효과
         Color c = markerImage.color;
+        c.a = Mathf.Abs(Mathf.Sin(Time.time * blinkSpeed));
         markerImage.color = c;
     }
 }

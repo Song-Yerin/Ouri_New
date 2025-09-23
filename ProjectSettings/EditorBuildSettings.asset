@@ -24,8 +24,8 @@ EditorBuildSettings:
     path: Assets/1.YouJeong/YJ_Forest_Night.unity
     guid: a5b3168686f35fb4b8cd5d3c11905d3a
   - enabled: 1
-    path: Assets/1.Yerin/Scenes/PipeScene.unity
-    guid: e8b770f9b944ab8438a8b4c8136527ca
+    path: Assets/1.Yerin/Scenes/PipeScene 1.unity
+    guid: eac751332cf1b8343a8ebd242dbf9b2b
   - enabled: 1
     path: Assets/1.Inseo/Scenes/Practice/Practice.unity
     guid: 35eab1652b3a2744cb719c0701ca9ff6

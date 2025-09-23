@@ -21,11 +21,14 @@ public class WorldMapCameraSetup : MonoBehaviour
 
     public bool isback = false;
 
+    [Header("Terrain 설정")]
+    public Terrain targetTerrain;   // 직접 넣을 Terrain (없으면 씬 전체 Terrain 기준)
+
     void Start()
     {
         cam = GetComponent<Camera>();
         SetupWorldMapCamera_DisableAllVolumes();
-        // 씬에 있는 모든 Terrain 기준으로 경계 계산
+        // Terrain 기준으로 경계 계산
         CalculateTerrainBounds();
 
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
@@ -48,10 +51,8 @@ public class WorldMapCameraSetup : MonoBehaviour
         else
         {
             cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.backgroundColor = new Color(0.1f, 0.3f, 0.1f, 0f); // 초록톤 (Terrain 색과 맞춤)
+            cam.backgroundColor = new Color(0.1f, 0.3f, 0.1f, 0f); // 초록톤 + 알파 0
         }
-       
-        
     }
 
     void SetupWorldMapCamera_DisableAllVolumes()
@@ -62,17 +63,28 @@ public class WorldMapCameraSetup : MonoBehaviour
         ucam.volumeLayerMask = 0; // Nothing
     }
 
-
     void CalculateTerrainBounds()
     {
+        // 직접 Terrain이 지정돼 있다면 그거만 기준
+        if (targetTerrain != null)
+        {
+            Vector3 pos = targetTerrain.transform.position;
+            Vector3 size = targetTerrain.terrainData.size;
+
+            terrainMin = pos;
+            terrainMax = pos + size;
+
+            Debug.Log($"선택된 Terrain 기준 경계: {terrainMin} ~ {terrainMax}");
+            return;
+        }
+
+        // 지정 안 했으면 씬 전체 Terrain 합산
         Terrain[] terrains = FindObjectsOfType<Terrain>();
         if (terrains.Length == 0) return;
 
-        // 첫 번째 Terrain으로 초기화
         Vector3 min = terrains[0].transform.position;
         Vector3 max = min + terrains[0].terrainData.size;
 
-        // 모든 Terrain을 돌면서 최소/최대 갱신
         foreach (var t in terrains)
         {
             Vector3 pos = t.transform.position;

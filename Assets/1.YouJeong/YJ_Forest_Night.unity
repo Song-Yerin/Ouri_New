@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2459590afff81b446bf2fd101dbe2f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: YR2
+  targetSceneName: PipeScene 1
   delay: 3
 --- !u!65 &4553991
 BoxCollider:
@@ -120397,6 +120397,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1201139917}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1201718626 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4975634342263074372, guid: eb544cdbef0c5dd449760674b459f543,
+    type: 3}
+  m_PrefabInstance: {fileID: 880488961}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1202197941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -124904,7 +124910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d8ab81da2a2d643a04208d7cff47e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 5272733}
+  target: {fileID: 1201718626}
   markerUI: {fileID: 1248531773}
   minimapCamera: {fileID: 1967409412}
   minimapUI: {fileID: 163597240}
@@ -158528,6 +158534,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 1465506521}
   player: {fileID: 0}
+  npc: {fileID: 0}
 --- !u!114 &1575751010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197535,6 +197542,7 @@ MonoBehaviour:
   minZoom: 50
   maxZoom: 800
   isback: 0
+  targetTerrain: {fileID: 0}
 --- !u!114 &1938839161
 MonoBehaviour:
   m_ObjectHideFlags: 0
