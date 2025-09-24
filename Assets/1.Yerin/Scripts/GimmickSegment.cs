@@ -216,10 +216,10 @@ public class GimmickSegment : MonoBehaviour
             active = false;
             PlayExitSfx();
             StopSegmentLoop(true);
-            uiBinder?.Show(false);
+            // uiBinder?.Show(false);
 
-            uiBinder?.ShowClearResult(ClearedCount);
-
+            // uiBinder?.ShowClearResult(ClearedCount);
+            uiBinder?.HideAll();
 
             // === 컷씬 재생 ===
             if (endCutscene)

@@ -47,6 +47,16 @@ public class SegmentUIBinder : MonoBehaviour
         if (group) group.SetActive(on);
     }
 
+
+    public void HideAll()
+    {
+        if (resultText) resultText.gameObject.SetActive(false);
+        if (ringText) ringText.text = string.Empty;
+        if (lifeText) lifeText.text = string.Empty;
+        if (group) group.SetActive(false);
+    }
+
+
     public void ShowClearResult(int cleared)
     {
         if (group) group.SetActive(true);
