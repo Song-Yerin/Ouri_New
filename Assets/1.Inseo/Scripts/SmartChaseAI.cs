@@ -2,6 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController))]
 public class SmartChaseAI : MonoBehaviour
 {
     [Header("추격 설정")]
@@ -10,16 +11,20 @@ public class SmartChaseAI : MonoBehaviour
     [SerializeField] private float stoppingDistance = 0.5f;
 
     [Header("점프 설정")]
+    [Tooltip("최대 점프 높이에 도달하기 위한 기본 점프 힘")]
     [SerializeField] private float jumpForce = 8f;
+    [Tooltip("AI가 점프할 수 있는 최대 높이")]
     [SerializeField] private float maxJumpHeight = 3f;
-    [SerializeField] public float jumpCooldown = 2.0f; // 점프 쿨타임
+    [Tooltip("가장 낮은 장애물을 넘기 위한 최소 점프 힘")]
+    [SerializeField] private float minObstacleJumpForce = 5f;
+    [SerializeField] public float jumpCooldown = 2.0f;
     [SerializeField] private LayerMask structureLayerMask = -1;
 
     [Header("구조물 감지")]
     [SerializeField] private float groundCheckDistance = 1f;
 
     [Header("장애물 점프 설정")]
-    [SerializeField] private float obstacleDetectDistance = 1.0f;
+    [SerializeField] private float obstacleDetectDistance = 1.5f;
     [SerializeField] private float obstacleDetectHeight = 0.5f;
     [SerializeField] private LayerMask obstacleLayerMask = ~0;
 
@@ -40,7 +45,7 @@ public class SmartChaseAI : MonoBehaviour
     private bool wasGroundedLastFrame = true;
     private Vector3 verticalVelocity;
     private float gravity = -9.81f;
-    private float lastJumpTime = -99f; // 마지막 점프 시간 기록
+    private float lastJumpTime = -99f;
 
     // 구조물 정보
     private Transform currentTargetStructure;
@@ -66,50 +71,78 @@ public class SmartChaseAI : MonoBehaviour
 
         if (isJumping) return;
 
-        // --- [핵심 수정] ---
-        // 땅에 있고, 쿨타임이 지났을 때만 점프를 판단합니다.
         if (isGrounded && Time.time >= lastJumpTime + jumpCooldown)
         {
             // 1. 전방 장애물 점프 판단
-            if (DetectObstacle())
+            if (DetectObstacle(out RaycastHit hit))
             {
                 isJumping = true;
-                lastJumpTime = Time.time; // 쿨타임 갱신
-                StartCoroutine(ExecuteJumpOverObstacle());
+                lastJumpTime = Time.time;
+                StartCoroutine(ExecuteJumpOverObstacle(hit));
                 return;
             }
 
             // 2. 높은 곳의 플레이어를 향한 스마트 점프 판단
             if (AnalyzeAndTrySmartJump())
             {
-                lastJumpTime = Time.time; // 쿨타임 갱신
+                lastJumpTime = Time.time;
                 return;
             }
         }
 
-        // 점프를 하지 않았다면, 일반 추격 이동을 수행합니다.
         MoveTowardsTarget();
-
         wasGroundedLastFrame = isGrounded;
     }
 
     /// <summary>
-    /// 전방 장애물 감지
+    /// 전방 장애물을 감지하고, 감지했다면 충돌 정보를 반환합니다.
     /// </summary>
-    private bool DetectObstacle()
+    private bool DetectObstacle(out RaycastHit hit)
     {
-        Vector3 origin = transform.position + Vector3.up * obstacleDetectHeight;
-        return Physics.Raycast(origin, transform.forward, obstacleDetectDistance, obstacleLayerMask);
+        Vector3 origin = transform.position + (Vector3.up * obstacleDetectHeight);
+        return Physics.Raycast(origin, transform.forward, out hit, obstacleDetectDistance, obstacleLayerMask);
     }
 
     /// <summary>
-    /// 장애물 위로 점프 (간단한 버전)
+    /// 감지된 장애물의 높이에 맞춰 점프를 실행합니다.
     /// </summary>
-    private IEnumerator ExecuteJumpOverObstacle()
+    private IEnumerator ExecuteJumpOverObstacle(RaycastHit obstacleHit)
     {
         anim?.SetTrigger(jumpTrigger);
-        verticalVelocity.y = jumpForce;
-        yield return new WaitForSeconds(1.0f);
+
+        // --- [핵심 수정: 물리 공식 기반 점프 힘 계산] ---
+        // 1. 넘어야 할 실제 높이 계산 (장애물 상단 - 내 발 위치 + 약간의 여유)
+        float obstacleTopY = obstacleHit.collider.bounds.max.y;
+        float heightToClear = obstacleTopY - transform.position.y + 0.5f; // 0.5m 여유분 추가
+
+        // 2. 점프 높이가 음수이거나 너무 높지 않도록 제한
+        if (heightToClear < 0) heightToClear = 0.5f; // 최소 점프 높이
+        heightToClear = Mathf.Min(heightToClear, maxJumpHeight);
+
+        // 3. 필요한 초기 점프 속도 계산: v = sqrt(2 * g * h)
+        //    g는 중력(gravity)의 절대값, h는 목표 높이(heightToClear)
+        float requiredJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * heightToClear);
+
+        // 4. 계산된 힘으로 점프
+        verticalVelocity.y = requiredJumpVelocity;
+
+        float jumpStartTime = Time.time;
+        // 점프 시간 동안 앞으로 이동하며 포물선 운동
+        while (!CheckGroundStatus() && Time.time < jumpStartTime + 2.0f) // 최대 2초간 점프 시도
+        {
+            // 점프 중에도 계속 앞으로 이동
+            Vector3 forwardMove = transform.forward * moveSpeed * Time.deltaTime;
+
+            // 수직 이동 (중력 적용)
+            verticalVelocity.y += gravity * Time.deltaTime;
+            Vector3 verticalMove = verticalVelocity * Time.deltaTime;
+
+            // 수평, 수직 이동을 합쳐서 한 번에 Move 호출
+            controller.Move(forwardMove + verticalMove);
+
+            yield return null;
+        }
+
         isJumping = false;
     }
 
@@ -132,14 +165,12 @@ public class SmartChaseAI : MonoBehaviour
 
     /// <summary>
     /// 플레이어의 위치를 분석하고 스마트 점프를 시도합니다.
-    /// 점프를 시작했다면 true를 반환합니다.
     /// </summary>
     private bool AnalyzeAndTrySmartJump()
     {
         if (player == null) return false;
 
         float heightDifference = player.position.y - transform.position.y;
-
         if (heightDifference <= 0.3f || heightDifference > (maxJumpHeight * 1.5f)) return false;
 
         Transform playerStructure = DetectPlayerStructure();
@@ -150,10 +181,10 @@ public class SmartChaseAI : MonoBehaviour
                 isJumping = true;
                 currentTargetStructure = playerStructure;
                 StartCoroutine(ExecuteSmartJump());
-                return true; // 점프 시작
+                return true;
             }
         }
-        return false; // 점프하지 않음
+        return false;
     }
 
     /// <summary>

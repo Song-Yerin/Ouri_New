@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14153619, g: 0.034152597, b: 0.032205157, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 0a33be4bb3a41ca40b2169b7c491841a,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -63411,6 +63412,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 352199157}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &354144994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7326754356602932589, guid: 2c334aa398ce9fc4c88d1383fa9b36b2,
+    type: 3}
+  m_PrefabInstance: {fileID: 359004463}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &354313051
 GameObject:
   m_ObjectHideFlags: 0
@@ -64409,7 +64416,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7326754356602932589, guid: 2c334aa398ce9fc4c88d1383fa9b36b2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 359004467}
   m_SourcePrefab: {fileID: 100100000, guid: 2c334aa398ce9fc4c88d1383fa9b36b2, type: 3}
 --- !u!4 &359004464 stripped
 Transform:
@@ -64417,6 +64428,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 359004463}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &359004467
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354144994}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3026436426225396084, guid: 2c334aa398ce9fc4c88d1383fa9b36b2, type: 3}
 --- !u!1001 &359682484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372698,8 +372731,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_SlopeLimit: 50
+  m_StepOffset: 1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.76, z: 0}
@@ -372719,14 +372752,15 @@ MonoBehaviour:
   moveSpeed: 4
   stoppingDistance: 0.5
   jumpForce: 5
-  maxJumpHeight: 3
+  maxJumpHeight: 8
+  minObstacleJumpForce: 5
   jumpCooldown: 2
   structureLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
   groundCheckDistance: 0.5
-  obstacleDetectDistance: 4
-  obstacleDetectHeight: 1
+  obstacleDetectDistance: 2
+  obstacleDetectHeight: 0
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
