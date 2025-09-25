@@ -132,6 +132,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-4705269165473492562
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mouse_slowwalk
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 56716000e07da8a43a054660ead59122, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &-4689979582946796185
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -149,6 +175,28 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &-3184554396170912085
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions: []
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 7678141477627983004}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.9032258
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -217,7 +265,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.89772725
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 4
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-646972246733581960
@@ -454,7 +502,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.9032257
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 3
+  m_InterruptionSource: 4
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1107 &5931499608940067404
@@ -484,6 +532,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 9153960610344377450}
     m_Position: {x: 300, y: 220, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -4705269165473492562}
+    m_Position: {x: 335, y: 285, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -8803368612628538905}
@@ -537,10 +588,10 @@ BlendTree:
   m_Name: WalkTree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 23b1074da70d26a41b2149ae88cb6486, type: 2}
+    m_Motion: {fileID: 7400000, guid: 56716000e07da8a43a054660ead59122, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: State
     m_Mirror: 0
@@ -649,6 +700,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2542021824182520576}
+  - {fileID: -3184554396170912085}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
