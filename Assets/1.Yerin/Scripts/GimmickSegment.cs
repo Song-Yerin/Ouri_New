@@ -3,9 +3,13 @@ using Controller; // CreatureMover 네임스페이스
 using System;
 using System.Collections.Generic;
 using UnityEngine.Playables;
+using UnityEngine.Events; // 맨 위에
 
 public class GimmickSegment : MonoBehaviour
 {
+    [Header("Signals")]
+    public UnityEvent onEndSuccess;
+
     [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private CreatureMover mover;
@@ -31,6 +35,9 @@ public class GimmickSegment : MonoBehaviour
     }
     [Header("Rings")]
     [SerializeField] private RingNode[] rings;
+
+    [Header("Rings Visibility")]
+    [SerializeField] private bool hideRingsUntilStart = true;
 
     // 순서 무시 진행 집계
     private bool[] ringCleared;   // 각 링을 '한 번이라도' 통과했는지
@@ -74,6 +81,7 @@ public class GimmickSegment : MonoBehaviour
     // 이벤트 구독 관리
     private readonly Dictionary<GlideRingAccelerator, Action<GlideRingAccelerator, Collider>> _subs
         = new Dictionary<GlideRingAccelerator, Action<GlideRingAccelerator, Collider>>();
+
 
     // ─────────────────────────────────────────────────────────────────────────────
 
@@ -152,7 +160,7 @@ public class GimmickSegment : MonoBehaviour
                 if (pass) AudioSource.PlayClipAtPoint(pass, player ? player.position : transform.position);
             };
 
-            
+
             acc.OnRingPassed += cb;
             _subs[acc] = cb;
         }
@@ -189,6 +197,7 @@ public class GimmickSegment : MonoBehaviour
     {
         active = true;
         completed = false;
+        SetRingsVisible(true);
 
         // 진행 유지 + 기대 링만 갱신
         RecomputeCurrentRing();
@@ -210,24 +219,25 @@ public class GimmickSegment : MonoBehaviour
         if (!active) return;
 
         bool success = (extraLives > 0);
-    if (success)
+        if (success)
         {
+            onEndSuccess?.Invoke();
             completed = true;
             active = false;
+
             PlayExitSfx();
             StopSegmentLoop(true);
-            // uiBinder?.Show(false);
-
-            // uiBinder?.ShowClearResult(ClearedCount);
             uiBinder?.HideAll();
 
-            // === 컷씬 재생 ===
+            // 엔드존 도착 → 링 전부 숨김
+            SetRingsVisible(false);
+
+            // === 컷씬 재생(원래 로직 유지) ===
             if (endCutscene)
             {
-                endCutscene.time = 0;          // 처음부터
-                endCutscene.Play();            // 실행
+                endCutscene.time = 0;
+                endCutscene.Play();
             }
-
         }
         else
         {
@@ -235,9 +245,9 @@ public class GimmickSegment : MonoBehaviour
             extraLives = Mathf.Max(0, extraLives - 1);
             OnLivesChanged?.Invoke(LivesLeft, TotalLives);
             if (extraLives == 0) ForceGameOverRespawn();
-            // 0 아니면 진행 계속 (워프 없음)
         }
     }
+
 
     // ─────────────────────────────────────────────────────────────────────────────
     // Teleport & States
@@ -379,6 +389,21 @@ public class GimmickSegment : MonoBehaviour
         return c;
     }
 
+    // 모든 링 가시성 토글 (accelerator 오브젝트 자체를 켜/끔)
+    private void SetRingsVisible(bool visible)
+    {
+        if (rings == null) return;
+        for (int i = 0; i < rings.Length; i++)
+        {
+            var acc = rings[i].accelerator;
+            if (!acc) continue;
+            var go = acc.gameObject;
+            if (go && go.activeSelf != visible)
+                go.SetActive(visible);
+        }
+    }
+
+
     // ─────────────────────────────────────────────────────────────────────────────
     // Audio helpers
     private void StartSegmentLoop()
@@ -436,4 +461,3 @@ public class GimmickSegment : MonoBehaviour
         if (stopAfter && Mathf.Approximately(target, 0f)) src.Stop();
     }
 }
-
