@@ -73,6 +73,11 @@ namespace Controller
         private bool _isActuallyGrounded;
         private bool _jumpRequested = false;
 
+        [Header("JumpMap Respawn")] 
+        [SerializeField] private Transform m_RespawnPoint; // 인스펙터에서 지정할 시작 위치
+        [SerializeField] private float m_DeathY = -30f;    // 이 높이보다 떨어지면 강제 리스폰
+
+
         private void OnValidate()
         {
             m_WalkSpeed = Mathf.Max(m_WalkSpeed, 0f);
@@ -177,6 +182,46 @@ namespace Controller
             float smoothFactor = 1.0f - Mathf.Pow(0.5f, Time.deltaTime * m_IkSmoothSpeed);
             m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, smoothFactor);
         }
+
+        public void Bounce(Vector3 bounceVelocity)
+        {
+            // 수직 속도 설정 (수평 속도는 유지)
+            m_Movement.SetVerticalVelocity(bounceVelocity.y);
+
+            // 점프 취소
+            _jumpRequested = false;
+
+            // 글라이드 강제 해제
+            m_IsGlide = false;
+
+            // 점프 애니메이션과 동일한 애니메이션 실행..이게맞나
+            m_Animation.TriggerJump();
+            
+            // Debug 확인
+            Debug.Log($"Bounce applied: {bounceVelocity}");
+        }
+        public void Respawn()
+        {
+            if (m_RespawnPoint == null)
+            {
+                Debug.LogWarning("리스폰 장소 연결 필요");
+                return;
+            }
+
+            // CharacterController 비활성화 후 위치 이동
+            m_Controller.enabled = false;
+            transform.position = m_RespawnPoint.position;
+            transform.rotation = m_RespawnPoint.rotation;
+            m_Controller.enabled = true;
+
+            // 내부 상태 초기화
+            ResetKinetics(stopSlide: true, stopClimb: true, clearGlide: true);
+
+            // 애니메이션 초기화도 필요하면 여기에 추가해야됨
+            Debug.Log("respawned");
+        }
+
+
 
         private void OnAnimatorIK()
         {
@@ -408,6 +453,13 @@ namespace Controller
             _normalMoveVelocity = Vector3.zero;
             _slideVelocity = Vector3.zero;
         }
+
+        public void SetVerticalVelocity(float yVel)
+        {
+            _normalMoveVelocity.y = yVel;
+        }
+
+
 
         public void SetNormalMovementStats(float w, float r, float rot, float j, float g, Space space)
         {
