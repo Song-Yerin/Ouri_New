@@ -35,7 +35,7 @@ public class CutsceneEndHandler : MonoBehaviour
         // 현재 씬 이름 확인
         string currentScene = SceneManager.GetActiveScene().name;
 
-        if (currentScene == "YR2")
+        if (currentScene == "PipeScene 1")
         {
             // 씬 이동 없이 오브젝트들 활성화
             foreach (var go in objectsToActivate)
