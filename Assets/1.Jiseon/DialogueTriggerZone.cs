@@ -292,6 +292,9 @@ public class DialogueTriggerZone : MonoBehaviour
         }
         if (data.nodeID == 50)
         {
+            Activator act = FindObjectOfType<Activator>();
+            if (act != null)
+                act.Activate();
             SetProgress(6, false);
         }
         if (data.nodeID == 42)
