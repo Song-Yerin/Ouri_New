@@ -359,7 +359,7 @@ public class UIManager : MonoBehaviour
                 SceneManager.LoadScene("YJ _Forest_Day");
                 break;
             case 7:
-                SceneManager.LoadScene("CityGliding");
+                SceneManager.LoadScene("CityGliding 1");
                 break;
             default:
                 break;
