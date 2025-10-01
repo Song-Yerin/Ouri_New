@@ -418098,7 +418098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1431512482130844399}
-  minSpeed: 5
+  minSpeed: 4.5
   maxSpeed: 10
   maxSpeedDistance: 30
   pathCheckInterval: 0.5
@@ -418147,7 +418147,8 @@ MonoBehaviour:
   attackCooldown: 10
   attackDamage: 1
   attackTriggerName: Attack
-  approachSounds: []
+  approachSounds:
+  - {fileID: 8300000, guid: 82f6d4f0df6846b42b41b645e4312588, type: 3}
   maxSoundDistance: 20
   maxVolume: 0.8
 --- !u!82 &4496240201039476582
