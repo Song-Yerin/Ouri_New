@@ -3,25 +3,25 @@ using UnityEngine;
 
 namespace Controller
 {
+    // --- [����] ��� Ŭ������ ���������� �и� ---
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
     [DisallowMultipleComponent]
     public class CreatureMover : MonoBehaviour
     {
-        #region 인스펙터 변수
+        #region ���� ����� (���� ����)
         [Header("Ground Check Settings")]
         [SerializeField] private LayerMask m_GroundLayer;
         [SerializeField] private float m_GroundCheckDistance = 0.3f;
         [SerializeField] private float m_GroundCheckRadius = 0.4f;
-
         [Header("Movement")]
         [SerializeField] private float m_WalkSpeed = 1f;
         [SerializeField] private float m_RunSpeed = 4f;
-        [Tooltip("캐릭터가 이동 방향으로 회전하는 부드러움의 정도입니다. 높을수록 빠릅니다.")]
-        [SerializeField, Range(1f, 30f)] private float m_RotationSmoothing = 15f;
+        [SerializeField, Range(0f, 360f)] private float m_RotateSpeed = 90f;
+        [SerializeField] private Space m_Space = Space.Self;
         [SerializeField] private float m_JumpHeight = 5f;
         [SerializeField] private float m_GlideGravity = -1f;
-
+        //�߰�
         [Header("Glide Bonus")]
         [SerializeField] private float m_GlideBonusDamp = 2.5f;
         [SerializeField] private float m_GlideMaxBonusSpeed = 500f;
@@ -34,7 +34,6 @@ namespace Controller
         [SerializeField] private float m_GlidePitchMaxUpSpeed = 4f;
         [SerializeField] private float m_GlidePitchMaxDownSpeed = 12f;
         private float m_GlidePitchVelY;
-
         [Header("Animator")]
         [SerializeField] private string m_VerticalID = "Vert";
         [SerializeField] private string m_StateID = "State";
@@ -44,21 +43,15 @@ namespace Controller
         [SerializeField] private string m_IsGroundedID = "IsGrounded";
         [SerializeField] private string m_IsClimbingID = "IsClimbing";
         [SerializeField] private LookWeight m_LookWeight = new(1f, 0.3f, 0.7f, 1f);
-
         [Header("IK Settings")]
         [SerializeField] private bool m_UseIk = true;
         [SerializeField] private float m_IkSmoothSpeed = 10f;
-
         [Header("Visuals")]
         [SerializeField] private Transform m_RootBone;
         [SerializeField] private float m_VisualRotationSpeed = 15f;
-
-        [Header("JumpMap Respawn")]
-        [SerializeField] private Transform m_RespawnPoint;
-        [SerializeField] private float m_DeathY = -30f;
         #endregion
 
-        // 내부 변수
+        // --- ���� ���� ������ ---
         private Transform m_Transform;
         private CharacterController m_Controller;
         private Animator m_Animator;
@@ -79,14 +72,18 @@ namespace Controller
         private Vector2 _currentAnimAxis;
         private bool _isActuallyGrounded;
         private bool _jumpRequested = false;
-        private Vector3 _currentMoveDirection;
+
+        [Header("JumpMap Respawn")] 
+        [SerializeField] private Transform m_RespawnPoint; // 인스펙터에서 지정할 시작 위치
+        [SerializeField] private float m_DeathY = -30f;    // 이 높이보다 떨어지면 강제 리스폰
+
 
         private void OnValidate()
         {
             m_WalkSpeed = Mathf.Max(m_WalkSpeed, 0f);
             m_RunSpeed = Mathf.Max(m_RunSpeed, m_WalkSpeed);
-            // --- [핵심 수정] --- 불필요한 인자들을 모두 제거합니다.
-            m_Movement?.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_JumpHeight, m_GlideGravity);
+            // Awake ������ m_Movement�� null�� �� �����Ƿ� null üũ �߰�
+            m_Movement?.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_RotateSpeed, m_JumpHeight, m_GlideGravity, m_Space);
         }
 
         private void Awake()
@@ -102,29 +99,28 @@ namespace Controller
 
             m_Animation = new AnimationHandler(m_Animator, m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsClimbingID);
             m_Movement = new MovementHandler(m_Controller, m_Transform, m_Animation, m_GroundLayer, m_GroundCheckDistance, m_GroundCheckRadius);
-            // --- [핵심 수정] --- 불필요한 인자들을 모두 제거합니다.
-            m_Movement.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_JumpHeight, m_GlideGravity);
+            m_Movement.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_RotateSpeed, m_JumpHeight, m_GlideGravity, m_Space);
 
             m_SmoothedLookAtPos = m_Transform.position + m_Transform.forward;
         }
 
         private void Update()
         {
-            if (m_IsMoving && !m_IsSliding && !m_IsClimbing)
-            {
-                if (_currentMoveDirection.sqrMagnitude > 0.01f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(_currentMoveDirection, Vector3.up);
-                    m_Transform.rotation = Quaternion.Slerp(m_Transform.rotation, targetRotation, Time.deltaTime * m_RotationSmoothing);
-                }
-            }
+            // Update ������ ������ ���� : ��鸮�°Ŷ��� �ű�
+            //m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, Time.deltaTime * m_IkSmoothSpeed);
         }
 
         private void FixedUpdate()
         {
+            //게임 시작 전
+            // if (!MiniGameManager._instance.GameStart) return;
+
+            // --- Glide ���� ---
             if (_glideToggleRequested && !m_Controller.isGrounded) { m_IsGlide = !m_IsGlide; }
             _glideToggleRequested = false;
             if (m_Controller.isGrounded) { m_IsGlide = false; }
+
+            // ���� ������ �۶��̵� ������ ���� (�߰�)
             if (_isActuallyGrounded)
             {
                 m_IsGlide = false;
@@ -132,73 +128,113 @@ namespace Controller
                 m_GlidePitchVelY = 0f;
             }
 
-            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, out _currentAnimAxis, out _currentMoveDirection);
+            // --- �̵� ó�� ---
+            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, out _currentAnimAxis);
             _isActuallyGrounded = m_Controller.isGrounded;
             _jumpRequested = false;
 
+            //�߰�
             if (m_IsGlide)
             {
                 AlignGlideToView(Time.fixedDeltaTime);
                 UpdateGlidePitchVertical(Time.fixedDeltaTime);
+
                 if (m_GlideBonusVelocity.sqrMagnitude > 1e-6f || Mathf.Abs(m_GlidePitchVelY) > 1e-4f)
                 {
-                    Vector3 bonusStep = new Vector3(m_GlideBonusVelocity.x, m_GlidePitchVelY, m_GlideBonusVelocity.z) * Time.fixedDeltaTime;
+                    Vector3 bonusStep = new Vector3(
+                        m_GlideBonusVelocity.x,
+                        m_GlidePitchVelY,
+                        m_GlideBonusVelocity.z
+                    ) * Time.fixedDeltaTime;
+
                     m_Controller.Move(bonusStep);
+
                     float dropH = m_GlideBonusDamp * Time.fixedDeltaTime;
                     m_GlideBonusVelocity = Vector3.MoveTowards(m_GlideBonusVelocity, Vector3.zero, dropH);
                 }
             }
+
             if (m_IsSliding)
             {
                 Vector3 slideDir = m_Controller.velocity;
                 if (slideDir.sqrMagnitude > 0.01f)
                 {
+                    // y�ุ ȸ�� ������ ��
                     Vector3 flatDir = new Vector3(slideDir.x, 0, slideDir.z);
                     if (flatDir.sqrMagnitude > 0.01f)
                     {
                         Quaternion target = Quaternion.LookRotation(flatDir, Vector3.up);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.fixedDeltaTime * 10f);
+                        transform.rotation = Quaternion.Slerp(
+                            transform.rotation, target, Time.fixedDeltaTime * 10f // 10�� ȸ�� �ӵ�, ��ȣ�� ���� ����
+                        );
                     }
                 }
+
             }
         }
 
-        // 이하 모든 코드는 이전 답변과 동일하게 유지됩니다.
-        #region 나머지 함수들 (수정 없음)
         private void LateUpdate()
         {
+            // LateUpdate ������ ������ ����
             m_Animation.Animate(in _currentAnimAxis, m_IsRun ? 1f : 0f, _isActuallyGrounded, m_IsGlide, m_IsClimbing, Time.deltaTime);
             ApplyVisualRootBoneRotation();
+            //��鸲 ����
             float smoothFactor = 1.0f - Mathf.Pow(0.5f, Time.deltaTime * m_IkSmoothSpeed);
             m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, smoothFactor);
         }
 
-        private void OnAnimatorIK()
-        {
-            if (!m_UseIk || m_IsSliding || m_IsClimbing) { m_Animator.SetLookAtWeight(0); return; }
-            m_Animation.AnimateIK(in m_SmoothedLookAtPos, m_LookWeight);
-        }
-
         public void Bounce(Vector3 bounceVelocity)
         {
+            // 수직 속도 설정 (수평 속도는 유지)
             m_Movement.SetVerticalVelocity(bounceVelocity.y);
+
+            // 점프 취소
             _jumpRequested = false;
+
+            // 글라이드 강제 해제
             m_IsGlide = false;
+
+            // 점프 애니메이션과 동일한 애니메이션 실행..이게맞나
             m_Animation.TriggerJump();
+            
+            // Debug 확인
             Debug.Log($"Bounce applied: {bounceVelocity}");
         }
-
         public void Respawn()
         {
-            if (m_RespawnPoint == null) { Debug.LogWarning("리스폰 장소 연결 필요"); return; }
+            if (m_RespawnPoint == null)
+            {
+                Debug.LogWarning("리스폰 장소 연결 필요");
+                return;
+            }
+
+            // CharacterController 비활성화 후 위치 이동
             m_Controller.enabled = false;
             transform.position = m_RespawnPoint.position;
             transform.rotation = m_RespawnPoint.rotation;
             m_Controller.enabled = true;
-            ResetKinetics(true, true, true);
+
+            // 내부 상태 초기화
+            ResetKinetics(stopSlide: true, stopClimb: true, clearGlide: true);
+
+            // 애니메이션 초기화도 필요하면 여기에 추가해야됨
             Debug.Log("respawned");
         }
 
+
+
+        private void OnAnimatorIK()
+        {
+            // OnAnimatorIK ������ ������ ����
+            if (!m_UseIk || m_IsSliding || m_IsClimbing)
+            {
+                m_Animator.SetLookAtWeight(0);
+                return;
+            }
+            m_Animation.AnimateIK(in m_SmoothedLookAtPos, m_LookWeight);
+        }
+
+        // --- [�ٽ� �߰�] Sliding.cs���� ȣ���� �Լ��� ---
         public void StartNewSlideMode(Vector3 slideNormal, float friction, float gravityForce, float controlForce)
         {
             if (m_IsClimbing) return;
@@ -207,21 +243,35 @@ namespace Controller
             m_Movement.EnterSlideState(slideNormal, friction, gravityForce, controlForce, m_Controller.velocity);
             m_IsRun = false; m_IsMoving = false;
         }
-
         public void StopNewSlideMode()
         {
             m_IsSliding = false;
             m_Animation.SetSliding(false);
             m_Movement.ExitSlideState();
         }
+        // ---------------------------------------------
 
+        // 추가
         public void ResetKinetics(bool stopSlide = true, bool stopClimb = true, bool clearGlide = true)
         {
+            // 상태 플래그/버퍼 정리
             _jumpRequested = false;
             m_IsMoving = false;
-            if (clearGlide) { m_IsGlide = false; m_GlideBonusVelocity = Vector3.zero; m_GlidePitchVelY = 0f; }
-            if (stopSlide && m_IsSliding) StopNewSlideMode();
-            if (stopClimb && m_IsClimbing) SetClimbMode(false, Vector3.zero);
+
+            if (clearGlide)
+            {
+                m_IsGlide = false;
+                m_GlideBonusVelocity = Vector3.zero;
+                m_GlidePitchVelY = 0f;
+            }
+
+            if (stopSlide && m_IsSliding)
+                StopNewSlideMode();
+
+            if (stopClimb && m_IsClimbing)
+                SetClimbMode(false, Vector3.zero);
+
+            // 이동 관련 내부 속도들 0으로
             m_Movement.ResetVelocities();
         }
 
@@ -236,16 +286,27 @@ namespace Controller
 
         private void AlignGlideToView(float dt)
         {
-            if (!m_IsGlide || m_GlideBonusVelocity.sqrMagnitude < 1e-4f) return;
+            if (!m_IsGlide) return;
+            if (m_GlideBonusVelocity.sqrMagnitude < 1e-4f) return;
+
             var cam = Camera.main ? Camera.main.transform : null;
             if (!cam) return;
+
             Vector3 desired = cam.forward; desired.y = 0f;
             if (desired.sqrMagnitude < 1e-4f) return;
             desired.Normalize();
+
             float speed = new Vector2(m_GlideBonusVelocity.x, m_GlideBonusVelocity.z).magnitude;
             if (speed < 1e-4f) return;
+
             Vector3 current = new Vector3(m_GlideBonusVelocity.x, 0f, m_GlideBonusVelocity.z).normalized;
-            Vector3 newDir = m_GlideAlignInstant ? desired : Vector3.RotateTowards(current, desired, m_GlideAlignYawDegPerSec * Mathf.Deg2Rad * dt, float.MaxValue);
+            Vector3 newDir;
+            if (m_GlideAlignInstant) newDir = desired;
+            else
+            {
+                float maxRad = m_GlideAlignYawDegPerSec * Mathf.Deg2Rad * dt;
+                newDir = Vector3.RotateTowards(current, desired, maxRad, float.MaxValue);
+            }
             m_GlideBonusVelocity = newDir * speed;
         }
 
@@ -253,15 +314,42 @@ namespace Controller
         {
             if (!m_GlidePitchAffectsVertical) return;
             if (!m_IsGlide) { m_GlidePitchVelY = 0f; return; }
-            if (m_GlideBonusVelocity.sqrMagnitude < 1e-4f) { m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, 0f, m_GlidePitchDownAccel * dt); return; }
+
+            if (m_GlideBonusVelocity.sqrMagnitude < 1e-4f)
+            {
+                m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, 0f, m_GlidePitchDownAccel * dt);
+                return;
+            }
+
             var cam = Camera.main ? Camera.main.transform : null;
-            if (!cam) { m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, 0f, m_GlidePitchDownAccel * dt); return; }
+            if (!cam)
+            {
+                m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, 0f, m_GlidePitchDownAccel * dt);
+                return;
+            }
+
             float py = Mathf.Clamp(cam.forward.y, -1f, 1f);
-            float targetYSpeed = (py > 0f) ? m_GlidePitchMaxUpSpeed * py : -m_GlidePitchMaxDownSpeed * (-py);
-            float accel = (py > 0f) ? m_GlidePitchUpAccel : m_GlidePitchDownAccel;
+            float targetYSpeed; float accel;
+
+            if (py > 0f)
+            {
+                targetYSpeed = m_GlidePitchMaxUpSpeed * py;
+                accel = m_GlidePitchUpAccel;
+            }
+            else if (py < 0f)
+            {
+                targetYSpeed = -m_GlidePitchMaxDownSpeed * (-py);
+                accel = m_GlidePitchDownAccel;
+            }
+            else
+            {
+                targetYSpeed = 0f;
+                accel = m_GlidePitchDownAccel;
+            }
+
             m_GlidePitchVelY = Mathf.MoveTowards(m_GlidePitchVelY, targetYSpeed, accel * dt);
         }
-
+        #region ��Ÿ �޼��� (������ ���� ����)
         public void RequestJump() { _jumpRequested = true; }
         public void RequestGlideToggle() { _glideToggleRequested = true; }
         public bool IsActuallyGrounded => _isActuallyGrounded;
@@ -271,17 +359,23 @@ namespace Controller
             m_PlayerCamera?.SetInput(mouseDelta, scroll);
             m_Target = target;
             m_IsRun = isRun;
-            if (m_IsClimbing || m_IsSliding) { m_Axis = axis; } else { m_Axis = axis; }
-            if (m_Axis.sqrMagnitude < Mathf.Epsilon) { m_IsMoving = false; } else { m_IsMoving = true; }
+
+            if (m_IsClimbing || m_IsSliding) { m_Axis = axis; } // ���, �����̵� �߿��� �Է��� �޵��� ����
+            else { m_Axis = axis; }
+
+            if (m_Axis.sqrMagnitude < Mathf.Epsilon) { m_IsMoving = false; }
+            else { m_IsMoving = true; }
         }
 
         public void SetClimbMode(bool isClimbing, Vector3 wallNormal)
         {
             if (isClimbing && m_IsSliding) StopNewSlideMode();
+
             m_IsClimbing = isClimbing;
             m_ClimbWallNormal = wallNormal;
             m_Movement.SetClimbState(isClimbing, wallNormal);
             m_Animation.SetClimbing(isClimbing);
+
             if (isClimbing) { m_IsRun = false; m_IsMoving = false; }
         }
 
@@ -291,14 +385,16 @@ namespace Controller
             Quaternion targetLocalRotation;
             if (m_IsClimbing)
             {
-                Quaternion targetWorldRotation = Quaternion.LookRotation(Vector3.down, -m_ClimbWallNormal);
+                Vector3 newForward = Vector3.down; Vector3 newUp = -m_ClimbWallNormal;
+                Quaternion targetWorldRotation = Quaternion.LookRotation(newForward, newUp);
                 targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
             }
             else if (m_IsSliding)
             {
                 Vector3 slideNormal = m_Movement.GetCurrentSlideNormal();
                 Vector3 slideForward = Vector3.ProjectOnPlane(transform.forward, slideNormal).normalized;
-                Quaternion targetWorldRotation = Quaternion.LookRotation(slideForward, slideNormal);
+                Vector3 slideUp = slideNormal;
+                Quaternion targetWorldRotation = Quaternion.LookRotation(slideForward, slideUp);
                 targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
             }
             else { targetLocalRotation = Quaternion.identity; }
@@ -319,28 +415,55 @@ namespace Controller
         private CharacterController _controller;
         private Transform _transform;
         private AnimationHandler _animation;
+
+        // �� ����
         private LayerMask _groundLayer;
-        private float _groundCheckDistance, _groundCheckRadius;
-        private float _walkSpeed, _runSpeed, _jumpHeight, _glideGravity;
+        private float _groundCheckDistance;
+        private float _groundCheckRadius;
+
+        // �Ϲ� �̵�
+        private float _walkSpeed, _runSpeed, _rotateSpeed, _jumpHeight, _glideGravity;
         private Vector3 _normalMoveVelocity;
+        private Space _space; // �߰�
+        private Vector3 _lastForward; // �߰�
+        private float _targetAngle; // �߰�
+        private bool _isRotating; // �߰�
+
+        // ���
         private bool _isClimbing;
         private Vector3 _climbNormal;
-        private Vector3 _slideVelocity, _slideNormal;
-        private float _slideFriction, _slideGravityForce, _slideControlForce;
+
+        // �����̵�
+        private Vector3 _slideVelocity;
+        private Vector3 _slideNormal;
+        private float _slideFriction;
+        private float _slideGravityForce;
+        private float _slideControlForce;
 
         public MovementHandler(CharacterController c, Transform t, AnimationHandler a, LayerMask gl, float dist, float radius)
         {
             _controller = c; _transform = t; _animation = a;
             _groundLayer = gl; _groundCheckDistance = dist; _groundCheckRadius = radius;
+            _lastForward = t.forward;
         }
 
-        public void ResetVelocities() { _normalMoveVelocity = Vector3.zero; _slideVelocity = Vector3.zero; }
-        public void SetVerticalVelocity(float yVel) => _normalMoveVelocity.y = yVel;
-
-        // --- [핵심 수정] --- 불필요한 인자들을 모두 제거합니다.
-        public void SetNormalMovementStats(float w, float r, float j, float g)
+        // 추가
+        public void ResetVelocities()
         {
-            _walkSpeed = w; _runSpeed = r; _jumpHeight = j; _glideGravity = g;
+            _normalMoveVelocity = Vector3.zero;
+            _slideVelocity = Vector3.zero;
+        }
+
+        public void SetVerticalVelocity(float yVel)
+        {
+            _normalMoveVelocity.y = yVel;
+        }
+
+
+
+        public void SetNormalMovementStats(float w, float r, float rot, float j, float g, Space space)
+        {
+            _walkSpeed = w; _runSpeed = r; _rotateSpeed = rot; _jumpHeight = j; _glideGravity = g; _space = space;
         }
 
         public void SetClimbState(bool isClimbing, Vector3 normal) { _isClimbing = isClimbing; _climbNormal = normal; }
@@ -351,15 +474,14 @@ namespace Controller
         public void ExitSlideState() { }
         public Vector3 GetCurrentSlideNormal() => _slideNormal;
 
-        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isClimbing, bool isSliding, out Vector2 animAxis, out Vector3 moveDirection)
+        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isClimbing, bool isSliding, out Vector2 animAxis)
         {
-            moveDirection = Vector3.zero;
             if (isSliding) SlideMove(deltaTime, axis, out animAxis);
             else if (isClimbing) ClimbMove(deltaTime, axis, isRun, out animAxis);
-            else NormalMove(deltaTime, axis, isRun, isJump, isMoving, isGlide, out animAxis, out moveDirection);
+            else NormalMove(deltaTime, axis, isRun, isJump, isMoving, isGlide, out animAxis);
         }
 
-        private void NormalMove(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, out Vector2 animAxis, out Vector3 moveDirection)
+        private void NormalMove(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, out Vector2 animAxis)
         {
             if (_controller.isGrounded)
             {
@@ -375,14 +497,21 @@ namespace Controller
             Transform camTransform = Camera.main.transform;
             Vector3 forward = camTransform.forward; forward.y = 0; forward.Normalize();
             Vector3 right = camTransform.right; right.y = 0; right.Normalize();
-            moveDirection = (axis.x * right + axis.y * forward).normalized;
+            Vector3 moveDirection = (axis.x * right + axis.y * forward).normalized;
 
             float targetSpeed = isRun ? _runSpeed : _walkSpeed;
             Vector3 horizontalMove = moveDirection * targetSpeed;
+
             _normalMoveVelocity.x = horizontalMove.x;
             _normalMoveVelocity.z = horizontalMove.z;
-            _controller.Move(_normalMoveVelocity * deltaTime);
 
+            if (isMoving)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                _transform.rotation = Quaternion.RotateTowards(_transform.rotation, toRotation, _rotateSpeed * deltaTime);
+            }
+
+            _controller.Move(_normalMoveVelocity * deltaTime);
             animAxis = new Vector2(Vector3.Dot(moveDirection, _transform.right), Vector3.Dot(moveDirection, _transform.forward));
             animAxis *= (isRun ? 2f : 1f);
         }
@@ -398,24 +527,40 @@ namespace Controller
 
         private void SlideMove(float deltaTime, Vector2 axis, out Vector2 animAxis)
         {
+            // 1. �ؿ� �ִ� ���� Normal�� �� ������ ���� (SphereCast �� Ȱ��)
             Vector3 rayOrigin = _transform.position + _controller.center;
             float rayLength = (_controller.height / 2f) + 0.1f;
-            if (Physics.SphereCast(rayOrigin, _controller.radius, Vector3.down, out RaycastHit hit, rayLength, LayerMask.GetMask("Default", "Slide"))) { _slideNormal = hit.normal; }
-            if (!_controller.isGrounded) { _slideVelocity.y += Physics.gravity.y * deltaTime; } else { _slideVelocity.y = Mathf.Max(_slideVelocity.y, -2f); }
+            Vector3 updatedNormal = _slideNormal; // �⺻���� ���� normal
+
+            if (Physics.SphereCast(rayOrigin, _controller.radius, Vector3.down, out RaycastHit hit, rayLength, LayerMask.GetMask("Default","Slide")))
+            {
+                updatedNormal = hit.normal;
+            }
+            _slideNormal = updatedNormal;
+
+            // 2. ���� �����̵� ���� ó�� (������ ����)
+            if (!_controller.isGrounded) { _slideVelocity.y += Physics.gravity.y * deltaTime; }
+            else { _slideVelocity.y = Mathf.Max(_slideVelocity.y, -2f); }
+
             Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, _slideNormal).normalized * _slideGravityForce;
             _slideVelocity += slopeForce * deltaTime;
+
+            // ��Ʈ�� �Է� �� ��Ÿ ���� �ڵ�...
             Transform camTransform = Camera.main.transform;
             Vector3 forward = camTransform.forward; forward.y = 0; forward.Normalize();
             Vector3 right = camTransform.right; right.y = 0; right.Normalize();
             Vector3 controlDirection = (axis.x * right + axis.y * forward).normalized;
             Vector3 controlForce = controlDirection * _slideControlForce;
             _slideVelocity += controlForce * deltaTime;
+
             float yVel = _slideVelocity.y;
             Vector3 hVel = new Vector3(_slideVelocity.x, 0, _slideVelocity.z);
             hVel = Vector3.Lerp(hVel, Vector3.zero, _slideFriction * deltaTime);
             _slideVelocity = hVel + Vector3.up * yVel;
+
             _controller.Move(_slideVelocity * deltaTime);
             animAxis = new Vector2(axis.x, 1f);
+
         }
     }
 
@@ -425,10 +570,12 @@ namespace Controller
         private readonly string m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsClimbingID;
         private readonly float k_InputFlow = 4.5f;
         private float m_FlowState; private Vector2 m_FlowAxis;
+
         public AnimationHandler(Animator animator, string verticalID, string stateID, string slidingID, string jumpTriggerID, string isGroundedID, string isGlidingID, string isClimbingID)
         {
             m_Animator = animator; m_VerticalID = verticalID; m_StateID = stateID; m_SlidingID = slidingID; m_JumpTriggerID = jumpTriggerID; m_IsGroundedID = isGroundedID; m_IsGlidingID = isGlidingID; m_IsClimbingID = isClimbingID;
         }
+
         public void SetSliding(bool isSliding) { m_Animator.SetBool(m_SlidingID, isSliding); }
         public void SetClimbing(bool isClimbing) { m_Animator.SetBool(m_IsClimbingID, isClimbing); }
         public void TriggerJump() { m_Animator.SetTrigger(m_JumpTriggerID); }
@@ -448,4 +595,6 @@ namespace Controller
             m_Animator.SetLookAtWeight(lookWeight.weight, lookWeight.body, lookWeight.head, lookWeight.eyes);
         }
     }
+
+
 }
