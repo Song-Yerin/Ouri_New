@@ -12094,7 +12094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!320 &292420765
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -21985,6 +21985,11 @@ MonoBehaviour:
   - {fileID: 2122868963}
   - {fileID: 665553531}
   - {fileID: 1920209433}
+  pipeSuccessIcons: []
+  iconOffColor: {r: 1, g: 1, b: 1, a: 0.25}
+  iconOnColor: {r: 1, g: 1, b: 1, a: 1}
+  pulseScale: 1.12
+  pulseTime: 0.12
 --- !u!4 &605006059
 Transform:
   m_ObjectHideFlags: 0
@@ -25238,6 +25243,7 @@ MonoBehaviour:
   npcSpriteForProgress2: {fileID: 0}
   checkpointPoints: []
   player: {fileID: 0}
+  npc: {fileID: 0}
 --- !u!114 &693988141
 MonoBehaviour:
   m_ObjectHideFlags: 0
