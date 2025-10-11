@@ -1620,6 +1620,7 @@ GameObject:
   - component: {fileID: 325245127699941419}
   - component: {fileID: 6252683410885416165}
   - component: {fileID: 3744909249668935393}
+  - component: {fileID: 2260318319180091612}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -1841,6 +1842,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleChangeTimeMin: 5
   idleChangeTimeMax: 10
+--- !u!114 &2260318319180091612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454177262601287682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7deb4546cb578224ba75f7e03b167218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  woodClips:
+  - {fileID: 8300000, guid: b29a280563964504b86bf7df367a54fd, type: 3}
+  stoneClips:
+  - {fileID: 8300000, guid: b29a280563964504b86bf7df367a54fd, type: 3}
+  grassClips:
+  - {fileID: 8300000, guid: be1ffa40b4f220f4bb254d0e2cca1d56, type: 3}
+  footTransform: {fileID: 4376619512741752987}
+  raycastDistance: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &3733122265156205020
 GameObject:
   m_ObjectHideFlags: 0
