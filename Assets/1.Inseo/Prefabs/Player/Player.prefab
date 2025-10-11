@@ -1724,8 +1724,7 @@ MonoBehaviour:
   m_GroundCheckRadius: 0.4
   m_WalkSpeed: 1
   m_RunSpeed: 5
-  m_RotateSpeed: 245
-  m_Space: 1
+  m_RotationSmoothing: 15
   m_JumpHeight: 2
   m_GlideGravity: -1.05
   m_GlideBonusDamp: 2.5
@@ -1753,6 +1752,8 @@ MonoBehaviour:
   m_IkSmoothSpeed: 10
   m_RootBone: {fileID: 0}
   m_VisualRotationSpeed: 15
+  m_RespawnPoint: {fileID: 0}
+  m_DeathY: -30
   m_IsRun: 0
 --- !u!114 &1136349006979107162
 MonoBehaviour:
@@ -1819,11 +1820,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   climbKey: 102
-  wallCheckDistance: 0.8
+  wallCheckDistance: 0.2
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  climbingRayOffsetY: 0.52
+  climbingRayOffsetY: 0
   rootBone: {fileID: 1431512482312526200}
   rotationSpeed: 5
 --- !u!114 &3744909249668935393
