@@ -1,82 +1,46 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider))]
 public class CutsceneTrigger : MonoBehaviour
 {
     public PlayableDirector timeline;
     public string playerTag = "Player";
-    public string customSaveKey = "";
 
-    bool _playedThisSession;
-
-    string SaveKey =>
-        string.IsNullOrEmpty(customSaveKey)
-        ? $"cutscene_seen::{SceneManager.GetActiveScene().path}::{name}"
-        : customSaveKey;
+    private bool _playedThisSession = false;
 
 #if UNITY_EDITOR
-    // ¿¡µğÅÍ¿¡¼­ °ªÀÌ ¹Ù²î¾îµµ °è¼Ó ²¨Áöµµ·Ï °­Á¦
     void OnValidate()
     {
         if (timeline)
-        {
-            timeline.playOnAwake = false;
-        }
+            timeline.playOnAwake = false; // ì—ë””í„°ì—ì„œ ìë™ì¬ìƒ ë°©ì§€
     }
 #endif
 
     void Awake()
     {
         if (timeline)
-        {
-            // ¡Ú Ã¼Å©°¡ ¾È ²¨Á® ÀÖ¾îµµ ¹«·ÂÈ­
             timeline.playOnAwake = false;
-            timeline.Stop();
-            timeline.time = 0;
-
-            // ¡Ú ½ÃÀÛ ½Ã ¾Æ¿¹ ºñÈ°¼ºÈ­ÇØ¼­ ÀÚµ¿Àç»ı ¿øÃµ Â÷´Ü
-            timeline.enabled = false;
-        }
-
-        if (HasSeen()) enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!enabled) return;
+        // â‘  í”Œë ˆì´ì–´ë§Œ ë°˜ì‘
         if (!other.CompareTag(playerTag)) return;
-        if (_playedThisSession || HasSeen()) return;
 
-        MarkSeen();
+        // â‘¡ í•œ ì„¸ì…˜(í”Œë ˆì´ ëª¨ë“œ) ë‚´ì—ì„œ í•œ ë²ˆë§Œ ì¬ìƒ
+        if (_playedThisSession) return;
 
+        _playedThisSession = true;
+
+        // â‘¢ ì»·ì”¬ ì¬ìƒ
         if (timeline)
         {
-            // ¡Ú Æ®¸®°Å ½ÃÁ¡¿¡¸¸ È°¼ºÈ­ ÈÄ Àç»ı
-            timeline.enabled = true;
             timeline.time = 0;
             timeline.Play();
         }
 
-        enabled = false; // ÇÑ ¹ø¸¸
-    }
-
-    bool HasSeen() => PlayerPrefs.GetInt(SaveKey, 0) == 1;
-
-    void MarkSeen()
-    {
-        _playedThisSession = true;
-        PlayerPrefs.SetInt(SaveKey, 1);
-        PlayerPrefs.Save();
-    }
-
-    [ContextMenu("Reset Seen Flag")]
-    void ResetSeenFlag()
-    {
-        PlayerPrefs.DeleteKey(SaveKey);
-        PlayerPrefs.Save();
-        _playedThisSession = false;
-        enabled = true;
+        // â‘£ ë‹¤ì‹œ ì•ˆ ë‚˜ì˜¤ê²Œ ìŠ¤í¬ë¦½íŠ¸ ë„ê¸° (ì”¬ ë¦¬ë¡œë“œ ì „ê¹Œì§€ë§Œ ìœ ì§€)
+        enabled = false;
     }
 }
