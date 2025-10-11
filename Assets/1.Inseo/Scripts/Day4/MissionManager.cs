@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Generic;
+using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 
 public class MissionManager : MonoBehaviour
 {
@@ -141,7 +143,10 @@ public class MissionManager : MonoBehaviour
             if (obj != null) Destroy(obj);
         }
         spawnedObjects.Clear();
+        SceneManager.LoadScene("City_Day 3");
 
         gameObject.SetActive(false);
     }
+
+    
 }
