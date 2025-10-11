@@ -337,7 +337,7 @@ public class GimmickSegment : MonoBehaviour
         clearedUnique = 0;
         currentRing = 0;
         OnRingProgressChanged?.Invoke(ClearedCount, TotalRings);  // => 0/총
-
+        DeathFaceEffect.PlayDeathPhase(); // 게임오버 페이즈
         // 스폰 워프
         RespawnTo(spawnPoint, 0.25f);
 

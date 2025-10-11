@@ -1,32 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using System;
 public class DeathFaceEffect : MonoBehaviour
 {
+    // ==========================================================
+    // 싱글톤 인스턴스
+    // ==========================================================
+    public static DeathFaceEffect Instance;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    // ==========================================================
+    // 이미지 및 설정 변수들
+    // ==========================================================
     [Header("이미지 설정")]
     public Image faceImage;           // 죽을 때 표시할 얼굴 이미지
     public Image fadePanel;           // 화면 어두워짐용 패널 (검정색 Image)
 
     [Header("크기 설정 (1단계 & 5단계 따로 조절 가능)")]
     [Tooltip("① 처음 시작할 때 얼굴 크기 (크게 시작할수록 임팩트 강함)")]
-    public float startScalePhase1 = 8f;     // ① 처음 시작할 때 얼굴 크기
+    public float startScalePhase1 = 8f;
 
     [Tooltip("① 줄어든 후 얼굴 크기 (최소 크기)")]
-    public float endScalePhase1 = 1f;       // ① 줄어든 후 얼굴 크기
+    public float endScalePhase1 = 1f;
 
     [Tooltip("① 줄어드는 데 걸리는 시간")]
-    public float shrinkDuration = 1.2f;     // ① 줄어드는 시간
+    public float shrinkDuration = 1.2f;
 
     [Space(5)]
     [Tooltip("⑤ 마지막 커지기 시작할 때 얼굴 크기")]
-    public float startScalePhase5 = 1f;     // ⑤ 마지막 커지기 시작 크기
+    public float startScalePhase5 = 1f;
 
     [Tooltip("⑤ 마지막 얼굴이 얼마나 커질지 (Inspector에서 조절 가능)")]
-    public float endScalePhase5 = 6f;       // ⑤ 마지막 커질 때 얼굴 크기
+    public float endScalePhase5 = 6f;
 
     [Tooltip("⑤ 커지는 데 걸리는 시간")]
-    public float growDuration = 1.2f;       // ⑤ 커지는 시간
+    public float growDuration = 1.2f;
 
     [Header("페이드 설정")]
     [Tooltip("화면이 어두워지는 속도 (페이드 인)")]
@@ -46,10 +59,13 @@ public class DeathFaceEffect : MonoBehaviour
     public KeyCode triggerKey = KeyCode.K;
 
     private bool isPlaying = false;
+    public bool IsPlaying => isPlaying;
 
+    // ==========================================================
+    // 초기화
+    // ==========================================================
     void Start()
     {
-        // 초기화: 이미지 비활성화, 알파 초기값 설정
         if (faceImage != null)
         {
             faceImage.gameObject.SetActive(false);
@@ -66,16 +82,45 @@ public class DeathFaceEffect : MonoBehaviour
         }
     }
 
+    //외부 스크립트에서 사용할 코루틴
+    public void PlayDeathSequence(Action onRestartAction)
+    {
+        if (!isPlaying)
+        {
+            StartCoroutine(DeathSequence(onRestartAction));
+        }
+    }
+
+    // ==========================================================
+    // 테스트용 키 입력
+    // ==========================================================
     void Update()
     {
-        // 테스트용: triggerKey 누르면 연출 실행
         if (Input.GetKeyDown(triggerKey) && !isPlaying)
         {
             StartCoroutine(DeathSequence());
         }
     }
 
-    private IEnumerator DeathSequence()
+    // ==========================================================
+    // 외부에서 호출 가능한 정적 함수
+    // ==========================================================
+    public static void PlayDeathPhase()
+    {
+        if (Instance != null && !Instance.isPlaying)
+        {
+            Instance.StartCoroutine(Instance.DeathSequence());
+        }
+        else if (Instance == null)
+        {
+            Debug.LogWarning("DeathFaceEffect 인스턴스가 존재하지 않습니다!");
+        }
+    }
+
+    // ==========================================================
+    // 실제 연출 시퀀스
+    // ==========================================================
+    private IEnumerator DeathSequence(Action onRestartAction = null)
     {
         if (faceImage == null || fadePanel == null)
         {
@@ -85,7 +130,7 @@ public class DeathFaceEffect : MonoBehaviour
 
         isPlaying = true;
 
-        // 얼굴 표시 및 알파 복원 (이거 없으면 2번째 실행부터 안보임)
+        // 얼굴 표시 및 알파 초기화
         faceImage.gameObject.SetActive(true);
         Color fc = faceImage.color;
         fc.a = 1f;
@@ -99,6 +144,9 @@ public class DeathFaceEffect : MonoBehaviour
 
         // 2) 화면 어두워짐 (페이드 인)
         yield return StartCoroutine(FadePanel(0f, 1f, fadeInDuration));
+
+        //외부에서 전달받은 작업(플레이어 이동)을 여기서 실행
+        onRestartAction?.Invoke();
 
         // 3) 어두운 상태 유지
         yield return new WaitForSeconds(fadeHoldTime);
@@ -118,6 +166,9 @@ public class DeathFaceEffect : MonoBehaviour
         isPlaying = false;
     }
 
+    // ==========================================================
+    // 얼굴 크기 조절
+    // ==========================================================
     private IEnumerator ScaleFace(float from, float to, float duration)
     {
         float elapsed = 0f;
@@ -134,6 +185,9 @@ public class DeathFaceEffect : MonoBehaviour
         faceImage.rectTransform.localScale = Vector3.one * to;
     }
 
+    // ==========================================================
+    // 화면 페이드 (패널)
+    // ==========================================================
     private IEnumerator FadePanel(float from, float to, float duration)
     {
         float elapsed = 0f;
@@ -152,6 +206,9 @@ public class DeathFaceEffect : MonoBehaviour
         fadePanel.color = c;
     }
 
+    // ==========================================================
+    // 얼굴 페이드아웃
+    // ==========================================================
     private IEnumerator FadeFaceOut(float from, float to, float duration)
     {
         float elapsed = 0f;
