@@ -24,6 +24,7 @@ public class TeleportTrigger : MonoBehaviour
     IEnumerator TeleportAfterDelay()
     {
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(targetSceneName);
+        // SceneManager.LoadScene(targetSceneName);
+        LoadingSceneManager.LoadScene(targetSceneName);
     }
 }
