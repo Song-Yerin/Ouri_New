@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DeathController : MonoBehaviour
 {
+    [SerializeField] RestartJumpMap restartJumpMap;
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("1");
@@ -23,6 +24,9 @@ public class DeathController : MonoBehaviour
                     Debug.Log("3");
                 }
             }
+            restartJumpMap.ActivateInactiveChildren();
         }
+
+
     }
 }

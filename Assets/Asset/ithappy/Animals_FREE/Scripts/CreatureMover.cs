@@ -163,7 +163,6 @@ namespace Controller
             }
         }
 
-        // 이하 모든 코드는 이전 답변과 동일하게 유지됩니다.
         #region 나머지 함수들 (수정 없음)
         private void LateUpdate()
         {
@@ -328,6 +327,8 @@ namespace Controller
         private Vector3 _slideVelocity, _slideNormal;
         private float _slideFriction, _slideGravityForce, _slideControlForce;
 
+        private float m_JumpMoveSpeed = 25f;
+
         public MovementHandler(CharacterController c, Transform t, AnimationHandler a, LayerMask gl, float dist, float radius)
         {
             _controller = c; _transform = t; _animation = a;
@@ -370,6 +371,7 @@ namespace Controller
             {
                 if (isGlide && _normalMoveVelocity.y < 0) _normalMoveVelocity.y = _glideGravity;
                 else _normalMoveVelocity.y += Physics.gravity.y * deltaTime;
+
             }
 
             Transform camTransform = Camera.main.transform;
@@ -377,7 +379,8 @@ namespace Controller
             Vector3 right = camTransform.right; right.y = 0; right.Normalize();
             moveDirection = (axis.x * right + axis.y * forward).normalized;
 
-            float targetSpeed = isRun ? _runSpeed : _walkSpeed;
+            //float targetSpeed = isRun ? _runSpeed : _walkSpeed;
+            float targetSpeed = isJump? m_JumpMoveSpeed : (isRun ? _runSpeed : _walkSpeed);
             Vector3 horizontalMove = moveDirection * targetSpeed;
             _normalMoveVelocity.x = horizontalMove.x;
             _normalMoveVelocity.z = horizontalMove.z;

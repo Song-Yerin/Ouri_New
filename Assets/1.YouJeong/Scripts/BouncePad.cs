@@ -5,13 +5,56 @@ using UnityEngine;
 
 public class BouncePad : MonoBehaviour
 {
-    public float bounceForce = 10f;
+    [SerializeField] float bounceForce = 10f;
+
+    [SerializeField] private float shakeMagnitude = 10f;               // 흔들림 진폭 (절댓값)
+    [SerializeField] private float shakeFrequency = 4f;                // 흔들림 속도 (진동수)
+    [SerializeField] private Vector3 shakeDirection = Vector3.forward; // Z축 방향으로 흔들기
+
+    [SerializeField] private int Count = 2;
+    [SerializeField] private AudioSource AudioSource;
+
+    int CountOfJump;
+    private Quaternion _initialRotation;
+
+
+
+    private void OnEnable()
+    {
+        AudioSource = this.GetComponent<AudioSource>();
+        CountOfJump = Count;
+
+        _initialRotation = transform.localRotation;
+        StartCoroutine(ShakeForever());
+    }
+
+    void Update()
+    {
+        if (CountOfJump <= 0)
+        {
+            // 오브젝트 비활성화
+            gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator ShakeForever()
+    {
+        //흔들리게
+
+        while (true)
+        {
+            float angle = Mathf.Sin(Time.time * shakeFrequency * Mathf.PI * 2f) * shakeMagnitude;
+            transform.localRotation = _initialRotation * Quaternion.Euler(0f, 0f, angle);
+            yield return null;
+        }
+    }
 
     public void OnTriggerEnter(Collider other)
     {
 
         if (other.CompareTag("Player"))
         {
+            AudioSource.Play();
             CharacterController controller = other.GetComponent<CharacterController>();
 
             if (controller != null)
@@ -22,8 +65,11 @@ public class BouncePad : MonoBehaviour
                     playerController.Bounce(Vector3.up * bounceForce);
                 }
             }
+            CountOfJump--;
         }
     }
+
+    
 }
 
 
