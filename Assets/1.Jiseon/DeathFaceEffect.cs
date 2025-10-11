@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using System;
 public class DeathFaceEffect : MonoBehaviour
 {
     // ==========================================================
@@ -59,6 +59,7 @@ public class DeathFaceEffect : MonoBehaviour
     public KeyCode triggerKey = KeyCode.K;
 
     private bool isPlaying = false;
+    public bool IsPlaying => isPlaying;
 
     // ==========================================================
     // 초기화
@@ -78,6 +79,15 @@ public class DeathFaceEffect : MonoBehaviour
             Color c = fadePanel.color;
             c.a = 0f;
             fadePanel.color = c;
+        }
+    }
+
+    //외부 스크립트에서 사용할 코루틴
+    public void PlayDeathSequence(Action onRestartAction)
+    {
+        if (!isPlaying)
+        {
+            StartCoroutine(DeathSequence(onRestartAction));
         }
     }
 
@@ -110,7 +120,7 @@ public class DeathFaceEffect : MonoBehaviour
     // ==========================================================
     // 실제 연출 시퀀스
     // ==========================================================
-    private IEnumerator DeathSequence()
+    private IEnumerator DeathSequence(Action onRestartAction = null)
     {
         if (faceImage == null || fadePanel == null)
         {
@@ -134,6 +144,9 @@ public class DeathFaceEffect : MonoBehaviour
 
         // 2) 화면 어두워짐 (페이드 인)
         yield return StartCoroutine(FadePanel(0f, 1f, fadeInDuration));
+
+        //외부에서 전달받은 작업(플레이어 이동)을 여기서 실행
+        onRestartAction?.Invoke();
 
         // 3) 어두운 상태 유지
         yield return new WaitForSeconds(fadeHoldTime);
