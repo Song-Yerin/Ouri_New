@@ -1087,7 +1087,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5272729}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
 --- !u!4 &5272733
 Transform:
   m_ObjectHideFlags: 0
@@ -90047,7 +90047,7 @@ MonoBehaviour:
   sfxEveryNChars: 1
   defaultPlayerName: "\uB2E4\uB78C\uC950"
   defaultNPCName: NPC
-  defaultNPCSprite: {fileID: 0}
+  defaultNPCSprite: {fileID: 21300000, guid: b221e2012dbfce54bb87a6a5aed8cc4e, type: 3}
 --- !u!82 &891570137
 AudioSource:
   m_ObjectHideFlags: 0
@@ -159525,13 +159525,13 @@ MonoBehaviour:
   targetIndex: 0
   matchRotation: 0
   positionOffset: {x: 0, y: 0, z: 0}
-  npcSpriteForProgress2: {fileID: 21300000, guid: 1bf7b311e420569449974cef1c124af7,
+  npcSpriteForProgress2: {fileID: 21300000, guid: b221e2012dbfce54bb87a6a5aed8cc4e,
     type: 3}
   checkpointPoints:
   - {fileID: 2061923780}
   - {fileID: 0}
-  - {fileID: 1465506521}
-  player: {fileID: 0}
+  - {fileID: 2121058659}
+  player: {fileID: 2132408737}
   npc: {fileID: 0}
 --- !u!114 &1575751010
 MonoBehaviour:
@@ -159571,8 +159571,8 @@ MonoBehaviour:
   interactionCount: 0
   alias: 
   overrideStartNode: -1
-  defaultNPCSprite: {fileID: 21300000, guid: 51fb7cff88162c04da241987fa5b7ec9, type: 3}
-  defaultPlayerSprite: {fileID: 21300000, guid: 4ebb2ab8ba7727a4fb7463b3fdf38de3,
+  defaultNPCSprite: {fileID: 21300000, guid: b221e2012dbfce54bb87a6a5aed8cc4e, type: 3}
+  defaultPlayerSprite: {fileID: 21300000, guid: 2dbe48afe15180f4a97701166bb27bad,
     type: 3}
   targetManager: {fileID: 0}
   preload: 0
@@ -217738,6 +217738,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2119162011}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2121058658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2121058659}
+  m_Layer: 0
+  m_Name: 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2121058659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121058658}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.27211234, z: 0, w: 0.96226555}
+  m_LocalPosition: {x: 472.13, y: 6.68, z: 178.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2121567995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221213,3 +221244,4 @@ SceneRoots:
   - {fileID: 758968203163396323}
   - {fileID: 278731017}
   - {fileID: 1584426311}
+  - {fileID: 2121058659}

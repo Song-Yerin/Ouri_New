@@ -282,6 +282,10 @@ public class DialogueTriggerZone : MonoBehaviour
         {
             SetProgress(2, false);
         }
+        if (data.nodeID == 27)
+        {
+            SetProgress(3, false);
+        }
         if (data.nodeID == 46)
         {
             SetProgress(4, false);
