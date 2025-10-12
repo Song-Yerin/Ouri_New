@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Controller
@@ -80,6 +81,7 @@ namespace Controller
         private bool _isActuallyGrounded;
         private bool _jumpRequested = false;
         private Vector3 _currentMoveDirection;
+        private float _gravityMultiplier = 1f;
 
         private void OnValidate()
         {
@@ -132,7 +134,7 @@ namespace Controller
                 m_GlidePitchVelY = 0f;
             }
 
-            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, out _currentAnimAxis, out _currentMoveDirection);
+            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, _gravityMultiplier, out _currentAnimAxis, out _currentMoveDirection);
             _isActuallyGrounded = m_Controller.isGrounded;
             _jumpRequested = false;
 
@@ -303,6 +305,26 @@ namespace Controller
             else { targetLocalRotation = Quaternion.identity; }
             m_RootBone.localRotation = Quaternion.Slerp(m_RootBone.localRotation, targetLocalRotation, Time.deltaTime * m_VisualRotationSpeed);
         }
+
+        public void ApplyTemporaryGravityMultiplier(float multiplier, float duration)
+        {
+            // 이전에 실행 중이던 중력 변경 코루틴이 있다면 중지
+            StopCoroutine("TemporaryGravityCoroutine");
+            StartCoroutine(TemporaryGravityCoroutine(multiplier, duration));
+        }
+
+        private IEnumerator TemporaryGravityCoroutine(float multiplier, float duration)
+        {
+            // 새로운 중력 계수 적용
+            _gravityMultiplier = multiplier;
+
+            // 지정된 시간만큼 대기
+            yield return new WaitForSeconds(duration);
+
+            // 원래 중력 계수(1)로 복원
+            _gravityMultiplier = 1f;
+        }
+
         #endregion
     }
 
@@ -352,15 +374,15 @@ namespace Controller
         public void ExitSlideState() { }
         public Vector3 GetCurrentSlideNormal() => _slideNormal;
 
-        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isClimbing, bool isSliding, out Vector2 animAxis, out Vector3 moveDirection)
+        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isClimbing, bool isSliding, float gravityMultiplier, out Vector2 animAxis, out Vector3 moveDirection)
         {
             moveDirection = Vector3.zero;
             if (isSliding) SlideMove(deltaTime, axis, out animAxis);
             else if (isClimbing) ClimbMove(deltaTime, axis, isRun, out animAxis);
-            else NormalMove(deltaTime, axis, isRun, isJump, isMoving, isGlide, out animAxis, out moveDirection);
+            else NormalMove(deltaTime, axis, isRun, isJump, isMoving, isGlide, gravityMultiplier, out animAxis, out moveDirection); // 여기도 전달
         }
 
-        private void NormalMove(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, out Vector2 animAxis, out Vector3 moveDirection)
+        private void NormalMove(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, float gravityMultiplier, out Vector2 animAxis, out Vector3 moveDirection)
         {
             if (_controller.isGrounded)
             {
@@ -369,9 +391,13 @@ namespace Controller
             }
             else
             {
-                if (isGlide && _normalMoveVelocity.y < 0) _normalMoveVelocity.y = _glideGravity;
-                else _normalMoveVelocity.y += Physics.gravity.y * deltaTime;
+                // 여기서 일반 중력 대신, 외부에서 받은 중력 계수를 적용합니다.
+                float currentGravity = Physics.gravity.y * gravityMultiplier;
 
+                if (isGlide && _normalMoveVelocity.y < 0)
+                    _normalMoveVelocity.y = _glideGravity; // 활공 시에는 별도 중력 유지
+                else
+                    _normalMoveVelocity.y += currentGravity * deltaTime;
             }
 
             Transform camTransform = Camera.main.transform;

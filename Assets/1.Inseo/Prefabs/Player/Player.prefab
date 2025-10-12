@@ -1861,6 +1861,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b29a280563964504b86bf7df367a54fd, type: 3}
   grassClips:
   - {fileID: 8300000, guid: be1ffa40b4f220f4bb254d0e2cca1d56, type: 3}
+  metalClips:
+  - {fileID: 8300000, guid: bc5dfd412ebd19d448446aea15a1e4c1, type: 3}
   footTransform: {fileID: 4376619512741752987}
   raycastDistance: 0.5
   groundLayer:

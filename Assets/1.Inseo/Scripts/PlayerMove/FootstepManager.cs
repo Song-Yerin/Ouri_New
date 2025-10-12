@@ -10,6 +10,8 @@ public class FootstepManager : MonoBehaviour
     public AudioClip[] stoneClips;
     [Tooltip("Grass_PhysicMat 이름의 물리 머티리얼에 해당하는 소리들")]
     public AudioClip[] grassClips;
+    [Tooltip("Metal_PhysicMat 이름의 물리 머티리얼에 해당하는 소리들")]
+    public AudioClip[] metalClips;
     // 필요한 만큼 다른 재질의 오디오 클립 배열을 추가할 수 있습니다.
 
     [Header("레이캐스트 설정")]
@@ -63,6 +65,8 @@ public class FootstepManager : MonoBehaviour
                 return stoneClips.Length > 0 ? stoneClips[Random.Range(0, stoneClips.Length)] : null;
             case "Grass_PhysicMat":
                 return grassClips.Length > 0 ? grassClips[Random.Range(0, grassClips.Length)] : null;
+            case "Metal_PhysicMat":
+                return metalClips.Length > 0 ? metalClips[Random.Range(0, metalClips.Length)] : null;
             // 다른 재질을 추가했다면 여기에 case를 추가합니다.
             default:
                 Debug.LogWarning("정의되지 않은 물리 머티리얼입니다: " + cleanMaterialName);
