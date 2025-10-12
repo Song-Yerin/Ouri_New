@@ -12,7 +12,7 @@ namespace Controller
         [SerializeField] private LayerMask wallLayerMask = -1;
 
         [Tooltip("등반을 유지하는 동안 Ray를 쏠 Y축 높이 오프셋입니다. 낮을수록 벽 끝까지 붙어있습니다.")]
-        [SerializeField, Range(0f, 2f)] private float climbingRayOffsetY = 0.4f;
+        [SerializeField, Range(-2f, 2f)] private float climbingRayOffsetY = 0.4f;
 
         [Header("시각적 효과")]
         [SerializeField] private Transform rootBone;

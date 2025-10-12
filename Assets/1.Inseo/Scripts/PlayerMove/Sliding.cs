@@ -65,12 +65,12 @@ namespace Controller
             if (Physics.SphereCast(rayOrigin, characterController.radius, Vector3.down, out RaycastHit hit, rayLength, slideLayerMask))
             {
                 // 밟고 있는 땅의 태그가 "Slide"이면 슬라이드 가능
-                if (hit.collider.CompareTag("Slide"))
-                {
+                //if (hit.collider.CompareTag("Slide"))
+                //{
                     canSlide = true;
                     groundNormal = hit.normal; // 경사면 정보 저장
                     return;
-                }
+                //}
             }
             // 그 외의 모든 경우는 슬라이드 불가능
             canSlide = false;
