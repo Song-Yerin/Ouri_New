@@ -1,19 +1,21 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class QuestBannerTween : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private RectTransform banner;       // QuestBanner RectTransform
-    [SerializeField] private CanvasGroup canvasGroup;    // QuestBanner CanvasGroup
-    [SerializeField] private TextMeshProUGUI chapterText; // "Ex" ∂«¥¬ √©≈Õ ∞∞¿∫ º“¡¶∏Ò
-    [SerializeField] private TextMeshProUGUI titleText;   // "∞À¿« Ω√∑√" ∞∞¿∫ ∏ﬁ¿Œ ≈∏¿Ã∆≤
+    [SerializeField] private RectTransform banner;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI chapterText;
+    [SerializeField] private TextMeshProUGUI titleText;
 
     [Header("Motion")]
-    [SerializeField] private float enterY = 0f;          // µÈæÓøÕº≠ ∏ÿ√‚ ¿ßƒ°
-    [SerializeField] private float offscreenTopY = 600f; // Ω√¿€(»≠∏È ¿ß)
-    [SerializeField] private float offscreenBottomY = -600f; // ≈¿Â(»≠∏È æ∆∑°)
+    [SerializeField] private float enterY = 0f;
+    [SerializeField] private float offscreenTopY = 600f;
+    [SerializeField] private float offscreenBottomY = -600f;
     [SerializeField] private float inDuration = 0.6f;
     [SerializeField] private float holdDuration = 1.4f;
     [SerializeField] private float outDuration = 0.6f;
@@ -27,80 +29,105 @@ public class QuestBannerTween : MonoBehaviour
     [SerializeField] private AudioClip whooshOut;
 
     private Sequence seq;
+    private bool isPlaying = false;
+
+    // ÏÑ∏ÏÖò Ï†ÑÏó≠: Ïù¥ÎØ∏ ÌëúÏãúÌïú Ïî¨ Ïù¥Î¶Ñ
+    private static readonly HashSet<string> shownScenes = new();
+
+    public void ShowBannerOnce(string chapter, string title)
+    {
+        var scene = SceneManager.GetActiveScene().name;
+
+        // Ï†ÑÏó≠ Í∞ÄÎìú
+        if (!shownScenes.Add(scene))
+        {
+            Debug.Log($"[Banner] Skip (already shown in scene: {scene})", this);
+            return;
+        }
+
+        // Î°úÏª¨/Ïû¨ÏÉùÏ§ë Í∞ÄÎìú
+        if (isPlaying)
+        {
+            Debug.Log($"[Banner] Skip (isPlaying) by {name}", this);
+            return;
+        }
+
+        Debug.Log($"[Banner] PLAY once in scene '{scene}' by {name}", this);
+        ShowBanner_Internal(chapter, title);
+    }
+
+    // ‚õî Ïô∏Î∂Ä ÏßÅÏ†ë Ìò∏Ï∂ú Í∏àÏßÄ: private
+    private void ShowBanner_Internal(string chapter, string title)
+    {
+        isPlaying = true;
+
+        if (chapterText) chapterText.text = chapter;
+        if (titleText) titleText.text = title;
+
+        if (seq != null && seq.IsActive()) seq.Kill();
+
+        canvasGroup.alpha = 0f;
+        banner.anchoredPosition = new Vector2(0f, offscreenTopY);
+
+        seq = DOTween.Sequence();
+        seq.Append(canvasGroup.DOFade(1f, inDuration));
+        seq.Join(banner.DOAnchorPosY(enterY, inDuration).SetEase(inEase)
+            .OnStart(() => { PlaySfx(whooshIn); PlaySfx(showJingle); })
+        );
+        seq.AppendInterval(holdDuration);
+        seq.Append(canvasGroup.DOFade(0f, outDuration));
+        seq.Join(banner.DOAnchorPosY(offscreenBottomY, outDuration).SetEase(outEase)
+            .OnStart(() => PlaySfx(whooshOut))
+        );
+        seq.OnComplete(() =>
+        {
+            banner.anchoredPosition = new Vector2(0f, offscreenTopY);
+            isPlaying = false;
+        });
+    }
 
     void Reset()
     {
-        // ¿⁄µø ø¨∞· ∆Ì¿«
         banner = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        if (transform.Find("ChapterText")) chapterText = transform.Find("ChapterText").GetComponent<TextMeshProUGUI>();
-        if (transform.Find("TitleText")) titleText = transform.Find("TitleText").GetComponent<TextMeshProUGUI>();
+        if (!chapterText && transform.Find("ChapterText"))
+            chapterText = transform.Find("ChapterText").GetComponent<TextMeshProUGUI>();
+        if (!titleText && transform.Find("TitleText"))
+            titleText = transform.Find("TitleText").GetComponent<TextMeshProUGUI>();
     }
-
+    void OnValidate()
+    {
+        if (!banner) banner = GetComponent<RectTransform>();
+        if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
+    }
     void Awake()
     {
         if (!banner) banner = GetComponent<RectTransform>();
         if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
         HideImmediate();
     }
-
     public void HideImmediate()
     {
         if (seq != null && seq.IsActive()) seq.Kill();
         canvasGroup.alpha = 0f;
         banner.anchoredPosition = new Vector2(0f, offscreenTopY);
+        isPlaying = false;
     }
-
-    /// <summary>
-    /// ≈∏¿”∂Û¿Œ Ω√±◊≥Œ/Ω∫≈©∏≥∆Æø°º≠ »£√‚: πË≥ ∏¶ ∫∏ø©¡÷∞Ì ¿⁄µø ≈¿Â«—¥Ÿ.
-    /// </summary>
-    public void ShowBanner(string chapter, string title)
-    {
-        if (chapterText) chapterText.text = chapter;
-        if (titleText) titleText.text = title;
-
-        if (seq != null && seq.IsActive()) seq.Kill();
-
-        // Ω√¿€ ªÛ≈¬
-        canvasGroup.alpha = 0f;
-        banner.anchoredPosition = new Vector2(0f, offscreenTopY);
-
-        // Ω√ƒˆΩ∫
-        seq = DOTween.Sequence();
-
-        // ¡¯¿‘
-        seq.Append(canvasGroup.DOFade(1f, inDuration));
-        seq.Join(banner.DOAnchorPosY(enterY, inDuration).SetEase(inEase)
-                 .OnStart(() => {
-                     PlaySfx(whooshIn);
-                     PlaySfx(showJingle);
-                 })
-        );
-
-        // ¿Ø¡ˆ
-        seq.AppendInterval(holdDuration);
-
-        // ≈¿Â
-        seq.Append(canvasGroup.DOFade(0f, outDuration));
-        seq.Join(banner.DOAnchorPosY(offscreenBottomY, outDuration).SetEase(outEase)
-                 .OnStart(() => PlaySfx(whooshOut))
-        );
-
-        // ¡æ∑· »ƒ ¡ÔΩ√ ¿ß¬  ¥Î±‚ ªÛ≈¬∑Œ ∫π±ÕΩ√≈≥¡ˆ º±≈√(√Î«‚)
-        seq.OnComplete(() => {
-            banner.anchoredPosition = new Vector2(0f, offscreenTopY);
-        });
-    }
-
-    // ≈∏¿”∂Û¿Œø°º≠ ∆ƒ∂ÛπÃ≈Õ æ¯¿Ã »£√‚«œ∞Ì ΩÕ¿ª ∂ß æ≤¥¬ ∆Ì¿« ∏ﬁº≠µÂ
-    public void ShowDefault()
-    {
-        ShowBanner("Ex", "∞À¿« Ω√∑√");
-    }
-
     private void PlaySfx(AudioClip clip)
     {
         if (!sfx || !clip) return;
         sfx.PlayOneShot(clip);
     }
+
+    public void ShowBanner(string chapter, string title)
+    {
+        ShowBannerOnce(chapter, title);
+    }
+
+    // ÏÉà Í≤åÏûÑ/ÌÉÄÏù¥ÌãÄ Î≥µÍ∑Ä Ïãú ÌïÑÏöîÌïòÎ©¥ Ìò∏Ï∂ú
+    public static void ResetAllShown() => shownScenes.Clear();
+
+    // ÏóêÎîîÌÑ∞ÏóêÏÑú Domain Reload Í∫ºÎÜ®ÏùÑ Îïå ÏÑ∏ÏÖò ÏãúÏûëÎßàÎã§ ÌÅ¥Î¶¨Ïñ¥ÌïòÍ≥† Ïã∂ÏúºÎ©¥ Ï£ºÏÑù Ìï¥Ï†ú
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    //static void ClearOnPlayStart() => shownScenes.Clear();
 }
