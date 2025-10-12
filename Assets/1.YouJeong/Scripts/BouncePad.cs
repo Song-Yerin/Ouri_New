@@ -49,12 +49,22 @@ public class BouncePad : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitForSecond()
+    {
+        AudioSource.Play();
+        float waitTime = AudioSource.clip != null ? AudioSource.clip.length : 1f;
+        yield return new WaitForSeconds(waitTime);
+
+        CountOfJump--; // 사운드 재생 끝난 후 감소
+    }
+
     public void OnTriggerEnter(Collider other)
     {
 
         if (other.CompareTag("Player"))
         {
-            AudioSource.Play();
+            StartCoroutine(WaitForSecond());
+
             CharacterController controller = other.GetComponent<CharacterController>();
 
             if (controller != null)
@@ -65,7 +75,6 @@ public class BouncePad : MonoBehaviour
                     playerController.Bounce(Vector3.up * bounceForce);
                 }
             }
-            CountOfJump--;
         }
     }
 
