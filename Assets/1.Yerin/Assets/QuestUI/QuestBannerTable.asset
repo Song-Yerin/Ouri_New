@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960565f82d5d04b4e9915e244688a74c, type: 3}
+  m_Name: QuestBannerTable
+  m_EditorClassIdentifier: 
+  entries:
+  - sceneName: YJ_Forest_Night
+    chapter: Ex1.
+    title: "\uC778\uACF5\uC704\uC131 \uD0D0\uC0C9\uD558\uAE30"
+  - sceneName: PipeScene 1
+    chapter: Ex2.
+    title: "\uC2E4\uD5D8\uC6A9 \uC950 \uAD6C\uCD9C\uD558\uAE30"
+  - sceneName: Practice
+    chapter: Ex3.
+    title: "\uC218\uB828\uD558\uAE30"
+  - sceneName: YJ_Forest_Day
+    chapter: Ex4.
+    title: "\uBC84\uC12F \uC810\uD504\uB9F5"
+  - sceneName: waterway
+    chapter: Ex5.
+    title: "\uD558\uC218\uAD6C \uD0C8\uCD9C\uD558\uAE30"
+  - sceneName: City_Day 2
+    chapter: Ex6.
+    title: "\uC2E4\uD5D8\uC6A9 \uC950 \uB530\uB77C\uC7A1\uAE30"
+  - sceneName: CityGliding 2
+    chapter: Ex7.
+    title: "\uC2E4\uD5D8\uC6A9 \uC950 \uB530\uB77C\uC7A1\uAE30 ~ \uD65C\uAC15"
+  - sceneName: City_Day 4
+    chapter: Ex8.
+    title: "\uACE0\uC591\uC774\uC5D0\uAC8C \uBC97\uC5B4\uB098\uAE30"
+  - sceneName: SpaceShipLauncher
+    chapter: Ex9.
+    title: "\uBC1C\uC0AC\uBC84\uD2BC \uCC3E\uAE30"
