@@ -100582,6 +100582,8 @@ GameObject:
   - component: {fileID: 1033487959}
   - component: {fileID: 1033487960}
   - component: {fileID: 1033487961}
+  - component: {fileID: 1033487963}
+  - component: {fileID: 1033487964}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -100724,6 +100726,144 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!82 &1033487963
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033487957}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1033487964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033487957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c67ac63fea73e23428ce322dd5338d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmSource: {fileID: 1033487961}
+  cutsceneSource: {fileID: 1033487963}
+  bgmClips:
+  - sceneName: Title
+    clip: {fileID: 8300000, guid: 43381184974d30a4f9d4a08674c00e2b, type: 3}
+  - sceneName: FIrstCutScene
+    clip: {fileID: 0}
+  - sceneName: YJ_Forest_Night
+    clip: {fileID: 8300000, guid: 4901edb70f1e19b4ca844dadbe9846d2, type: 3}
+  - sceneName: PipeScene 1
+    clip: {fileID: 0}
+  - sceneName: Practice
+    clip: {fileID: 0}
+  - sceneName: YJ _Forest_Day
+    clip: {fileID: 0}
+  - sceneName: waterway
+    clip: {fileID: 0}
+  - sceneName: City_Day 2
+    clip: {fileID: 0}
+  - sceneName: CityGliding2
+    clip: {fileID: 0}
+  - sceneName: City_Day 4
+    clip: {fileID: 0}
+  - sceneName: SpaceShipLauncher
+    clip: {fileID: 0}
+  cutsceneClips:
+  - sceneName: StartSceneTimeline
+    clip: {fileID: 8300000, guid: 57fcb1d07aed2a64eb95a62bb5a2e62a, type: 3}
+  smoothTransition: 1
+  fadeTime: 0.5
 --- !u!1001 &1033587263
 PrefabInstance:
   m_ObjectHideFlags: 0

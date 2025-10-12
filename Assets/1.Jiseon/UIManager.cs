@@ -196,7 +196,7 @@ public class UIManager : MonoBehaviour
             if (settingsButton != null)
                 settingsButton.SetActive(false);
 
-            Debug.Log("타이틀씬 세팅창 열림");
+            // Debug.Log("타이틀씬 세팅창 열림");
             return;
         }
 
