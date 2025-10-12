@@ -5023,6 +5023,7 @@ MonoBehaviour:
   maxPitch: 60
   forwardSpeed: 1
   heightOffset: 1
+  allowMouseLook: 1
 --- !u!114 &62054609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51336,6 +51337,7 @@ MonoBehaviour:
   maxPitch: 60
   forwardSpeed: 1
   heightOffset: 1
+  allowMouseLook: 1
 --- !u!114 &565553409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93281,8 +93283,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "F \uD0A4\uB97C \uB20C\uB7EC \uD558\uB298\uC744 \uD65C\uACF5\uD560 \uC218
-    \uC788\uC2B5\uB2C8\uB2E4."
+  m_text: "SPACE \uD0A4\uB97C \uB20C\uB7EC \uD558\uB298\uC744 \uD65C\uACF5\uD560
+    \uC218 \uC788\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 195cfaa38cd696f4d81a6ee8c70e9c9a, type: 2}
   m_sharedMaterial: {fileID: -2034502576362269662, guid: 195cfaa38cd696f4d81a6ee8c70e9c9a,
