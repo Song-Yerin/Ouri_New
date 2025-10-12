@@ -79,7 +79,7 @@ public class DialogueTriggerZone : MonoBehaviour
     private void OnDialogueEnd(VD.NodeData data)
     {
         // 특정 진행도에서만 이동 실행
-        if (nightMapProgress == 4 || nightMapProgress == 5)
+        if (nightMapProgress == 4 || nightMapProgress == 5 || nightMapProgress == 7)
         {
             nextsection();
             ApplyProgress();
