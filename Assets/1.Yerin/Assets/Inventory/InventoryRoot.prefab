@@ -207,6 +207,7 @@ MonoBehaviour:
   cg: {fileID: 5498279595297077189}
   hideInScenes:
   - Loading
+  - EndingScene
   fade: 0.15
 --- !u!1 &1788281144005800386
 GameObject:

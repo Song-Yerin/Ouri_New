@@ -179279,6 +179279,97 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 704787031}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &705873825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705873828}
+  - component: {fileID: 705873827}
+  - component: {fileID: 705873826}
+  m_Layer: 0
+  m_Name: UIVisibility
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &705873826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705873825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 9b3b0b4c7ee12a841894a0abdb26d06f, type: 2}
+    - {fileID: 11400000, guid: f675aed312b82da419919463a58890bd, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 705873827}
+          m_TargetAssemblyTypeName: GlobalUIHider, Assembly-CSharp
+          m_MethodName: CutsceneStart
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 705873827}
+          m_TargetAssemblyTypeName: GlobalUIHider, Assembly-CSharp
+          m_MethodName: CutsceneEnd
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &705873827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705873825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eaa777bde4d7af4384df8192fa65975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fade: 0.15
+--- !u!4 &705873828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705873825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.010365, y: -4.308408, z: 38.548546}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &705904725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209347,6 +209438,10 @@ PlayableDirector:
     value: {fileID: 995933583}
   - key: {fileID: 1637856475720392633, guid: 60b36ce3f02a03545a58585b04221758, type: 2}
     value: {fileID: 1953369645}
+  - key: {fileID: 5432098875107430260, guid: 60b36ce3f02a03545a58585b04221758, type: 2}
+    value: {fileID: 1733054388}
+  - key: {fileID: 2606643058284356758, guid: 60b36ce3f02a03545a58585b04221758, type: 2}
+    value: {fileID: 705873826}
   m_ExposedReferences:
     m_References:
     - 76ea0ffe8f9b4ae409ef29dd0a5bbf8a: {fileID: 0}
@@ -560317,3 +560412,4 @@ SceneRoots:
   - {fileID: 198883423}
   - {fileID: 375589072}
   - {fileID: 1600540150}
+  - {fileID: 705873828}

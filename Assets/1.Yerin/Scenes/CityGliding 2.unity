@@ -223830,7 +223830,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!224 &1238686271
 RectTransform:
@@ -266194,7 +266194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483352729}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.34962484, y: -0.56642854, z: -0.28757945, w: 0.6886358}
+  m_LocalRotation: {x: -0.34962484, y: -0.5664285, z: -0.2875794, w: 0.68863595}
   m_LocalPosition: {x: 45.065598, y: -1.2546349, z: -679.43933}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
