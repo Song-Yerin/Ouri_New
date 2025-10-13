@@ -29,13 +29,13 @@ public class KeyHintSpawner : MonoBehaviour
         // 테스트용: F키 힌트 (duration = 0, 수동 제거)
         if (Input.GetKeyDown(KeyCode.N))
         {
-            ShowKeyHint("F", "상호작용하세요!", 0f);
+            //ShowKeyHint("F", "상호작용하세요!", 0f);
         }
 
         // 테스트용: F키 힌트 제거 (예: 문 열기 성공 후)
         if (Input.GetKeyDown(KeyCode.M))
         {
-            RemoveHintByKey("F");
+            //RemoveHintByKey("F");
         }
 
         // 테스트용: G키 → 타겟 오브젝트 위에 월드 힌트 표시
