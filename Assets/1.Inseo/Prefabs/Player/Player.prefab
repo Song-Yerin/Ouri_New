@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   woodClips:
-  - {fileID: 8300000, guid: b29a280563964504b86bf7df367a54fd, type: 3}
+  - {fileID: 8300000, guid: ca8456bc677bc594291bf4809cd89937, type: 3}
   stoneClips:
   - {fileID: 8300000, guid: b29a280563964504b86bf7df367a54fd, type: 3}
   grassClips:

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class NewBehaviourScript : MonoBehaviour
+public class CutSceneController : MonoBehaviour
 {
     [SerializeField] private PlayableDirector playableDirector;  
 
