@@ -8,28 +8,37 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [Header("UI 연결")]
-    public Slider masterVolumeSlider;       // Slider 컴포넌트 드래그
-    public Toggle fullScreenToggle;         // Toggle 컴포넌트 드래그
-    public TMP_Dropdown qualityDropdown;    // Dropdown 컴포넌트 드래그
-    public Slider mouseSensitivitySlider;   // Slider 컴포넌트 드래그
+    public Slider masterVolumeSlider;       // 마스터 볼륨 슬라이더
+    public Slider bgmVolumeSlider;          // BGM 전용 볼륨 슬라이더
+    public Toggle fullScreenToggle;         // 전체화면 토글
+    public TMP_Dropdown qualityDropdown;    // 그래픽 품질 드롭다운
+    public Slider mouseSensitivitySlider;   // 마우스 감도 슬라이더
+
+    [Header("BGM 전용 오디오소스")]
+    public AudioSource bgmSource;           // 배경 BGM 오디오 소스
+    public AudioSource cutsceneBgmSource;   // 컷씬용 BGM 오디오 소스
 
     [Header("참조")]
     public SmoothMouseLook smoothMouseLook;
 
     // 타이틀 전용 패널(기존)
-    public GameObject settingsPanel;        // 타이틀 전용 설정 패널
-    public GameObject ppVolumeObject;       // 타이틀 전용 후처리 오브젝트
-    public GameObject titleGroup;           // 타이틀 UI 그룹
-    public Button continueButton;           // Continue 버튼
+    public GameObject settingsPanel;
+    public GameObject ppVolumeObject;
+    public GameObject titleGroup;
+    public Button continueButton;
 
     // 전역(인게임 공용) 설정창
-    public GameObject settingsWindow;       // SettingsCanvas 안의 SettingsWindow(패널)
-    public GameObject settingsButton;       // 인게임용 Settings 버튼(전역)
-    public GameObject closeButton;          // 전역 SettingsWindow 안 닫기 버튼
+    public GameObject settingsWindow;
+    public GameObject settingsButton;
+    public GameObject closeButton;
 
     // 씬 이름 집합
     private readonly string[] titleSceneNames = { "TitleScene", "Title" };
     private readonly string[] disabledButtonScenes = { "FIrstCutScene", "LoadingScene", "Loading" };
+
+    // 내부 상태 변수
+    private float masterVolume = 1f;
+    private float bgmVolume = 1f;
 
     void Awake()
     {
@@ -41,7 +50,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // 전역 SettingsCanvas 유지: settingsWindow의 부모 Canvas를 찾아 루트에 DDOL 적용
+        // 전역 SettingsCanvas 유지
         if (settingsWindow != null)
         {
             Canvas parentCanvas = settingsWindow.GetComponentInParent<Canvas>(true);
@@ -53,7 +62,6 @@ public class UIManager : MonoBehaviour
             settingsWindow.SetActive(false);
         }
 
-        // 전역 인게임용 버튼과 닫기 버튼 유지
         if (settingsButton != null) DontDestroyOnLoad(settingsButton);
         if (closeButton != null)
         {
@@ -67,15 +75,26 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         // 1) 마스터 볼륨
-        float vol = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        AudioListener.volume = vol;
+        masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        AudioListener.volume = masterVolume;
+
         if (masterVolumeSlider != null)
         {
-            masterVolumeSlider.value = vol;
+            masterVolumeSlider.value = masterVolume;
             masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         }
 
-        // 2) 전체화면
+        // 2) BGM 볼륨 (마스터와 곱연산 구조)
+        bgmVolume = PlayerPrefs.GetFloat("BGMVolume", 1f);
+        ApplyBgmVolume(); // 초기값 반영
+
+        if (bgmVolumeSlider != null)
+        {
+            bgmVolumeSlider.value = bgmVolume;
+            bgmVolumeSlider.onValueChanged.AddListener(SetBgmVolume);
+        }
+
+        // 3) 전체화면
         bool fs = PlayerPrefs.GetInt("FullScreen", 1) == 1;
         Screen.fullScreen = fs;
         if (fullScreenToggle != null)
@@ -84,7 +103,7 @@ public class UIManager : MonoBehaviour
             fullScreenToggle.onValueChanged.AddListener(SetFullScreen);
         }
 
-        // 3) 그래픽 품질 (TMP 버전)
+        // 4) 그래픽 품질
         int ql = PlayerPrefs.GetInt("QualityLevel", QualitySettings.GetQualityLevel());
         QualitySettings.SetQualityLevel(ql);
         if (qualityDropdown != null)
@@ -94,7 +113,7 @@ public class UIManager : MonoBehaviour
             qualityDropdown.onValueChanged.AddListener(SetQuality);
         }
 
-        // 4) 마우스 감도
+        // 5) 마우스 감도
         float sens = PlayerPrefs.GetFloat("MouseSensitivity", smoothMouseLook != null ? smoothMouseLook.sensitivity : 1f);
         if (smoothMouseLook != null) smoothMouseLook.sensitivity = sens;
         if (mouseSensitivitySlider != null)
@@ -103,19 +122,18 @@ public class UIManager : MonoBehaviour
             mouseSensitivitySlider.onValueChanged.AddListener(SetMouseSensitivity);
         }
 
-        // 타이틀 전용 패널 초기화
+        // 타이틀 전용 초기화
         if (settingsPanel != null) settingsPanel.SetActive(false);
         if (ppVolumeObject != null) ppVolumeObject.SetActive(false);
         if (titleGroup != null) titleGroup.SetActive(true);
 
-        // Continue 버튼 활성화
         int progress = PlayerPrefs.GetInt("nightMapProgress", 0);
         if (continueButton != null) continueButton.interactable = progress != 0;
     }
 
     void Update()
     {
-        // 개발 편의: 숫자키 0~7로 진행도 저장 (원본 유지)
+        // 개발용 단축키: 0~7 저장
         for (int i = 0; i <= 7; i++)
         {
             KeyCode key = KeyCode.Alpha0 + i;
@@ -127,7 +145,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // ESC 키로 전역 SettingsWindow 토글 (타이틀/비활성 씬 제외)
+        // ESC키로 설정창 토글
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             string sceneName = SceneManager.GetActiveScene().name;
@@ -144,21 +162,14 @@ public class UIManager : MonoBehaviour
     {
         string sceneName = scene.name;
 
-        // 인게임용 settingsButton은 타이틀, 컷씬, 로딩씬에서 숨김
         if (settingsButton != null)
             settingsButton.SetActive(!(IsIn(sceneName, titleSceneNames) || IsIn(sceneName, disabledButtonScenes)));
 
-        // 전역 닫기 버튼 기본 숨김
         if (closeButton != null) closeButton.SetActive(false);
-
-        // 전역 SettingsWindow는 씬 진입 시 항상 닫음
         if (settingsWindow != null) settingsWindow.SetActive(false);
-
-        // 타이틀 씬에서는 타이틀 UI 노출
         if (IsIn(sceneName, titleSceneNames) && titleGroup != null) titleGroup.SetActive(true);
     }
 
-    // 전역 SettingsWindow 토글 (인게임에서 사용)
     public void ToggleSettingsWindow()
     {
         if (settingsWindow == null)
@@ -168,69 +179,23 @@ public class UIManager : MonoBehaviour
         }
 
         string sceneName = SceneManager.GetActiveScene().name;
+        bool isTitleScene = IsIn(sceneName, titleSceneNames);
 
-        bool isTitleScene = false;
-        foreach (string name in titleSceneNames)
-        {
-            if (sceneName == name)
-            {
-                isTitleScene = true;
-                break;
-            }
-        }
-
-        // -------------------------------
-        // ① 타이틀씬 전용 동작
-        // -------------------------------
         if (isTitleScene)
         {
-            // 타이틀 UI 끄고 세팅창 켜기 (기존 OpenSettings와 동일)
-            if (titleGroup != null)
-                titleGroup.SetActive(false);
-
+            if (titleGroup != null) titleGroup.SetActive(false);
             settingsWindow.SetActive(true);
-            if (closeButton != null)
-                closeButton.SetActive(true);
-
-            // 타이틀씬에는 인게임용 세팅버튼 없음
-            if (settingsButton != null)
-                settingsButton.SetActive(false);
-
-            // Debug.Log("타이틀씬 세팅창 열림");
+            if (closeButton != null) closeButton.SetActive(true);
+            if (settingsButton != null) settingsButton.SetActive(false);
             return;
         }
 
-        // -------------------------------
-        // ② 인게임용 동작
-        // -------------------------------
         bool isActive = settingsWindow.activeSelf;
-
-        // 세팅창 열기
-        if (!isActive)
-        {
-            settingsWindow.SetActive(true);
-
-            if (settingsButton != null)
-                settingsButton.SetActive(false);
-
-            if (closeButton != null)
-                closeButton.SetActive(true);
-        }
-        // 세팅창 닫기
-        else
-        {
-            settingsWindow.SetActive(false);
-
-            if (settingsButton != null)
-                settingsButton.SetActive(true);
-
-            if (closeButton != null)
-                closeButton.SetActive(false);
-        }
+        settingsWindow.SetActive(!isActive);
+        if (settingsButton != null) settingsButton.SetActive(isActive);
+        if (closeButton != null) closeButton.SetActive(!isActive);
     }
 
-
-    // 전역 SettingsWindow 닫기 (닫기 버튼에 연결)
     public void CloseSettingsWindow()
     {
         if (settingsWindow != null) settingsWindow.SetActive(false);
@@ -241,7 +206,6 @@ public class UIManager : MonoBehaviour
         if (settingsButton != null) settingsButton.SetActive(showBtn);
     }
 
-    // 타이틀 전용: 기존 설정창 열기
     public void OpenSettings()
     {
         if (settingsPanel != null) settingsPanel.SetActive(true);
@@ -249,47 +213,55 @@ public class UIManager : MonoBehaviour
         if (titleGroup != null) titleGroup.SetActive(false);
     }
 
-    // 타이틀 전용: 기존 설정창 닫기
     public void CloseSettings()
     {
-        if (settingsWindow != null)
-            settingsWindow.SetActive(false);
-
-        if (closeButton != null)
-            closeButton.SetActive(false);
+        if (settingsWindow != null) settingsWindow.SetActive(false);
+        if (closeButton != null) closeButton.SetActive(false);
 
         string sceneName = SceneManager.GetActiveScene().name;
-        bool isTitleScene = false;
-        foreach (string name in titleSceneNames)
-        {
-            if (sceneName == name)
-            {
-                isTitleScene = true;
-                break;
-            }
-        }
+        bool isTitleScene = IsIn(sceneName, titleSceneNames);
 
         if (isTitleScene)
         {
-            // 타이틀씬에서는 닫으면 titleGroup 다시 켜기
-            if (titleGroup != null)
-                titleGroup.SetActive(true);
+            if (titleGroup != null) titleGroup.SetActive(true);
         }
         else
         {
-            // 인게임에서는 세팅 버튼 복구
-            if (settingsButton != null)
-                settingsButton.SetActive(true);
+            if (settingsButton != null) settingsButton.SetActive(true);
         }
     }
 
+    // ===================== 볼륨 및 설정 저장 함수 =====================
 
-    // 설정 저장 함수들 (원본 유지 + Save 추가)
     public void SetMasterVolume(float volume)
     {
+        masterVolume = volume;
         AudioListener.volume = volume;
+
+        // BGM 실제 볼륨도 반영 (마스터 × BGM)
+        ApplyBgmVolume();
+
         PlayerPrefs.SetFloat("MasterVolume", volume);
         PlayerPrefs.Save();
+    }
+
+    public void SetBgmVolume(float volume)
+    {
+        bgmVolume = volume;
+
+        // 실제 적용
+        ApplyBgmVolume();
+
+        PlayerPrefs.SetFloat("BGMVolume", volume);
+        PlayerPrefs.Save();
+    }
+
+    private void ApplyBgmVolume()
+    {
+        float effectiveVolume = masterVolume * bgmVolume;
+
+        if (bgmSource != null) bgmSource.volume = effectiveVolume;
+        if (cutsceneBgmSource != null) cutsceneBgmSource.volume = effectiveVolume;
     }
 
     public void SetFullScreen(bool fullscreen)
@@ -332,7 +304,6 @@ public class UIManager : MonoBehaviour
         Debug.Log("nightMapProgress = 0 (저장 완료)");
 
         LoadingSceneManager.LoadScene("FirstCutScene");
-        // SceneManager.LoadScene("dialogue");
     }
 
     public void OnClickContinue()
@@ -366,7 +337,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // 유틸: 문자열이 배열에 포함돼 있는지 검사
     private bool IsIn(string value, string[] list)
     {
         for (int i = 0; i < list.Length; i++)
