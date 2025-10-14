@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
+//[RequireComponent(typeof(AudioSource))]
 public class FootstepManager : MonoBehaviour
 {
     [Header("발자국 소리 설정")]
@@ -26,14 +26,21 @@ public class FootstepManager : MonoBehaviour
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        // 오디오 소스가 꺼져 있으면 소리가 나지 않으므로, Play On Awake는 비활성화합니다.
-        audioSource.playOnAwake = false;
+        if (audioSource != null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            // 오디오 소스가 꺼져 있으면 소리가 나지 않으므로, Play On Awake는 비활성화합니다.
+            audioSource.playOnAwake = false;
+        }
     }
 
     // 이 함수를 애니메이션 이벤트에서 호출할 것입니다.
     public void PlayFootstepSound()
     {
+        if(audioSource == null)
+        {
+            return;
+        }
         // 발 아래로 레이저를 쏴서 닿는 오브젝트가 있는지 확인합니다.
         if (Physics.Raycast(footTransform.position, Vector3.down, out RaycastHit hit, raycastDistance, groundLayer))
         {
