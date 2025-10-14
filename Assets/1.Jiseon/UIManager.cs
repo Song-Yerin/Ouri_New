@@ -134,7 +134,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         // 개발용 단축키: 0~7 저장
-        for (int i = 0; i <= 7; i++)
+        for (int i = 0; i <= 8; i++)
         {
             KeyCode key = KeyCode.Alpha0 + i;
             if (Input.GetKeyDown(key))
@@ -331,6 +331,9 @@ public class UIManager : MonoBehaviour
                 break;
             case 7:
                 SceneManager.LoadScene("CityGliding 2");
+                break;
+            case 8:
+                SceneManager.LoadScene("SpaceShipLauncher");
                 break;
             default:
                 break;

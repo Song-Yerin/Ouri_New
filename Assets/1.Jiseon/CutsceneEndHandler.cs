@@ -44,6 +44,15 @@ public class CutsceneEndHandler : MonoBehaviour
             }
             Debug.Log("▶ YR2 컷씬 종료 → 오브젝트들 활성화 완료");
         }
+        else if (currentScene == "SpaceShipLauncher")
+        {
+            // 씬 이동 없이 오브젝트들 활성화
+            foreach (var go in objectsToActivate)
+            {
+                if (go != null) go.SetActive(true);
+            }
+            Debug.Log("▶ YR2 컷씬 종료 → 오브젝트들 활성화 완료");
+        }
         else
         {
             // 기본 동작: 씬 이동

@@ -240,6 +240,12 @@ public class DialogueTriggerZone : MonoBehaviour
                 dialogueManager.defaultNPCName = npcNameOverride;
         }
 
+        if (nightMapProgress == 8)
+        {
+            myDialogue.overrideStartNode = 56;
+        }
+
+
         // 자동 시작이 켜져 있으면 기존 로직대로 한 번만 시작
         if (!VD.isActive && autoStartOnEnter && !hasTriggered)
         {
@@ -278,7 +284,7 @@ public class DialogueTriggerZone : MonoBehaviour
             SetProgress(1);
         }
 
-        if(data.nodeID == 16)
+        if (data.nodeID == 16)
         {
             SetProgress(2, false);
         }
@@ -290,7 +296,7 @@ public class DialogueTriggerZone : MonoBehaviour
         {
             SetProgress(4, false);
         }
-        if(data.nodeID == 35)
+        if (data.nodeID == 35)
         {
             SetProgress(5, false);
         }
@@ -304,6 +310,18 @@ public class DialogueTriggerZone : MonoBehaviour
         if (data.nodeID == 42)
         {
             SetProgress(7, false);
+        }
+        if (data.nodeID == 54)
+        {
+            SetProgress(8, false);
+        }
+
+        if (data.nodeID == 69)
+        {
+            Debug.Log("엔딩 마지막 노드 도달 → 자동시작 비활성화");
+            autoStartOnEnter = false;
+            hasTriggered = true;
+            //VD.EndDialogue();
         }
     }
 
@@ -471,6 +489,14 @@ public class DialogueTriggerZone : MonoBehaviour
                 autoStartOnEnter = true; 
                 hasTriggered = false;
                 Debug.Log("진행도 7: 다음 이벤트 상태 반영 완료");
+                break;
+
+            case 8:
+                nextsection();
+                myDialogue.overrideStartNode = 56;
+                autoStartOnEnter = true;
+                hasTriggered = false;
+                Debug.Log("진행도 8: 다음 이벤트 상태 반영 완료");
                 break;
 
             default:
