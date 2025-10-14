@@ -208,6 +208,7 @@ MonoBehaviour:
   hideInScenes:
   - Loading
   - EndingScene
+  - SpaceShipLauncher
   fade: 0.15
 --- !u!1 &1788281144005800386
 GameObject:
