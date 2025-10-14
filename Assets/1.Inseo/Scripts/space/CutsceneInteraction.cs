@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Playables; // 컷씬(Timeline)을 제어하기 위해 꼭 필요합니다.
+using UnityEngine.SceneManagement;  // 필수
 
 // 이 스크립트가 붙은 오브젝트에는 반드시 Collider 컴포넌트가 있어야 합니다.
 [RequireComponent(typeof(Collider))]
@@ -14,7 +16,9 @@ public class CutsceneInteraction : MonoBehaviour
     public GameObject interactionPromptUI;
 
     // 내부 상태 변수
-    private bool isPlayerInZone = false;
+    [SerializeField] private bool isPlayerInZone = false;
+
+    public GameObject CinemachineBrain;
 
     private void Awake()
     {
@@ -34,6 +38,8 @@ public class CutsceneInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = true;
+
+            
 
             // 상호작용 UI가 있다면 활성화하여 플레이어에게 알립니다.
             if (interactionPromptUI != null)
@@ -67,6 +73,9 @@ public class CutsceneInteraction : MonoBehaviour
             if (cutsceneToPlay != null)
             {
                 Debug.Log("E키 입력: 컷씬(" + cutsceneToPlay.name + ")을 재생합니다.");
+                CinemachineBrain.SetActive(true);
+                cutsceneToPlay.stopped += OnCutsceneStopped;
+                cutsceneToPlay.stopped += ToEndCutScene;
 
                 // 컷씬을 재생합니다.
                 cutsceneToPlay.Play();
@@ -81,6 +90,32 @@ public class CutsceneInteraction : MonoBehaviour
             {
                 Debug.LogWarning("재생할 컷씬이 할당되지 않았습니다!", this.gameObject);
             }
+        }
+    }
+
+    private void OnCutsceneStopped(PlayableDirector director)
+    {
+        if (CinemachineBrain != null)
+        {
+            // Cinemachine Brain 비활성화
+            //playerCam.SetActive(true);
+            CinemachineBrain.SetActive(false);
+            //movePlayerInput.enabled = true;
+        }
+    }
+
+    private void ToEndCutScene(PlayableDirector director)
+    {
+        // 컷씬이 끝나면 이 스크립트를 비활성화하여 다시 상호작용하지 못하게 합니다.
+        SceneManager.LoadScene("EndingScene");
+    }
+
+    void OnDestroy()
+    {
+        // 이벤트에서 제거 (메모리 누수 방지)
+        if (cutsceneToPlay != null)
+        {
+            cutsceneToPlay.stopped -= OnCutsceneStopped;
         }
     }
 }

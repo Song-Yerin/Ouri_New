@@ -56,6 +56,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.YouJeong/City_Day 3.unity
     guid: 49a8d26481496574d937885ee5f16325
+  - enabled: 1
+    path: Assets/1.Yerin/Scenes/EndingScene.unity
+    guid: 696a5a2a86efde34a93495dd9803272e
   - enabled: 0
     path: Assets/1.Inseo/Scenes/gravity/gravity.unity
     guid: 0afaaafece5e94d428dd52e267920a4f

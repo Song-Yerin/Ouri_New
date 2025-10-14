@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(Collider))]
@@ -6,6 +7,7 @@ public class CutsceneTrigger : MonoBehaviour
 {
     public PlayableDirector timeline;
     public string playerTag = "Player";
+    public GameObject CinemachineBrain;
 
     private bool _playedThisSession = false;
 
@@ -33,14 +35,38 @@ public class CutsceneTrigger : MonoBehaviour
 
         _playedThisSession = true;
 
+        CinemachineBrain.SetActive(true);
+
         // ③ 컷씬 재생
         if (timeline)
         {
             timeline.time = 0;
+
+            timeline.stopped += OnCutsceneStopped;
             timeline.Play();
         }
 
         // ④ 다시 안 나오게 스크립트 끄기 (씬 리로드 전까지만 유지)
         enabled = false;
+    }
+
+    private void OnCutsceneStopped(PlayableDirector director)
+    {
+        if (CinemachineBrain != null)
+        {
+            // Cinemachine Brain 비활성화
+            //playerCam.SetActive(true);
+            CinemachineBrain.SetActive(false);
+            //movePlayerInput.enabled = true;
+        }
+    }
+
+    void OnDestroy()
+    {
+        // 이벤트에서 제거 (메모리 누수 방지)
+        if (timeline != null)
+        {
+            timeline.stopped -= OnCutsceneStopped;
+        }
     }
 }
