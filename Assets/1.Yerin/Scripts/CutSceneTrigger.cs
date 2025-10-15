@@ -1,72 +1,67 @@
-﻿using Cinemachine;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(Collider))]
 public class CutsceneTrigger : MonoBehaviour
 {
+    [Header("PlayableDirector (Timeline)")]
     public PlayableDirector timeline;
-    public string playerTag = "Player";
-    public GameObject CinemachineBrain;
 
-    private bool _playedThisSession = false;
+    [Header("Trigger Filter")]
+    public string playerTag = "Player";
+
+    [Header("Play Once Per Session")]
+    public bool playOnceThisSession = true;
+
+    private bool _fired = false;              // 이미 발화했는지
+    private Collider _col;
 
 #if UNITY_EDITOR
     void OnValidate()
     {
-        if (timeline)
-            timeline.playOnAwake = false; // 에디터에서 자동재생 방지
+        if (timeline) timeline.playOnAwake = false;
     }
 #endif
 
     void Awake()
     {
+        _col = GetComponent<Collider>();
         if (timeline)
+        {
             timeline.playOnAwake = false;
+            // 루프 방지
+            timeline.extrapolationMode = DirectorWrapMode.None; // 끝나면 정지
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // ① 플레이어만 반응
         if (!other.CompareTag(playerTag)) return;
+        if (playOnceThisSession && _fired) return;
 
-        // ② 한 세션(플레이 모드) 내에서 한 번만 재생
-        if (_playedThisSession) return;
+        _fired = true;
 
-        _playedThisSession = true;
+        // 재진입 물리적으로 차단 (가장 확실함)
+        if (_col) _col.enabled = false;
 
-        CinemachineBrain.SetActive(true);
-
-        // ③ 컷씬 재생
         if (timeline)
         {
             timeline.time = 0;
-
             timeline.stopped += OnCutsceneStopped;
             timeline.Play();
         }
 
-        // ④ 다시 안 나오게 스크립트 끄기 (씬 리로드 전까지만 유지)
-        enabled = false;
+        if (playOnceThisSession) enabled = false; // 선택: 스크립트 자체도 비활성화
     }
 
     private void OnCutsceneStopped(PlayableDirector director)
     {
-        if (CinemachineBrain != null)
-        {
-            // Cinemachine Brain 비활성화
-            //playerCam.SetActive(true);
-            CinemachineBrain.SetActive(false);
-            //movePlayerInput.enabled = true;
-        }
+        if (timeline) timeline.stopped -= OnCutsceneStopped;
+        // 필요 시 여기서 플레이어 입력/카메라 복구
     }
 
     void OnDestroy()
     {
-        // 이벤트에서 제거 (메모리 누수 방지)
-        if (timeline != null)
-        {
-            timeline.stopped -= OnCutsceneStopped;
-        }
+        if (timeline) timeline.stopped -= OnCutsceneStopped;
     }
 }

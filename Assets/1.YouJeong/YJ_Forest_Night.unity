@@ -148032,6 +148032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeline: {fileID: 278731016}
   playerTag: Player
+  playOnceThisSession: 1
 --- !u!1001 &1465594893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160911,6 +160912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeline: {fileID: 278731016}
   playerTag: Player
+  playOnceThisSession: 1
 --- !u!65 &1584426310
 BoxCollider:
   m_ObjectHideFlags: 0
