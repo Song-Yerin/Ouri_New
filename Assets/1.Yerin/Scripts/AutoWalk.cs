@@ -117,6 +117,3 @@ public class AutoWalk : MonoBehaviour
         isWalking = true; // 감속 과정은 계속 Update에서 처리
     }
 }
-
-
-
