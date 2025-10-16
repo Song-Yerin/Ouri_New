@@ -1,19 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class WorkAreaToggle : MonoBehaviour
 {
     [Header("Target")]
-    [SerializeField] RectTransform workArea;      // ¿ì»ó´Ü WorkArea ·çÆ® (ÆĞ³Î)
-    [SerializeField] CanvasGroup cg;            // ¾øÀ¸¸é ÀÚµ¿À¸·Î ºÙÀÓ
-    [SerializeField] bool startHidden = true;     // ½ÃÀÛÀ» ¼û±ä »óÅÂ·Î
+    [SerializeField] RectTransform workArea;      // ìš°ìƒë‹¨ WorkArea ë£¨íŠ¸ (íŒ¨ë„)
+    [SerializeField] CanvasGroup cg;              // ì—†ìœ¼ë©´ ìë™ìœ¼ë¡œ ë¶™ì„
+    [SerializeField] bool startHidden = true;     // ì‹œì‘ì„ ìˆ¨ê¸´ ìƒíƒœë¡œ
     [SerializeField] bool bringToFrontOnOpen = true;
 
     [Header("Anim")]
-    [SerializeField] float fadeDuration = 0.15f;  // ¿­°í/´İ±â ½Ã°£
+    [SerializeField] float fadeDuration = 0.15f;  // ì—´ê³ /ë‹«ê¸° ì‹œê°„
     [SerializeField] Vector3 openScale = Vector3.one;
     [SerializeField] Vector3 closeScale = new Vector3(0.96f, 0.96f, 1f);
+
+    [Header("Hotkey")]
+    [SerializeField] bool enableHotkey = true;    // í‚¤ë³´ë“œ í† ê¸€ í—ˆìš©
+    [SerializeField] KeyCode toggleKey = KeyCode.V; // ê¸°ë³¸ Ví‚¤
 
     Coroutine routine;
 
@@ -21,7 +24,7 @@ public class WorkAreaToggle : MonoBehaviour
     {
         if (!workArea)
         {
-            // °°Àº ¿ÀºêÁ§Æ®¿¡ ºÙ¿´´Ù¸é ÀÚµ¿ Å½»ö ½Ãµµ
+            // ê°™ì€ ì˜¤ë¸Œì íŠ¸ì— ë¶™ì˜€ë‹¤ë©´ ìë™ íƒìƒ‰ ì‹œë„
             workArea = GetComponent<RectTransform>();
         }
     }
@@ -30,7 +33,7 @@ public class WorkAreaToggle : MonoBehaviour
     {
         if (!workArea)
         {
-            Debug.LogError("[WorkAreaToggle] workArea ·¹ÆÛ·±½º°¡ ºñ¾îÀÖ¾î¿ä.");
+            Debug.LogError("[WorkAreaToggle] workArea ë ˆí¼ëŸ°ìŠ¤ê°€ ë¹„ì–´ìˆì–´ìš”.");
             enabled = false;
             return;
         }
@@ -45,7 +48,16 @@ public class WorkAreaToggle : MonoBehaviour
         else SetShownImmediate();
     }
 
-    // Button.onClick ¿¡ ÀÌ°É ¿¬°áÇÏ¸é µÊ
+    void Update()
+    {
+        // ğŸ”¹ V í‚¤ë¡œ í† ê¸€
+        if (enableHotkey && Input.GetKeyDown(toggleKey))
+        {
+            Toggle();
+        }
+    }
+
+    // Button.onClick ì— ì´ê±¸ ì—°ê²°í•˜ë©´ ë¨
     public void Toggle()
     {
         if (IsOpen()) Close();
@@ -60,6 +72,10 @@ public class WorkAreaToggle : MonoBehaviour
         cg.interactable = true;
         cg.blocksRaycasts = true;
         routine = StartCoroutine(FadeTo(1f, openScale));
+
+        // ğŸ”¹ ì»¤ì„œ í‘œì‹œ (UIStateì— ë°˜ì˜)
+        if (!UIState.CursorShown)
+            UIState.PushCursor();
     }
 
     public void Close()
@@ -68,9 +84,13 @@ public class WorkAreaToggle : MonoBehaviour
         cg.interactable = false;
         cg.blocksRaycasts = false;
         routine = StartCoroutine(FadeTo(0f, closeScale, deactivateAtEnd: true));
+
+        // ğŸ”¹ ì»¤ì„œ ìˆ¨ê¸°ê¸°
+        if (UIState.CursorShown)
+            UIState.PopCursor();
     }
 
-    public void EnsureOpen() { if (!IsOpen()) Open(); } // ´Ù¸¥ ½ºÅ©¸³Æ®¿¡¼­ È£Ãâ¿ë
+    public void EnsureOpen() { if (!IsOpen()) Open(); } // ë‹¤ë¥¸ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ í˜¸ì¶œìš©
 
     bool IsOpen() => workArea.gameObject.activeSelf && cg.alpha > 0.5f;
 
@@ -87,7 +107,7 @@ public class WorkAreaToggle : MonoBehaviour
         workArea.localScale = openScale;
     }
 
-    IEnumerator FadeTo(float targetAlpha, Vector3 targetScale, bool deactivateAtEnd = false)
+    System.Collections.IEnumerator FadeTo(float targetAlpha, Vector3 targetScale, bool deactivateAtEnd = false)
     {
         float t = 0f;
         float startA = cg.alpha;
