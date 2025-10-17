@@ -59,7 +59,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Yerin/Scenes/EndingScene.unity
     guid: 696a5a2a86efde34a93495dd9803272e
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Inseo/Scenes/gravity/gravity.unity
     guid: 0afaaafece5e94d428dd52e267920a4f
+  - enabled: 0
+    path: Assets/1.Inseo/Scenes/Practice/Practice_mobile.unity
+    guid: 50155924cc346a14c8d959ad988c27bf
   m_configObjects: {}

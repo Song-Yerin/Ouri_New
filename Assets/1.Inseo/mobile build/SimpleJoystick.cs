@@ -13,6 +13,7 @@ public class SimpleJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
     // 외부에서 읽을 최종 입력 값 (-1 ~ 1)
     public Vector2 InputDirection { get; private set; }
+    [SerializeField] private Vector2 debug_InputDirection;
 
     private Vector2 startPosition;
 
@@ -39,6 +40,7 @@ public class SimpleJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
         // 핸들 위치 업데이트
         joystickHandle.anchoredPosition = clampedVector;
+        debug_InputDirection = InputDirection;
 
         // 실제 플레이어가 사용할 -1 ~ 1 사이의 값으로 정규화
         InputDirection = clampedVector / joystickRadius;

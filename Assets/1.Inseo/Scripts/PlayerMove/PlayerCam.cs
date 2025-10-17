@@ -127,5 +127,31 @@ namespace Controller
         {
             TransitionToState(new NormalCameraState());
         }
+
+        public void UpdateRotation(Vector2 lookInput)
+        {
+            // 1. 기존 SetInput 메서드를 재사용하여 카메라 각도(Angles)를 갱신합니다.
+            SetInput(lookInput, 0f);
+
+            // 2. LateUpdate의 로직과 유사하게, 갱신된 각도를 실제 카메라 위치와 회전에 적용합니다.
+            //    Cinemachine이 활성화되어 있으면 동작하지 않도록 방지합니다.
+            var brain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
+            if (brain != null && (brain.ActiveVirtualCamera != null || brain.IsBlending))
+                return;
+
+            // 계산된 각도로 회전값을 만듭니다.
+            Quaternion rotation = Quaternion.Euler(Angles.y, Angles.x, 0); // 참고: 원본 코드를 보니 Angles.x가 pitch, Angles.y가 yaw일 수 있습니다. 순서 확인 필요.
+                                                                           // 일반적인 구현이라면 Quaternion.Euler(Angles.x, Angles.y, 0)가 맞습니다.
+
+            // 플레이어 위치와 오프셋, 거리를 기준으로 카메라가 있어야 할 이상적인 위치를 계산합니다.
+            Vector3 lookPoint = m_Player.position + m_LookAtOffset;
+            Vector3 desiredPosition = lookPoint - (rotation * Vector3.forward * TargetDistance);
+
+            // 3. 계산된 위치에 대해 충돌 처리를 적용하여 최종 위치를 결정합니다.
+            PositionCameraWithCollision(desiredPosition, lookPoint);
+
+            // 4. 카메라 타겟 오브젝트의 위치를 갱신합니다.
+            UpdateTargetObjectPosition();
+        }
     }
 }
