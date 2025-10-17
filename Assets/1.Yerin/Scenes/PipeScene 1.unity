@@ -4370,7 +4370,7 @@ MonoBehaviour:
   sfxEveryNChars: 1
   defaultPlayerName: "\uB2E4\uB78C\uC950"
   defaultNPCName: NPC
-  defaultNPCSprite: {fileID: 21300000, guid: 7a962e1c5dbaa1b4d897f8120c131052, type: 3}
+  defaultNPCSprite: {fileID: 21300000, guid: abae89b78a0f9e3489017ff32f2313d7, type: 3}
 --- !u!4 &99876124
 Transform:
   m_ObjectHideFlags: 0
@@ -26142,8 +26142,8 @@ MonoBehaviour:
   interactionCount: 0
   alias: 
   overrideStartNode: -1
-  defaultNPCSprite: {fileID: 21300000, guid: 7a962e1c5dbaa1b4d897f8120c131052, type: 3}
-  defaultPlayerSprite: {fileID: 21300000, guid: 2dbe48afe15180f4a97701166bb27bad,
+  defaultNPCSprite: {fileID: 21300000, guid: abae89b78a0f9e3489017ff32f2313d7, type: 3}
+  defaultPlayerSprite: {fileID: 21300000, guid: 488cb12e35291b24cb8fbf78c9dc7bda,
     type: 3}
   targetManager: {fileID: 0}
   preload: 0
@@ -34385,7 +34385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -261, y: 95.19998}
+  m_AnchoredPosition: {x: -261, y: 80}
   m_SizeDelta: {x: 65, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &901236998
@@ -60292,7 +60292,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -261, y: 95.2}
+  m_AnchoredPosition: {x: -261, y: 80}
   m_SizeDelta: {x: 65, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1500572335
