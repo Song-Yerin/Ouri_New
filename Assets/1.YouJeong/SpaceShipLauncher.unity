@@ -18492,6 +18492,7 @@ MonoBehaviour:
   timeline: {fileID: 1747618396}
   playerTag: Player
   playOnceThisSession: 1
+  cinemachineBrain: {fileID: 1344759024}
 --- !u!65 &179556000
 BoxCollider:
   m_ObjectHideFlags: 0

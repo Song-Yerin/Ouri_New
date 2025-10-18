@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(Collider))]
@@ -15,6 +16,8 @@ public class CutsceneTrigger : MonoBehaviour
 
     private bool _fired = false;              // 이미 발화했는지
     private Collider _col;
+
+    public GameObject cinemachineBrain;
 
 #if UNITY_EDITOR
     void OnValidate()
@@ -47,6 +50,7 @@ public class CutsceneTrigger : MonoBehaviour
         if (timeline)
         {
             timeline.time = 0;
+            cinemachineBrain.SetActive(true);
             timeline.stopped += OnCutsceneStopped;
             timeline.Play();
         }
@@ -57,7 +61,7 @@ public class CutsceneTrigger : MonoBehaviour
     private void OnCutsceneStopped(PlayableDirector director)
     {
         if (timeline) timeline.stopped -= OnCutsceneStopped;
-        // 필요 시 여기서 플레이어 입력/카메라 복구
+        cinemachineBrain.SetActive(false);
     }
 
     void OnDestroy()

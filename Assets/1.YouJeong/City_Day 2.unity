@@ -16249,7 +16249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Path: {fileID: 941037854}
-  m_PathPosition: -0.45
+  m_PathPosition: 4
   m_PositionUnits: 0
   m_PathOffset: {x: 0, y: 0, z: 0}
   m_XDamping: 0
@@ -214689,7 +214689,6 @@ Transform:
   - {fileID: 1792136735}
   - {fileID: 551564665}
   - {fileID: 797768250}
-  - {fileID: 1712498783}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &843179437
@@ -452226,37 +452225,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1712097558}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1712498782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1712498783}
-  m_Layer: 0
-  m_Name: Lane1_4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1712498783
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712498782}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -143.17, y: 0.1, z: -725.07}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 843086296}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1712708122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -477015,7 +476983,7 @@ MonoBehaviour:
   - path: {fileID: 906173132}
     speedRange: {x: 10, y: 10}
     prefabOptions:
-    - tag: 3
+    - tag: 0
       weight: 0
     - tag: 4
       weight: 0
@@ -477026,7 +476994,7 @@ MonoBehaviour:
   - path: {fileID: 1792136736}
     speedRange: {x: 10, y: 10}
     prefabOptions:
-    - tag: 4
+    - tag: 5
       weight: 0
     - tag: 3
       weight: 0
@@ -477037,9 +477005,9 @@ MonoBehaviour:
   - path: {fileID: 551564666}
     speedRange: {x: 10, y: 10}
     prefabOptions:
-    - tag: 4
+    - tag: 2
       weight: 0
-    - tag: 3
+    - tag: 5
       weight: 0
     spawnInterval: 5
     maxActiveOnLane: 10
