@@ -32,6 +32,11 @@ public class PlayerSoundController : MonoBehaviour
     /// <param name="index">soundClips 배열의 인덱스 번호</param>
     public void PlaySoundByIndex(int index)
     {
+        if (oneShotAudioSource == null)
+        {
+            return;
+        }
+
         if (index < 0 || index >= soundClips.Length)
         {
             Debug.LogWarning("PlayerSoundController: 잘못된 사운드 인덱스입니다: " + index);
