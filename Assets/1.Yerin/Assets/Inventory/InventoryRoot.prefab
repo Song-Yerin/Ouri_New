@@ -511,6 +511,8 @@ MonoBehaviour:
   fadeDuration: 0.15
   openScale: {x: 1, y: 1, z: 1}
   closeScale: {x: 0.96, y: 0.96, z: 1}
+  enableHotkey: 1
+  toggleKey: 118
 --- !u!1 &3737843849940522019
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +655,13 @@ MonoBehaviour:
   spawnZone: {fileID: 3161494860389335809}
   spawnCols: 2
   spawnPadding: 10
+  alwaysHideInScenes:
+  - waterway
+  - City_Day 2
+  - CityGliding 2
+  signalScenes:
+  - CityGliding 2
+  defaultHideDuration: 0.25
 --- !u!225 &2377650000901740460
 CanvasGroup:
   m_ObjectHideFlags: 0

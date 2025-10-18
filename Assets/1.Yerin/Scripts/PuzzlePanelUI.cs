@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PuzzlePanelUI : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class PuzzlePanelUI : MonoBehaviour
     [Header("Data/Prefab")]
     [SerializeField] PaperData currentData;    // 현재 퍼즐 대상
     [SerializeField] GameObject piecePrefab;   // Image + CanvasGroup + PaperPieceMeta + (드래그 스크립트)
-                                               
+
     [SerializeField] bool fitToArea = false;                 // true면 fitArea에 맞춤, false면 maxSize 기준
     [SerializeField] RectTransform fitArea;
     [SerializeField] Vector2 maxSize = new Vector2(320, 320);
@@ -30,11 +32,24 @@ public class PuzzlePanelUI : MonoBehaviour
     [SerializeField] int spawnCols = 2;         // 스폰 그리드 가로 칸 수
     [SerializeField] float spawnPadding = 10f;  // 스폰 존 안쪽 여백
 
+    // add: 씬/시그널 제어
+    [Header("Scene Visibility Rules")]
+    [SerializeField] string[] alwaysHideInScenes;   // 이 씬들에선 완성종이 영구 숨김(기본값)
+    [SerializeField] string[] signalScenes;         // 시그널로 제어 허용할 씬들(비우면 모든 씬)
+
+    [Header("Signal Hide Options")]
+    [SerializeField] float defaultHideDuration = 0.25f;
+    // add 끝
 
     bool subscribed;
 
+    // ★ 추가: 퍼즐(지도) 완성 여부 플래그
+    bool _isCompleted = false;
+
     void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         if (slots == null || slots.Length == 0)
             slots = GetComponentsInChildren<DropSlot>(true);
 
@@ -45,16 +60,91 @@ public class PuzzlePanelUI : MonoBehaviour
         }
 
         if (currentData != null) RefreshAll();
+
+        // 씬 규칙 즉시 적용(완성 전이면 무조건 숨김)
+        ApplySceneRuleImmediate();
     }
 
     void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         if (subscribed && PaperInventory.Instance != null)
         {
             PaperInventory.Instance.OnPieceAdded -= OnPieceAdded;
             subscribed = false;
         }
     }
+
+    // add: 씬 로드시 규칙 재적용
+    void OnSceneLoaded(Scene s, LoadSceneMode m) => ApplySceneRuleImmediate();
+
+    void ApplySceneRuleImmediate()
+    {
+        if (!completedPreview) return;
+
+        // ★ 완성 전이면 무조건 숨김(처음부터 보이는 현상 방지)
+        if (!_isCompleted)
+        {
+            completedPreview.gameObject.SetActive(false);
+            return;
+        }
+
+        string cur = SceneManager.GetActiveScene().name;
+        bool alwaysHide = alwaysHideInScenes != null && System.Array.Exists(alwaysHideInScenes, n => n == cur);
+
+        // 기본 규칙: 항상숨김 씬이면 끄고, 아니면 켠다(스프라이트가 있을 때)
+        completedPreview.gameObject.SetActive(!alwaysHide && completedPreview.sprite != null);
+    }
+
+    bool IsSignalAllowedHere()
+    {
+        if (signalScenes == null || signalScenes.Length == 0) return true;
+        string cur = SceneManager.GetActiveScene().name;
+        return System.Array.Exists(signalScenes, n => n == cur);
+    }
+
+    // ----------------- 타임라인 시그널에서 호출할 공개 API -----------------
+
+    Coroutine _hideCo;
+
+    /// <summary>시그널 한 번으로 '잠깐 숨김' (지정 시간)</summary>
+    public void HideCompletedPaperOnce() => HideCompletedPaperFor(defaultHideDuration);
+
+    public void HideCompletedPaperFor(float duration)
+    {
+        if (!IsSignalAllowedHere()) return;
+        if (!completedPreview || !completedPreview.gameObject.activeInHierarchy) return;
+        if (_hideCo != null) StopCoroutine(_hideCo);
+        _hideCo = StartCoroutine(CoHideFor(duration));
+    }
+
+    /// <summary>시그널로 숨김 시작/끝을 따로 제어</summary>
+    public void BeginHideCompletedPaper()
+    {
+        if (!IsSignalAllowedHere()) return;
+        if (!completedPreview) return;
+        if (!_isCompleted) return; // 완성 전이면 무시
+        completedPreview.gameObject.SetActive(false);
+    }
+
+    public void EndHideCompletedPaper()
+    {
+        if (!completedPreview) return;
+        if (!_isCompleted) return; // ★ 완성 전이면 켤 수 없음
+
+        // ★ C안: 항상숨김 씬이라도 시그널이 오면 '무조건' 켠다
+        completedPreview.gameObject.SetActive(true);
+    }
+
+    IEnumerator CoHideFor(float duration)
+    {
+        completedPreview.gameObject.SetActive(false);
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, duration));
+        EndHideCompletedPaper();
+        _hideCo = null;
+    }
+    // add 끝
 
     void OnPieceAdded(PaperData d, int idx)
     {
@@ -86,6 +176,10 @@ public class PuzzlePanelUI : MonoBehaviour
     public void RefreshAll()
     {
         if (!currentData || !piecePrefab || !workArea || !pieceContainer || !completedPreview) return;
+
+        // ★ 완성 상태 리셋 & 완성 프리뷰 숨김
+        _isCompleted = false;
+        completedPreview.gameObject.SetActive(false);
 
         ClearAllPiecesAndSlots(); // 겹침 방지
 
@@ -205,6 +299,7 @@ public class PuzzlePanelUI : MonoBehaviour
             }
         }
 
+        // 초기엔 항상 숨김(완성 전엔 절대 표시 금지)
         completedPreview.gameObject.SetActive(false);
     }
 
@@ -219,7 +314,7 @@ public class PuzzlePanelUI : MonoBehaviour
 
         var src = d.sprite;
         var tex = src.texture;
-        var r = src.rect; 
+        var r = src.rect;
         float w = Mathf.Floor(r.width / 2f);
         float h = Mathf.Floor(r.height / 2f);
         float ppu = src.pixelsPerUnit;
@@ -251,7 +346,6 @@ public class PuzzlePanelUI : MonoBehaviour
 
             if (!s.HasCorrectPiece())
             {
-                // 필요하면 디버깅:
                 // Debug.Log($"[PUZZLE] not correct: slot {s.acceptPieceIndex}");
                 return;
             }
@@ -272,11 +366,15 @@ public class PuzzlePanelUI : MonoBehaviour
             sp = currentData.extraSprites[0];
         if (!sp) return;
 
-        // 이미지 표시
+        // 완료 표시
         completedPreview.gameObject.SetActive(true);
         completedPreview.sprite = sp;
-        completedPreview.preserveAspect = preserveAspect;  // Image에도 preserveAspect가 있어요
+        completedPreview.preserveAspect = preserveAspect;
         completedPreview.SetNativeSize();
+
+        // ★ 완성 플래그 세팅 후 씬 규칙 적용
+        _isCompleted = true;
+        ApplySceneRuleImmediate();
 
         // ---- 크기 계산 ----
         var rt = completedPreview.rectTransform;
@@ -285,12 +383,10 @@ public class PuzzlePanelUI : MonoBehaviour
         Vector2 targetBox;
         if (fitToArea && fitArea != null)
         {
-            // fitArea의 내부 크기(패딩 반영)
             var r = fitArea.rect;
             targetBox = new Vector2(Mathf.Max(0, r.width - areaPadding.x * 2f),
                                     Mathf.Max(0, r.height - areaPadding.y * 2f));
 
-            // 위치도 fitArea 중심에 맞추고 싶다면:
             Vector3 worldCenter = fitArea.TransformPoint(r.center);
             Vector3 localCenter = ((RectTransform)completedPreview.transform.parent).InverseTransformPoint(worldCenter);
             rt.anchoredPosition = (Vector2)localCenter;
@@ -313,11 +409,5 @@ public class PuzzlePanelUI : MonoBehaviour
         {
             rt.sizeDelta = targetBox; // 비율 무시하고 딱 채우기
         }
-
-        // 필요하면 살짝 연출
-        // rt.localScale = Vector3.one * 0.95f;  // 시작 스케일
-        // StartCoroutine(Bounce(rt));           // 바운스 연출 등
     }
-
 }
-
