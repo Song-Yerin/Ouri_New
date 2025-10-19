@@ -29,9 +29,9 @@ public class FootstepManager : MonoBehaviour
         if (GetComponent<AudioSource>() != null)
         {
             audioSource = GetComponent<AudioSource>();
+            // 오디오 소스가 꺼져 있으면 소리가 나지 않으므로, Play On Awake는 비활성화합니다.
+            audioSource.playOnAwake = false;
         }
-        // 오디오 소스가 꺼져 있으면 소리가 나지 않으므로, Play On Awake는 비활성화합니다.
-        audioSource.playOnAwake = false;
     }
 
     // 이 함수를 애니메이션 이벤트에서 호출할 것입니다.
