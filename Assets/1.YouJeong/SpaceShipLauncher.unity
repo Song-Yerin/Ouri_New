@@ -66698,7 +66698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.1714
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.z
@@ -81520,7 +81520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.1097239
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.z
@@ -81568,7 +81568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86748,8 +86748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0877ff32c142047a09550321e9bb90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityMultiplier: -0.1
-  effectDuration: 30
+  gravityMultiplier: 0.1
+  effectDuration: 10
   resetDurationOnReEnter: 1
 --- !u!64 &743684276
 MeshCollider:
@@ -99154,7 +99154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityMultiplier: -0.1
-  effectDuration: 30
+  effectDuration: 15
   resetDurationOnReEnter: 1
 --- !u!64 &858067344
 MeshCollider:
@@ -108298,7 +108298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.2146
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.z
@@ -140131,7 +140131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.107
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.z
@@ -152804,7 +152804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityMultiplier: -0.1
-  effectDuration: 30
+  effectDuration: 10
   resetDurationOnReEnter: 1
 --- !u!64 &1293982350
 MeshCollider:
@@ -193025,7 +193025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.6974
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalScale.z
@@ -193037,11 +193037,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0775514
+      value: 3.2881
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 87.166855
+      value: 87.1669
       objectReference: {fileID: 0}
     - target: {fileID: 428906, guid: a5cd29a93d7ae2d488fa0376d0d08462, type: 3}
       propertyPath: m_LocalRotation.w
