@@ -36716,8 +36716,6 @@ MonoBehaviour:
   - {fileID: 171474980}
   - {fileID: 1153030544}
   - {fileID: 282751459}
-  - {fileID: 1291599094}
-  - {fileID: 34313426}
   samplesPerSegment: 64
 --- !u!1001 &150397031
 PrefabInstance:
@@ -141697,14 +141695,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 1053345128}
   - {fileID: 510313769}
   - {fileID: 1088680374}
   - {fileID: 1085576717}
   - {fileID: 1892288788}
   - {fileID: 1066150779}
   - {fileID: 416485512}
-  - {fileID: 343185242}
   samplesPerSegment: 64
 --- !u!1001 &552247628
 PrefabInstance:
@@ -179855,14 +179851,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 582815779}
   - {fileID: 2091774154}
   - {fileID: 36102812}
   - {fileID: 1024730000}
   - {fileID: 2011306000}
   - {fileID: 1692046723}
   - {fileID: 1365082553}
-  - {fileID: 1305073736}
   samplesPerSegment: 64
 --- !u!1 &705873825
 GameObject:
@@ -202021,14 +202015,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 1907682711}
   - {fileID: 463417969}
   - {fileID: 1119608419}
   - {fileID: 337203175}
   - {fileID: 78499225}
   - {fileID: 1177807309}
   - {fileID: 693106545}
-  - {fileID: 106094302}
   samplesPerSegment: 64
 --- !u!1001 &798016426
 PrefabInstance:
@@ -291108,7 +291100,7 @@ Transform:
   m_GameObject: {fileID: 1053345127}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -18.73, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -313800,8 +313792,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 664594831}
-  - {fileID: 543104200}
   - {fileID: 727078097}
   - {fileID: 485487225}
   - {fileID: 1596657144}
@@ -325403,8 +325393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 235896033}
-  - {fileID: 1252659773}
   - {fileID: 801269683}
   - {fileID: 1340134303}
   - {fileID: 1872068240}
@@ -396310,8 +396298,6 @@ MonoBehaviour:
   - {fileID: 1398277237}
   - {fileID: 1868601660}
   - {fileID: 1122479015}
-  - {fileID: 802539869}
-  - {fileID: 1019024247}
   samplesPerSegment: 64
 --- !u!1001 &1468026304
 PrefabInstance:
@@ -471863,7 +471849,6 @@ MonoBehaviour:
   - {fileID: 401125398}
   - {fileID: 215949273}
   - {fileID: 749481016}
-  - {fileID: 1232508280}
   samplesPerSegment: 8
 --- !u!1001 &1792431245
 PrefabInstance:
@@ -479041,27 +479026,27 @@ MonoBehaviour:
   - tag: 0
     prefab: {fileID: 7448978434561828454, guid: 7a854b49c315684428ce0ac9ca75b363,
       type: 3}
-    initialSize: 15
+    initialSize: 18
     expandable: 0
   - tag: 4
     prefab: {fileID: 1627040689373637532, guid: 7921a26b4bad4414ab23c922002812a7,
       type: 3}
-    initialSize: 15
+    initialSize: 18
     expandable: 0
   - tag: 1
     prefab: {fileID: 7163389983190078362, guid: 062d0d73122f7694999c656f580abb21,
       type: 3}
-    initialSize: 15
+    initialSize: 18
     expandable: 0
   - tag: 2
     prefab: {fileID: 3891183066976726858, guid: db85732ec3820934399d5d7c2d6ec5b8,
       type: 3}
-    initialSize: 15
+    initialSize: 18
     expandable: 0
   - tag: 5
     prefab: {fileID: 6444100973234053922, guid: 8614ea2ad1226eb489ca363c4f92dfa7,
       type: 3}
-    initialSize: 15
+    initialSize: 18
     expandable: 0
 --- !u!1 &1822499782
 GameObject:
@@ -512968,7 +512953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 1245499281}
   - {fileID: 1851214139}
   - {fileID: 491867981}
   - {fileID: 1464949426}
