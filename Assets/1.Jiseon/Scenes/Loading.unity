@@ -93283,8 +93283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SPACE \uD0A4\uB97C \uB20C\uB7EC \uD558\uB298\uC744 \uD65C\uACF5\uD560
-    \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 195cfaa38cd696f4d81a6ee8c70e9c9a, type: 2}
   m_sharedMaterial: {fileID: -2034502576362269662, guid: 195cfaa38cd696f4d81a6ee8c70e9c9a,
@@ -188137,7 +188136,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressSlider: {fileID: 1437126165}
   progressText: {fileID: 1345631654}
+  tipText: {fileID: 978269574}
   fakeTotalLoadTime: 2
+  loadingTips:
+  - "SPACE \uD0A4\uB97C \uB20C\uB7EC \uD558\uB298\uC744 \uD65C\uACF5\uD560 \uC218
+    \uC788\uC2B5\uB2C8\uB2E4."
+  - "V \uD0A4\uB97C \uB20C\uB7EC \uC778\uBCA4\uD1A0\uB9AC\uB97C \uC5F4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  - "ESC \uD0A4\uB97C \uB20C\uB7EC \uC124\uC815\uCC3D\uC744 \uC5F4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  - "\uB0A0\uB2E4\uB78C\uC950\uAC00 \uB0A0 \uC900\uBE44\uB97C \uD558\uACE0 \uC788\uC5B4\uC694..."
 --- !u!4 &1917388601
 Transform:
   m_ObjectHideFlags: 0

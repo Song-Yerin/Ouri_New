@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.16389982, g: 0.2479233, b: 0.35507783, a: 1}
+  m_IndirectSpecularColor: {r: 0.16359751, g: 0.24719231, b: 0.35398707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5079,7 +5079,6 @@ GameObject:
   m_Component:
   - component: {fileID: 46094762}
   - component: {fileID: 46094761}
-  - component: {fileID: 46094760}
   - component: {fileID: 46094759}
   - component: {fileID: 46094758}
   - component: {fileID: 46094763}
@@ -5168,14 +5167,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &46094760
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 46094757}
-  m_Enabled: 1
 --- !u!20 &46094761
 Camera:
   m_ObjectHideFlags: 0
@@ -73850,7 +73841,7 @@ Transform:
   m_GameObject: {fileID: 721344138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.20548522, z: -0, w: 0.9786603}
-  m_LocalPosition: {x: 510.27, y: 15.82, z: 430.28}
+  m_LocalPosition: {x: 524.74, y: 15.82, z: 423.92}
   m_LocalScale: {x: 1, y: 4.7307, z: 7.0435}
   m_ConstrainProportionsScale: 0
   m_Children: []

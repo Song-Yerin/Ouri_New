@@ -26,4 +26,10 @@ public class jumpMap2 : MonoBehaviour
             PlayableDirector.Play();
         }
     }
+
+    public void play_cutscene()
+    {
+        camObject.SetActive(true);
+        PlayableDirector.Play();
+    }
 }
