@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 플레이어의 동작 사운드를 관리하고, Animation Event를 통해 사운드를 재생합니다.
 /// </summary>
-[RequireComponent(typeof(AudioSource))]
+//[RequireComponent(typeof(AudioSource))]
 public class PlayerSoundController : MonoBehaviour
 {
     [Header("사운드 클립 목록")]
@@ -21,7 +21,8 @@ public class PlayerSoundController : MonoBehaviour
     void Awake()
     {
         // 이 게임 오브젝트에 붙어있는 기본 AudioSource를 가져옵니다.
-        oneShotAudioSource = GetComponent<AudioSource>();
+        if (GetComponent<AudioSource>() != null)
+            oneShotAudioSource = GetComponent<AudioSource>();
     }
 
     // --- Animation Event에서 직접 호출할 함수들 ---

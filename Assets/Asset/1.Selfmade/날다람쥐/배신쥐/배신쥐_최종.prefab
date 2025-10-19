@@ -3489,6 +3489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6386355099127422353}
   - component: {fileID: 8266846632862161819}
+  - component: {fileID: 845760451785931118}
   m_Layer: 0
   m_Name: "\uBC30\uC2E0\uC950_\uCD5C\uC885"
   m_TagString: Untagged
@@ -3547,6 +3548,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &845760451785931118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8141051770618412415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d59208066cd65a4589affa1afc70da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClips: []
+  loopingAudioSource: {fileID: 0}
 --- !u!1 &8142583888934803382
 GameObject:
   m_ObjectHideFlags: 0
