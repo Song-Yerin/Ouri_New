@@ -100967,18 +100967,20 @@ MonoBehaviour:
   - sceneName: waterway
     clip: {fileID: 8300000, guid: 84756df1e4e9bc841a5ad6c3117678e3, type: 3}
   - sceneName: City_Day 2
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 3331c0b442ad3724a854746535547eaf, type: 3}
   - sceneName: CityGliding2
     clip: {fileID: 0}
   - sceneName: City_Day 4
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: df07929332558a642ae27a6fcdc7bbff, type: 3}
+  - sceneName: City_Day 3
+    clip: {fileID: 8300000, guid: 53b0095f8c637e14089d17bf7428a61a, type: 3}
   - sceneName: SpaceShipLauncher
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 949450e97e7762e44888ab3b79eb9156, type: 3}
   cutsceneClips:
   - sceneName: StartSceneTimeline
     clip: {fileID: 8300000, guid: 7fc42194b019ade4f8a5aba2f6eadde6, type: 3}
-  - sceneName: StartSceneTimeline
-    clip: {fileID: 8300000, guid: 7fc42194b019ade4f8a5aba2f6eadde6, type: 3}
+  - sceneName: Virtual Camera1Timeline
+    clip: {fileID: 8300000, guid: 610a770fb023d424e924b6dab234eb8c, type: 3}
   smoothTransition: 1
   fadeTime: 0.5
 --- !u!1001 &1033587263

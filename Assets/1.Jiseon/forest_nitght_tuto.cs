@@ -9,7 +9,7 @@ public class forest_nitght_tuto : MonoBehaviour
     public KeyHintSpawner keyHintSpawner;
     void Start()
     {
-        keyHintSpawner.ShowKeyHint("E", "E 키를 눌러 대화를 시작하세요.", 13f);
+        keyHintSpawner.ShowKeyHint("E", "E 키를 눌러 대화를 시작하세요.", 3f);
     }
 
 }

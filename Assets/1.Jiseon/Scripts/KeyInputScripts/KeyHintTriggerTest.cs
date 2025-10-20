@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class KeyHintTriggerTest : MonoBehaviour
 {
-    public string keyName = "F";
+    [Header("힌트 설정")]
+    public string keyName = "F";              // 비워두면 텍스트만 중앙 표시
     public string message = "상호작용 (F)";
-    public float hintDuration = 0f; // 0이면 수동 제거 필요
+    public float hintDuration = 0f;           // 0이면 수동 제거 필요
 
     private bool hintShown = false;
 
@@ -12,7 +13,15 @@ public class KeyHintTriggerTest : MonoBehaviour
     {
         if (other.CompareTag("Player") && !hintShown)
         {
-            KeyHintSpawner.Instance.ShowWorldKeyHint(keyName, message, transform, hintDuration);
+            if (string.IsNullOrEmpty(keyName))
+            {
+                KeyHintSpawner.Instance.ShowCenterHint(message, hintDuration);
+            }
+            else
+            {
+                KeyHintSpawner.Instance.ShowWorldKeyHint(keyName, message, transform, hintDuration);
+            }
+
             hintShown = true;
         }
     }
@@ -21,7 +30,11 @@ public class KeyHintTriggerTest : MonoBehaviour
     {
         if (other.CompareTag("Player") && hintShown)
         {
-            KeyHintSpawner.Instance.RemoveHintByKey(keyName);
+            if (string.IsNullOrEmpty(keyName))
+                KeyHintSpawner.Instance.RemoveCenterHint();
+            else
+                KeyHintSpawner.Instance.RemoveHintByKey(keyName);
+
             hintShown = false;
         }
     }

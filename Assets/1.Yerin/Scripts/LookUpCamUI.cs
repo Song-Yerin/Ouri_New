@@ -16,10 +16,22 @@ public class LookUpCamUI : MonoBehaviour
 
     void Awake()
     {
-        btnLookUp.onClick.AddListener(() => SetLookUp(true));
-        btnRestore.onClick.AddListener(() => SetLookUp(false));
+        if (btnLookUp) btnLookUp.onClick.AddListener(() => SetLookUp(true));
+        if (btnRestore) btnRestore.onClick.AddListener(() => SetLookUp(false));
         SetLookUp(false); // 기본 OFF
         HideUI();
+    }
+
+    void Update()
+    {
+        // 화살표 키 입력으로 제어
+        if (zoneUI && zoneUI.interactable)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                SetLookUp(true);
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+                SetLookUp(false);
+        }
     }
 
     // 존 트리거에서 호출
@@ -45,11 +57,10 @@ public class LookUpCamUI : MonoBehaviour
 
         if (on)
         {
-            // 존이 넘겨준 뷰포인트가 있으면 그 자리로
             if (_currentViewPoint)
                 lookUpCam.transform.SetPositionAndRotation(_currentViewPoint.position, _currentViewPoint.rotation);
 
-            lookUpCam.m_Lens.FieldOfView = 60f; // (선택) FOV 절대값 통일
+            lookUpCam.m_Lens.FieldOfView = 60f;
             lookUpCam.gameObject.SetActive(true);
 
             if (btnLookUp) btnLookUp.gameObject.SetActive(false);
@@ -67,13 +78,16 @@ public class LookUpCamUI : MonoBehaviour
     private void ShowUI()
     {
         if (!zoneUI) return;
-        zoneUI.alpha = 1; zoneUI.interactable = true; zoneUI.blocksRaycasts = true;
+        zoneUI.alpha = 1;
+        zoneUI.interactable = true;
+        zoneUI.blocksRaycasts = true;
     }
 
     private void HideUI()
     {
         if (!zoneUI) return;
-        zoneUI.alpha = 0; zoneUI.interactable = false; zoneUI.blocksRaycasts = false;
+        zoneUI.alpha = 0;
+        zoneUI.interactable = false;
+        zoneUI.blocksRaycasts = false;
     }
 }
-

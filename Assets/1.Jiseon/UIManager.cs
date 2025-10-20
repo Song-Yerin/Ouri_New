@@ -187,14 +187,46 @@ public class UIManager : MonoBehaviour
             settingsWindow.SetActive(true);
             if (closeButton != null) closeButton.SetActive(true);
             if (settingsButton != null) settingsButton.SetActive(false);
-            return;
+        }
+        else
+        {
+            bool isActive = settingsWindow.activeSelf;
+            settingsWindow.SetActive(!isActive);
+            if (settingsButton != null) settingsButton.SetActive(isActive);
+            if (closeButton != null) closeButton.SetActive(!isActive);
         }
 
-        bool isActive = settingsWindow.activeSelf;
-        settingsWindow.SetActive(!isActive);
-        if (settingsButton != null) settingsButton.SetActive(isActive);
-        if (closeButton != null) closeButton.SetActive(!isActive);
+        // ===================================================
+        // [추가] 설정창 켜질 때 클릭 가능하게 만드는 부분
+        // ===================================================
+        bool nowActive = settingsWindow.activeSelf;
+
+        if (nowActive)
+        {
+            // 커서 표시 + 잠금 해제
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            // EventSystem이 비활성 상태면 다시 켜기
+            var evt = UnityEngine.EventSystems.EventSystem.current;
+            if (evt == null)
+            {
+                Debug.LogWarning("EventSystem이 없어 새로 생성합니다.");
+                GameObject go = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
+            }
+            else if (!evt.enabled)
+            {
+                evt.enabled = true;
+            }
+        }
+        else
+        {
+            // 설정창 닫으면 커서 다시 잠그기 (FPS 게임일 경우)
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
+
 
     public void CloseSettingsWindow()
     {
