@@ -100971,7 +100971,7 @@ MonoBehaviour:
   - sceneName: CityGliding2
     clip: {fileID: 0}
   - sceneName: City_Day 4
-    clip: {fileID: 8300000, guid: df07929332558a642ae27a6fcdc7bbff, type: 3}
+    clip: {fileID: 0}
   - sceneName: City_Day 3
     clip: {fileID: 8300000, guid: 53b0095f8c637e14089d17bf7428a61a, type: 3}
   - sceneName: SpaceShipLauncher
