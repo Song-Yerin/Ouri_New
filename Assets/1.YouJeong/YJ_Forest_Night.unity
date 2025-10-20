@@ -105509,7 +105509,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 4
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 1866780349}
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60.000004
@@ -105538,7 +105538,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046170598}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0182408, y: -0.32860094, z: 0.007850777, w: -0.94426006}
+  m_LocalRotation: {x: 0.11097231, y: 0.44130534, z: -0.05510209, w: 0.8887624}
   m_LocalPosition: {x: 488.9181, y: 14.244165, z: 148.95032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -148628,6 +148628,7 @@ MonoBehaviour:
   playerTag: Player
   playOnceThisSession: 1
   cinemachineBrain: {fileID: 0}
+  autoFindBrainIfNull: 1
 --- !u!1001 &1465594893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161509,6 +161510,7 @@ MonoBehaviour:
   playerTag: Player
   playOnceThisSession: 1
   cinemachineBrain: {fileID: 0}
+  autoFindBrainIfNull: 1
 --- !u!65 &1584426310
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -161956,7 +161958,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 4
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 1866780349}
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60.000004
@@ -161985,7 +161987,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1590640523}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13602698, y: -0.33903277, z: 0.05107424, w: -0.92948633}
+  m_LocalRotation: {x: 0.23927736, y: 0.6057958, z: -0.1978801, w: 0.7325307}
   m_LocalPosition: {x: 492.77713, y: 14.708981, z: 154.13406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -192301,6 +192303,12 @@ Transform:
 --- !u!95 &1866780348 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6901963856866541540, guid: bee2bce2854d0e54894cf174ae93bde7,
+    type: 3}
+  m_PrefabInstance: {fileID: 758968203163396323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1866780349 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7031817736253150919, guid: bee2bce2854d0e54894cf174ae93bde7,
     type: 3}
   m_PrefabInstance: {fileID: 758968203163396323}
   m_PrefabAsset: {fileID: 0}

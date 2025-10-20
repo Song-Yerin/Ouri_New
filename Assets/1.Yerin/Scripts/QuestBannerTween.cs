@@ -16,6 +16,11 @@ public class QuestBannerTween : MonoBehaviour
     [SerializeField] private float enterY = 0f;
     [SerializeField] private float offscreenTopY = 600f;
     [SerializeField] private float offscreenBottomY = -600f;
+
+    [SerializeField] private float offscreenRightX = 800f;
+    [SerializeField] private float offscreenLeftX = -800f;
+    [SerializeField] private float centerX = 0f;
+
     [SerializeField] private float inDuration = 0.6f;
     [SerializeField] private float holdDuration = 1.4f;
     [SerializeField] private float outDuration = 0.6f;
@@ -67,7 +72,7 @@ public class QuestBannerTween : MonoBehaviour
         if (seq != null && seq.IsActive()) seq.Kill();
 
         canvasGroup.alpha = 0f;
-        banner.anchoredPosition = new Vector2(0f, offscreenTopY);
+        /*banner.anchoredPosition = new Vector2(0f, offscreenTopY);
 
         seq = DOTween.Sequence();
         seq.Append(canvasGroup.DOFade(1f, inDuration));
@@ -83,7 +88,25 @@ public class QuestBannerTween : MonoBehaviour
         {
             banner.anchoredPosition = new Vector2(0f, offscreenTopY);
             isPlaying = false;
+        });*/
+        banner.anchoredPosition = new Vector2(offscreenRightX, 0f);
+
+        seq = DOTween.Sequence();
+        seq.Append(canvasGroup.DOFade(1f, inDuration));
+        seq.Join(banner.DOAnchorPosX(centerX, inDuration).SetEase(inEase)
+            .OnStart(() => { PlaySfx(whooshIn); PlaySfx(showJingle); })
+        );
+        seq.AppendInterval(holdDuration);
+        seq.Append(canvasGroup.DOFade(0f, outDuration));
+        seq.Join(banner.DOAnchorPosX(offscreenLeftX, outDuration).SetEase(outEase)
+            .OnStart(() => PlaySfx(whooshOut))
+        );
+        seq.OnComplete(() =>
+        {
+            banner.anchoredPosition = new Vector2(offscreenRightX, 0f);
+            isPlaying = false;
         });
+
     }
 
     void Reset()
