@@ -23,12 +23,33 @@ public class FadeOut : MonoBehaviour
                  .OnComplete(() => onComplete?.Invoke());
     }
 
+    public void FadeIn(System.Action onComplete = null)
+    {
+        Debug.Log("FadeIn Start");
+        fadeImage.DOFade(0f, fadeDuration)
+                 .SetEase(fadeEase)
+                 .OnStart(() => fadeImage.raycastTarget = true) // 페이드 중 클릭 막기
+                 .OnComplete(() =>
+                 {
+                     fadeImage.raycastTarget = false; // 페이드 완료되면 클릭 허용
+                     onComplete?.Invoke();
+                 });
+    }
+
     public void startFade()
     {
         Fade(() => {
             Debug.Log("FadeOut Complete");
             // 여기서 씬 로딩
             SceneManager.LoadScene("SpaceShipLauncher");
+        });
+
+    }
+
+    public void startFadein()
+    {
+        FadeIn(() => {
+            Debug.Log("FadeIn Complete");
         });
 
     }
