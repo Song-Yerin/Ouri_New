@@ -100975,7 +100975,7 @@ MonoBehaviour:
   - sceneName: City_Day 3
     clip: {fileID: 8300000, guid: 53b0095f8c637e14089d17bf7428a61a, type: 3}
   - sceneName: SpaceShipLauncher
-    clip: {fileID: 8300000, guid: 949450e97e7762e44888ab3b79eb9156, type: 3}
+    clip: {fileID: 8300000, guid: 3e05898ef699aad42a85fced623ebc8e, type: 3}
   cutsceneClips:
   - sceneName: StartSceneTimeline
     clip: {fileID: 8300000, guid: 7fc42194b019ade4f8a5aba2f6eadde6, type: 3}

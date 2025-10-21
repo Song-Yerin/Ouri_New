@@ -123,12 +123,21 @@ public class SoundManager : MonoBehaviour
         SceneMusicPair pair = FindClip(cutsceneName, cutsceneClips);
         if (pair == null)
         {
-            Debug.Log($"[SoundManager] 컷씬 '{cutsceneName}'에 대응되는 음악 없음");
+            Debug.Log($"[SoundManager] 컷씬 '{cutsceneName}'에 대응되는 음악 없음 → 현재 BGM 유지");
+            return;
+        }
+
+        // 현재 씬의 BGM이 설정되어 있을 때만 컷씬으로 전환
+        SceneMusicPair currentScenePair = FindClip(currentSceneName, bgmClips);
+        if (currentScenePair == null || bgmSource.clip == null)
+        {
+            Debug.Log($"[SoundManager] 현재 씬 '{currentSceneName}'에 BGM이 없으므로 컷씬 음악으로 전환하지 않음");
             return;
         }
 
         StartCoroutine(SwitchToCutscene(pair.clip));
     }
+
 
     private void OnCutsceneEnd(PlayableDirector dir)
     {
