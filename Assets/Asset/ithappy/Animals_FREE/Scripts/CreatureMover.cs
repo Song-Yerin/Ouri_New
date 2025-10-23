@@ -43,7 +43,7 @@ namespace Controller
         [SerializeField] private string m_JumpTriggerID = "Jump";
         [SerializeField] private string m_IsGlidingID = "IsGliding";
         [SerializeField] private string m_IsGroundedID = "IsGrounded";
-        [SerializeField] private string m_IsClimbingID = "IsClimbing";
+        [SerializeField] private string m_IsHangingID = "IsHanging";
         [SerializeField] private LookWeight m_LookWeight = new(1f, 0.3f, 0.7f, 1f);
 
         [Header("IK Settings")]
@@ -74,8 +74,9 @@ namespace Controller
         public bool IsGliding => m_IsGlide;
         private bool _glideToggleRequested = false;
         private bool m_IsSliding = false;
-        private bool m_IsClimbing = false;
-        private Vector3 m_ClimbWallNormal;
+        private bool m_IsHanging = false;
+        public bool IsHanging => m_IsHanging;
+        private Vector3 m_HangWallNormal;
         private Vector3 m_SmoothedLookAtPos;
         private Vector2 _currentAnimAxis;
         private bool _isActuallyGrounded;
@@ -87,7 +88,6 @@ namespace Controller
         {
             m_WalkSpeed = Mathf.Max(m_WalkSpeed, 0f);
             m_RunSpeed = Mathf.Max(m_RunSpeed, m_WalkSpeed);
-            // --- [핵심 수정] --- 불필요한 인자들을 모두 제거합니다.
             m_Movement?.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_JumpHeight, m_GlideGravity);
         }
 
@@ -102,9 +102,8 @@ namespace Controller
                 m_PlayerCamera = Camera.main.GetComponent<PlayerCam>();
             }
 
-            m_Animation = new AnimationHandler(m_Animator, m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsClimbingID);
+            m_Animation = new AnimationHandler(m_Animator, m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsHangingID);
             m_Movement = new MovementHandler(m_Controller, m_Transform, m_Animation, m_GroundLayer, m_GroundCheckDistance, m_GroundCheckRadius);
-            // --- [핵심 수정] --- 불필요한 인자들을 모두 제거합니다.
             m_Movement.SetNormalMovementStats(m_WalkSpeed, m_RunSpeed, m_JumpHeight, m_GlideGravity);
 
             m_SmoothedLookAtPos = m_Transform.position + m_Transform.forward;
@@ -112,7 +111,7 @@ namespace Controller
 
         private void Update()
         {
-            if (m_IsMoving && !m_IsSliding && !m_IsClimbing)
+            if (m_IsMoving && !m_IsSliding && !m_IsHanging)
             {
                 if (_currentMoveDirection.sqrMagnitude > 0.01f)
                 {
@@ -134,7 +133,7 @@ namespace Controller
                 m_GlidePitchVelY = 0f;
             }
 
-            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsClimbing, m_IsSliding, _gravityMultiplier, out _currentAnimAxis, out _currentMoveDirection);
+            m_Movement.Move(Time.fixedDeltaTime, m_Axis, m_IsRun, _jumpRequested, m_IsMoving, m_IsGlide, m_IsSliding, m_IsHanging, _gravityMultiplier, out _currentAnimAxis, out _currentMoveDirection);
             _isActuallyGrounded = m_Controller.isGrounded;
             _jumpRequested = false;
 
@@ -165,10 +164,9 @@ namespace Controller
             }
         }
 
-        #region 나머지 함수들 (수정 없음)
         private void LateUpdate()
         {
-            m_Animation.Animate(in _currentAnimAxis, m_IsRun ? 1f : 0f, _isActuallyGrounded, m_IsGlide, m_IsClimbing, Time.deltaTime);
+            m_Animation.Animate(in _currentAnimAxis, m_IsRun ? 1f : 0f, _isActuallyGrounded, m_IsGlide, m_IsHanging, Time.deltaTime);
             ApplyVisualRootBoneRotation();
             float smoothFactor = 1.0f - Mathf.Pow(0.5f, Time.deltaTime * m_IkSmoothSpeed);
             m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, smoothFactor);
@@ -176,7 +174,7 @@ namespace Controller
 
         private void OnAnimatorIK()
         {
-            if (!m_UseIk || m_IsSliding || m_IsClimbing) { m_Animator.SetLookAtWeight(0); return; }
+            if (!m_UseIk || m_IsSliding || m_IsHanging) { m_Animator.SetLookAtWeight(0); return; }
             m_Animation.AnimateIK(in m_SmoothedLookAtPos, m_LookWeight);
         }
 
@@ -202,7 +200,7 @@ namespace Controller
 
         public void StartNewSlideMode(Vector3 slideNormal, float friction, float gravityForce, float controlForce)
         {
-            if (m_IsClimbing) return;
+            if (m_IsHanging) return;
             m_IsSliding = true;
             m_Animation.SetSliding(true);
             m_Movement.EnterSlideState(slideNormal, friction, gravityForce, controlForce, m_Controller.velocity);
@@ -216,13 +214,13 @@ namespace Controller
             m_Movement.ExitSlideState();
         }
 
-        public void ResetKinetics(bool stopSlide = true, bool stopClimb = true, bool clearGlide = true)
+        public void ResetKinetics(bool stopSlide = true, bool stopHang = true, bool clearGlide = true)
         {
             _jumpRequested = false;
             m_IsMoving = false;
             if (clearGlide) { m_IsGlide = false; m_GlideBonusVelocity = Vector3.zero; m_GlidePitchVelY = 0f; }
             if (stopSlide && m_IsSliding) StopNewSlideMode();
-            if (stopClimb && m_IsClimbing) SetClimbMode(false, Vector3.zero);
+            if (stopHang && m_IsHanging) SetHangMode(false, Vector3.zero);
             m_Movement.ResetVelocities();
         }
 
@@ -272,27 +270,33 @@ namespace Controller
             m_PlayerCamera?.SetInput(mouseDelta, scroll);
             m_Target = target;
             m_IsRun = isRun;
-            if (m_IsClimbing || m_IsSliding) { m_Axis = axis; } else { m_Axis = axis; }
+            if (m_IsHanging || m_IsSliding) { m_Axis = axis; } else { m_Axis = axis; }
             if (m_Axis.sqrMagnitude < Mathf.Epsilon) { m_IsMoving = false; } else { m_IsMoving = true; }
         }
 
-        public void SetClimbMode(bool isClimbing, Vector3 wallNormal)
+        public void SetHangMode(bool isHanging, Vector3 wallNormal)
         {
-            if (isClimbing && m_IsSliding) StopNewSlideMode();
-            m_IsClimbing = isClimbing;
-            m_ClimbWallNormal = wallNormal;
-            m_Movement.SetClimbState(isClimbing, wallNormal);
-            m_Animation.SetClimbing(isClimbing);
-            if (isClimbing) { m_IsRun = false; m_IsMoving = false; }
+            m_IsHanging = isHanging;
+            m_HangWallNormal = wallNormal;
+            m_Animation.SetHanging(isHanging);
+
+            if (isHanging)
+            {
+                m_IsRun = false;
+                m_IsMoving = false;
+                m_IsGlide = false;
+                m_Movement.ResetVelocities();
+            }
         }
 
         private void ApplyVisualRootBoneRotation()
         {
             if (m_RootBone == null) return;
             Quaternion targetLocalRotation;
-            if (m_IsClimbing)
+
+            if (m_IsHanging)
             {
-                Quaternion targetWorldRotation = Quaternion.LookRotation(Vector3.down, -m_ClimbWallNormal);
+                Quaternion targetWorldRotation = Quaternion.LookRotation(Vector3.down, -m_HangWallNormal);
                 targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
             }
             else if (m_IsSliding)
@@ -303,29 +307,22 @@ namespace Controller
                 targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
             }
             else { targetLocalRotation = Quaternion.identity; }
+
             m_RootBone.localRotation = Quaternion.Slerp(m_RootBone.localRotation, targetLocalRotation, Time.deltaTime * m_VisualRotationSpeed);
         }
 
         public void ApplyTemporaryGravityMultiplier(float multiplier, float duration)
         {
-            // 이전에 실행 중이던 중력 변경 코루틴이 있다면 중지
             StopCoroutine("TemporaryGravityCoroutine");
             StartCoroutine(TemporaryGravityCoroutine(multiplier, duration));
         }
 
         private IEnumerator TemporaryGravityCoroutine(float multiplier, float duration)
         {
-            // 새로운 중력 계수 적용
             _gravityMultiplier = multiplier;
-
-            // 지정된 시간만큼 대기
             yield return new WaitForSeconds(duration);
-
-            // 원래 중력 계수(1)로 복원
             _gravityMultiplier = 1f;
         }
-
-        #endregion
     }
 
     [Serializable]
@@ -344,18 +341,12 @@ namespace Controller
         private float _groundCheckDistance, _groundCheckRadius;
         private float _walkSpeed, _runSpeed, _jumpHeight, _glideGravity;
         private Vector3 _normalMoveVelocity;
-        private bool _isClimbing;
-        private Vector3 _climbNormal;
         private Vector3 _slideVelocity, _slideNormal;
         private float _slideFriction, _slideGravityForce, _slideControlForce;
-
         private float m_JumpMoveSpeed = 25f;
-
-        // --- [추가] 경사 미끄러짐 관련 변수 ---
-        private float slopeCheckDistance = 1.5f; // 경사 체크 레이캐스트 거리
-        private float slopeLimit = 80f; // 이 각도 이상이면 미끄러짐 (CharacterController의 slopeLimit과 동일하게 설정 권장)
-        private float slopeSlideSpeed = 8f; // 경사를 미끄러지는 속도
-        private bool isAutoSliding = false; // 현재 자동 미끄러짐 중인지 여부
+        private float slopeLimit = 80f;
+        private float slopeSlideSpeed = 8f;
+        private bool isAutoSliding = false;
 
         public MovementHandler(CharacterController c, Transform t, AnimationHandler a, LayerMask gl, float dist, float radius)
         {
@@ -365,8 +356,6 @@ namespace Controller
             _groundLayer = gl;
             _groundCheckDistance = dist;
             _groundCheckRadius = radius;
-
-            // CharacterController의 slopeLimit 값을 가져와 일치시키는 것이 좋습니다
             slopeLimit = _controller.slopeLimit;
         }
 
@@ -386,12 +375,6 @@ namespace Controller
             _glideGravity = g;
         }
 
-        public void SetClimbState(bool isClimbing, Vector3 normal)
-        {
-            _isClimbing = isClimbing;
-            _climbNormal = normal;
-        }
-
         public void EnterSlideState(Vector3 normal, float friction, float gravity, float control, Vector3 initialVelocity)
         {
             _slideNormal = normal;
@@ -403,11 +386,8 @@ namespace Controller
 
         public void ExitSlideState() { }
         public Vector3 GetCurrentSlideNormal() => _slideNormal;
-
-        // --- [추가] 외부에서 자동 미끄러짐 상태를 확인할 수 있는 프로퍼티 ---
         public bool IsAutoSliding => isAutoSliding;
 
-        // --- [수정] 경사면이 너무 가파른지 검사하는 함수 ---
         private bool CheckSteepSlope(out Vector3 slideDirection, out float slopeAngle)
         {
             slideDirection = Vector3.zero;
@@ -419,18 +399,17 @@ namespace Controller
             Vector3 origin = _transform.position + _controller.center;
             float maxDistance = _controller.height / 2f;
 
-            // [핵심!] 발 주변 8방향으로 Raycast (360도 커버)
             Vector3[] directions = new Vector3[]
             {
-        Vector3.down,                                    // 바로 아래
-        Vector3.down + _transform.forward * 0.5f,        // 앞쪽 아래
-        Vector3.down - _transform.forward * 0.5f,        // 뒤쪽 아래
-        Vector3.down + _transform.right * 0.5f,          // 오른쪽 아래
-        Vector3.down - _transform.right * 0.5f,          // 왼쪽 아래
-        Vector3.down + (_transform.forward + _transform.right) * 0.3f,   // 대각선 1
-        Vector3.down + (_transform.forward - _transform.right) * 0.3f,   // 대각선 2
-        Vector3.down + (-_transform.forward + _transform.right) * 0.3f,  // 대각선 3
-        Vector3.down + (-_transform.forward - _transform.right) * 0.3f   // 대각선 4
+                Vector3.down,
+                Vector3.down + _transform.forward * 0.3f,
+                Vector3.down - _transform.forward * 0.3f,
+                Vector3.down + _transform.right * 0.3f,
+                Vector3.down - _transform.right * 0.3f,
+                Vector3.down + (_transform.forward + _transform.right) * 0.2f,
+                Vector3.down + (_transform.forward - _transform.right) * 0.2f,
+                Vector3.down + (-_transform.forward + _transform.right) * 0.2f,
+                Vector3.down + (-_transform.forward - _transform.right) * 0.2f
             };
 
             float steepestAngle = 0f;
@@ -445,17 +424,21 @@ namespace Controller
                 {
                     float angle = Vector3.Angle(hit.normal, Vector3.up);
 
-                    // 디버그 라인
+                    if (angle > 85f)
+                    {
+                        Debug.DrawLine(origin, hit.point, Color.blue);
+                        continue;
+                    }
+
                     Debug.DrawLine(origin, hit.point, angle > slopeLimit ? Color.red : Color.green);
 
-                    // 가장 가파른 각도 저장
                     if (angle > steepestAngle)
                     {
                         steepestAngle = angle;
                         steepestNormal = hit.normal;
                     }
 
-                    if (angle > slopeLimit)
+                    if (angle > slopeLimit && angle < 85f)
                     {
                         foundSteepSlope = true;
                     }
@@ -466,94 +449,41 @@ namespace Controller
             {
                 slopeAngle = steepestAngle;
                 slideDirection = Vector3.ProjectOnPlane(Vector3.down, steepestNormal).normalized;
-
-                // 미끄러짐 방향 시각화
                 Debug.DrawRay(_transform.position, slideDirection * 3f, Color.yellow);
-
                 return true;
             }
 
             return false;
         }
 
-
-        // --- [추가] 구체를 그리는 헬퍼 함수 ---
-        /// <summary>
-        /// Scene 뷰에서 구체를 와이어프레임으로 그립니다.
-        /// </summary>
-        private void DrawDebugSphere(Vector3 center, float radius, Color color, int segments = 16)
-        {
-            // 수평 원 (XZ 평면)
-            DrawDebugCircle(center, radius, Vector3.up, color, segments);
-
-            // 수직 원 1 (XY 평면)
-            DrawDebugCircle(center, radius, Vector3.forward, color, segments);
-
-            // 수직 원 2 (YZ 평면)
-            DrawDebugCircle(center, radius, Vector3.right, color, segments);
-        }
-
-        /// <summary>
-        /// Scene 뷰에서 원을 그립니다.
-        /// </summary>
-        private void DrawDebugCircle(Vector3 center, float radius, Vector3 normal, Color color, int segments)
-        {
-            Vector3 from = Vector3.zero;
-            float angleStep = 360f / segments;
-
-            // 원의 첫 번째 점 계산
-            Vector3 perpendicular = Vector3.Cross(normal, Vector3.up);
-            if (perpendicular.sqrMagnitude < 0.001f)
-            {
-                perpendicular = Vector3.Cross(normal, Vector3.forward);
-            }
-            perpendicular.Normalize();
-
-            from = center + perpendicular * radius;
-
-            for (int i = 0; i <= segments; i++)
-            {
-                float angle = angleStep * i;
-                Vector3 direction = Quaternion.AngleAxis(angle, normal) * perpendicular;
-                Vector3 to = center + direction * radius;
-
-                Debug.DrawLine(from, to, color);
-                from = to;
-            }
-        }
-
-        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isClimbing, bool isSliding, float gravityMultiplier, out Vector2 animAxis, out Vector3 moveDirection)
+        public void Move(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, bool isSliding, bool isHanging, float gravityMultiplier, out Vector2 animAxis, out Vector3 moveDirection)
         {
             moveDirection = Vector3.zero;
 
             if (isSliding)
                 SlideMove(deltaTime, axis, out animAxis);
-            else if (isClimbing)
-                ClimbMove(deltaTime, axis, isRun, out animAxis);
+            else if (isHanging)
+                HangMove(deltaTime, out animAxis);
             else
                 NormalMove(deltaTime, axis, isRun, isJump, isMoving, isGlide, gravityMultiplier, out animAxis, out moveDirection);
         }
 
+        private void HangMove(float deltaTime, out Vector2 animAxis)
+        {
+            _controller.Move(Vector3.zero);
+            animAxis = Vector2.zero;
+        }
+
         private void NormalMove(float deltaTime, Vector2 axis, bool isRun, bool isJump, bool isMoving, bool isGlide, float gravityMultiplier, out Vector2 animAxis, out Vector3 moveDirection)
         {
-            // --- [수정] 경사 미끄러짐 체크 (isGrounded 조건 제거) ---
             bool onSteepSlope = CheckSteepSlope(out Vector3 slopeSlideDir, out float slopeAngle);
             bool effectivelyGrounded = _controller.isGrounded && !onSteepSlope;
-            // [디버깅] 경사 상태 확인
-            if (onSteepSlope)
-            {
-                Debug.Log($"[NormalMove] 가파른 경사 위 - 각도: {slopeAngle:F1}도, 미끄러짐 방향: {slopeSlideDir}");
-            }
+            isAutoSliding = onSteepSlope;
 
-            // [수정] isGrounded 체크 없이 경사만으로 판단
-            isAutoSliding = onSteepSlope; 
-
-            // 지면 체크 및 점프 처리
             if (effectivelyGrounded)
             {
                 _normalMoveVelocity.y = -2f;
 
-                // 가파른 경사면에서는 점프 불가
                 if (isJump && !isAutoSliding)
                 {
                     _normalMoveVelocity.y = Mathf.Sqrt(_jumpHeight * -2f * Physics.gravity.y);
@@ -562,7 +492,6 @@ namespace Controller
             }
             else
             {
-                // 공중에서의 중력 적용
                 float currentGravity = Physics.gravity.y * gravityMultiplier;
 
                 if (isGlide && _normalMoveVelocity.y < 0)
@@ -571,7 +500,6 @@ namespace Controller
                     _normalMoveVelocity.y += currentGravity * deltaTime;
             }
 
-            // 카메라 기준 이동 방향 계산
             Transform camTransform = Camera.main.transform;
             Vector3 forward = camTransform.forward;
             forward.y = 0;
@@ -581,56 +509,33 @@ namespace Controller
             right.Normalize();
             moveDirection = (axis.x * right + axis.y * forward).normalized;
 
-            // --- [수정] 경사 미끄러짐 적용 ---
             if (isAutoSliding)
             {
-                Debug.Log($"[NormalMove] 미끄러짐 적용 중! 방향: {slopeSlideDir}");
-
-                // 플레이어 입력과 미끄러짐 방향 혼합
                 float playerControlStrength = 0.3f;
                 Vector3 playerInfluence = moveDirection * (isRun ? _runSpeed : _walkSpeed) * playerControlStrength;
                 Vector3 slopeInfluence = slopeSlideDir * slopeSlideSpeed;
-
                 Vector3 combinedHorizontal = playerInfluence + slopeInfluence;
-
-                // [디버깅] 최종 이동 벡터 출력
-                Debug.Log($"[NormalMove] 최종 이동 벡터: {combinedHorizontal}");
 
                 _normalMoveVelocity.x = combinedHorizontal.x;
                 _normalMoveVelocity.z = combinedHorizontal.z;
 
-                // [중요] Y축 속도는 경사를 따라 내려가도록 설정
-                // 경사면을 따라 미끄러질 때는 약간의 하향 속도가 필요합니다
                 if (_controller.isGrounded)
                 {
-                    _normalMoveVelocity.y = -5f; // 경사를 따라 내려가는 힘
+                    _normalMoveVelocity.y = -5f;
                 }
             }
             else
             {
-                // 일반 이동 (기존 로직)
                 float targetSpeed = isJump ? m_JumpMoveSpeed : (isRun ? _runSpeed : _walkSpeed);
                 Vector3 horizontalMove = moveDirection * targetSpeed;
                 _normalMoveVelocity.x = horizontalMove.x;
                 _normalMoveVelocity.z = horizontalMove.z;
             }
 
-            // 최종 이동 적용
             _controller.Move(_normalMoveVelocity * deltaTime);
 
-            // 애니메이션용 축 계산
             animAxis = new Vector2(Vector3.Dot(moveDirection, _transform.right), Vector3.Dot(moveDirection, _transform.forward));
             animAxis *= (isRun ? 2f : 1f);
-        }
-
-        private void ClimbMove(float deltaTime, Vector2 axis, bool isRun, out Vector2 animAxis)
-        {
-            Vector3 wallUp = Vector3.up;
-            Vector3 wallRight = Vector3.Cross(_climbNormal, wallUp).normalized;
-            float currentSpeed = isRun ? _runSpeed : _walkSpeed;
-            Vector3 movement = (wallUp * axis.y + wallRight * axis.x) * currentSpeed;
-            _controller.Move(movement * deltaTime);
-            animAxis = axis;
         }
 
         private void SlideMove(float deltaTime, Vector2 axis, out Vector2 animAxis)
@@ -679,26 +584,37 @@ namespace Controller
     public class AnimationHandler
     {
         private readonly Animator m_Animator;
-        private readonly string m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsClimbingID;
+        private readonly string m_VerticalID, m_StateID, m_SlidingID, m_JumpTriggerID, m_IsGroundedID, m_IsGlidingID, m_IsHangingID;
         private readonly float k_InputFlow = 4.5f;
         private float m_FlowState; private Vector2 m_FlowAxis;
-        public AnimationHandler(Animator animator, string verticalID, string stateID, string slidingID, string jumpTriggerID, string isGroundedID, string isGlidingID, string isClimbingID)
+
+        public AnimationHandler(Animator animator, string verticalID, string stateID, string slidingID, string jumpTriggerID, string isGroundedID, string isGlidingID, string isHangingID)
         {
-            m_Animator = animator; m_VerticalID = verticalID; m_StateID = stateID; m_SlidingID = slidingID; m_JumpTriggerID = jumpTriggerID; m_IsGroundedID = isGroundedID; m_IsGlidingID = isGlidingID; m_IsClimbingID = isClimbingID;
+            m_Animator = animator;
+            m_VerticalID = verticalID;
+            m_StateID = stateID;
+            m_SlidingID = slidingID;
+            m_JumpTriggerID = jumpTriggerID;
+            m_IsGroundedID = isGroundedID;
+            m_IsGlidingID = isGlidingID;
+            m_IsHangingID = isHangingID;
         }
+
         public void SetSliding(bool isSliding) { m_Animator.SetBool(m_SlidingID, isSliding); }
-        public void SetClimbing(bool isClimbing) { m_Animator.SetBool(m_IsClimbingID, isClimbing); }
+        public void SetHanging(bool isHanging) { m_Animator.SetBool(m_IsHangingID, isHanging); }
         public void TriggerJump() { m_Animator.SetTrigger(m_JumpTriggerID); }
-        public void Animate(in Vector2 axis, float state, bool isGrounded, bool isGliding, bool isClimbing, float deltaTime)
+
+        public void Animate(in Vector2 axis, float state, bool isGrounded, bool isGliding, bool isHanging, float deltaTime)
         {
             m_Animator.SetBool(m_IsGroundedID, isGrounded);
             m_Animator.SetBool(m_IsGlidingID, isGliding);
-            m_Animator.SetBool(m_IsClimbingID, isClimbing);
+            m_Animator.SetBool(m_IsHangingID, isHanging);
             m_FlowAxis = Vector2.Lerp(m_FlowAxis, axis, k_InputFlow * deltaTime);
             m_FlowState = Mathf.Lerp(m_FlowState, state, k_InputFlow * deltaTime);
             m_Animator.SetFloat(m_VerticalID, m_FlowAxis.magnitude);
             m_Animator.SetFloat(m_StateID, m_FlowState);
         }
+
         public void AnimateIK(in Vector3 target, in LookWeight lookWeight)
         {
             m_Animator.SetLookAtPosition(target);

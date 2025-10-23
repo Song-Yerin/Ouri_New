@@ -1,195 +1,289 @@
-using Controller;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-public class WallHang : MonoBehaviour
+namespace Controller
 {
-    [Header("벽 감지 설정")]
-    [Tooltip("벽을 감지할 LayerMask")]
-    public LayerMask wallLayer;
-    [Tooltip("벽 감지 거리")]
-    public float wallCheckDistance = 1f;
-    [Tooltip("벽 감지를 시작할 플레이어 앞쪽 오프셋")]
-    public Vector3 wallCheckOffset = new Vector3(0, 1f, 0);
-
-    [Header("매달리기 입력")]
-    [Tooltip("매달리기 활성화 키")]
-    public KeyCode hangKey = KeyCode.F;
-
-    [Header("점프 설정")]
-    [Tooltip("매달린 상태에서 점프할 때 사용할 키")]
-    public KeyCode jumpKey = KeyCode.Space;
-    [Tooltip("점프 대체 입력 버튼 이름")]
-    public string jumpButtonName = "Jump";
-    [Tooltip("벽에서 점프할 때의 상승 속도")]
-    public float wallJumpUpwardForce = 10f;
-    [Tooltip("벽에서 점프할 때의 뒤쪽(벽 반대 방향) 속도")]
-    public float wallJumpBackwardForce = 5f;
-
-    [Header("애니메이션 설정")]
-    [Tooltip("플레이어의 Animator 컴포넌트")]
-    public Animator animator;
-    [Tooltip("매달림 상태를 제어할 Bool 파라미터 이름")]
-    public string hangParameterName = "IsHanging";
-
-    // 내부 상태 변수
-    private CharacterController controller;
-    private CreatureMover creatureMover;
-
-    private bool isHanging = false;
-    private bool canHangAgain = true;
-    private Vector3 hangPosition;
-    private Vector3 wallNormal;
-    private Vector3 jumpVelocity; // 점프 후 속도를 저장
-
-    private void Awake()
+    /// <summary>
+    /// 플레이어의 손 위치를 기준으로 벽 매달리기를 감지하는 컴포넌트
+    /// </summary>
+    public class WallHangDetector : MonoBehaviour
     {
-        controller = GetComponent<CharacterController>();
-        creatureMover = GetComponent<CreatureMover>();
+        [Header("Hand Positions")]
+        [Tooltip("왼손 Transform (애니메이터의 왼손 본 또는 수동 지정)")]
+        [SerializeField] private Transform leftHandTransform;
 
-        if (animator == null)
+        [Tooltip("오른손 Transform (애니메이터의 오른손 본 또는 수동 지정)")]
+        [SerializeField] private Transform rightHandTransform;
+
+        [Tooltip("손 Transform이 없을 경우 사용할 오프셋 (플레이어 중심 기준)")]
+        [SerializeField] private Vector3 handOffset = new Vector3(0, 1.5f, 0.5f);
+
+        [Header("Detection Settings")]
+        [SerializeField] private LayerMask wallLayer;
+        [SerializeField] private float detectionRadius = 0.3f;
+        [SerializeField] private float hangDistance = 0.6f;
+
+        [Header("Jump Settings")]
+        [SerializeField] private float jumpForce = 8f;
+
+        [Header("Cooldown")]
+        [Tooltip("매달린 후 다시 매달리기까지 필요한 쿨다운 (지면 착지 전까지)")]
+        [SerializeField] private bool requireGroundedToReset = true;
+
+        [Header("Visual")]
+        [SerializeField] private bool showVisualSphere = true;
+        [SerializeField] private Color detectionColor = new Color(0, 1, 0, 0.3f);
+        [SerializeField] private GameObject visualSphere;
+
+        [Header("Debug")]
+        [SerializeField] private bool showDebug = true;
+
+        private CreatureMover creatureMover;
+        private CharacterController controller;
+        private bool isHanging = false;
+        private bool hasHungThisJump = false; // [추가] 이번 점프에서 이미 매달렸는지
+        private Vector3 hangWallNormal;
+        private Vector3 hangPosition;
+
+        public bool IsHanging => isHanging;
+
+        private void Awake()
         {
-            animator = GetComponentInChildren<Animator>();
-        }
-    }
+            creatureMover = GetComponent<CreatureMover>();
+            controller = GetComponent<CharacterController>();
 
-    private void Update()
-    {
-        // 땅에 닿으면 재매달림 가능 상태로 초기화
-        if (controller.isGrounded && !canHangAgain)
-        {
-            canHangAgain = true;
-        }
-
-        // 매달리기 입력 감지
-        if (Input.GetKeyDown(hangKey) && !isHanging && canHangAgain)
-        {
-            TryHang();
-        }
-
-        // 매달린 상태에서 점프 입력 감지
-        if (isHanging)
-        {
-            bool jumpPressed = Input.GetKeyDown(jumpKey);
-
-            if (!jumpPressed && !string.IsNullOrEmpty(jumpButtonName))
+            // 손 Transform 자동 찾기
+            if (leftHandTransform == null || rightHandTransform == null)
             {
-                try
+                Animator animator = GetComponent<Animator>();
+                if (animator != null)
                 {
-                    jumpPressed = Input.GetButtonDown(jumpButtonName);
+                    leftHandTransform = animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                    rightHandTransform = animator.GetBoneTransform(HumanBodyBones.RightHand);
                 }
-                catch { }
             }
 
-            if (jumpPressed)
+            // 시각적 Sphere 생성
+            if (showVisualSphere && visualSphere == null)
             {
-                JumpFromWall();
+                CreateVisualSphere();
             }
-
-            // 매달린 상태 유지
-            MaintainHangPosition();
         }
-    }
 
-    private void FixedUpdate()
-    {
-        // 점프 직후에만 WallHang이 속도를 적용
-        if (!isHanging && jumpVelocity != Vector3.zero)
+        private void CreateVisualSphere()
         {
-            controller.Move(jumpVelocity * Time.fixedDeltaTime);
+            visualSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            visualSphere.name = "WallHangDetector_Visual";
+            visualSphere.transform.SetParent(transform);
 
-            // 중력 적용
-            jumpVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
+            // Collider 제거 (시각용이므로)
+            Destroy(visualSphere.GetComponent<Collider>());
 
-            // CreatureMover가 다시 제어권을 가져가면 속도 초기화
-            if (creatureMover != null && creatureMover.enabled)
+            // 반투명 Material 생성
+            Renderer renderer = visualSphere.GetComponent<Renderer>();
+            Material mat = new Material(Shader.Find("Standard"));
+            mat.SetFloat("_Mode", 3); // Transparent
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = 3000;
+            mat.color = detectionColor;
+            renderer.material = mat;
+
+            visualSphere.transform.localScale = Vector3.one * detectionRadius * 2f;
+        }
+
+        private void Update()
+        {
+            // [추가] 지면 착지 시 쿨다운 리셋
+            if (requireGroundedToReset && controller.isGrounded && !isHanging)
             {
-                jumpVelocity = Vector3.zero;
+                if (hasHungThisJump)
+                {
+                    hasHungThisJump = false;
+                    Debug.Log("[WallHang] 지면 착지 - 매달리기 쿨다운 리셋");
+                }
+            }
+
+            if (isHanging)
+            {
+                HandleHangingInput();
+            }
+            else
+            {
+                CheckWallHang();
+            }
+
+            // Visual Sphere 위치 업데이트
+            UpdateVisualSphere();
+        }
+
+        private void UpdateVisualSphere()
+        {
+            if (visualSphere != null && showVisualSphere)
+            {
+                Vector3 handPosition = GetHandPosition();
+                visualSphere.transform.position = handPosition;
+                visualSphere.SetActive(!isHanging && !controller.isGrounded); // 공중일 때만 표시
+            }
+            else if (visualSphere != null && !showVisualSphere)
+            {
+                visualSphere.SetActive(false);
             }
         }
-    }
 
-    private void TryHang()
-    {
-        Vector3 rayOrigin = transform.position + wallCheckOffset;
-        Vector3 rayDirection = transform.forward;
+        private void CheckWallHang()
+        {
+            if (controller.isGrounded)
+                return;
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, wallCheckDistance, wallLayer))
+            // 이미 이번 점프에서 매달렸으면 체크 안 함
+            if (hasHungThisJump)
+                return;
+
+            Vector3 handPosition = GetHandPosition();
+            Vector3 checkDirection = transform.forward;
+
+            if (Physics.SphereCast(handPosition, detectionRadius, checkDirection, out RaycastHit hit, hangDistance, wallLayer))
+            {
+                // [추가] Terrain 체크 - Terrain이면 무시
+                if (hit.collider.GetComponent<Terrain>() != null)
+                {
+                    if (showDebug)
+                    {
+                        Debug.DrawLine(handPosition, hit.point, Color.blue); // Terrain은 파란색으로 표시
+                        Debug.Log("[WallHang] Terrain 감지 - 매달리기 불가");
+                    }
+                    return;
+                }
+
+                float wallAngle = Vector3.Angle(hit.normal, Vector3.up);
+
+                if (wallAngle > 70f && wallAngle < 110f)
+                {
+                    TryStartHang(hit);
+                }
+            }
+
+            if (showDebug)
+            {
+                Debug.DrawLine(handPosition, handPosition + Vector3.up * 0.2f, Color.green);
+                Debug.DrawRay(handPosition, checkDirection * hangDistance, Color.yellow);
+            }
+        }
+        private Vector3 GetHandPosition()
+        {
+            if (leftHandTransform != null && rightHandTransform != null)
+            {
+                return (leftHandTransform.position + rightHandTransform.position) / 2f;
+            }
+            else
+            {
+                return transform.position + transform.rotation * handOffset;
+            }
+        }
+
+        private void TryStartHang(RaycastHit hit)
         {
             isHanging = true;
-            hangPosition = transform.position;
-            wallNormal = hit.normal;
+            hasHungThisJump = true; // [추가] 이번 점프에서 매달렸음 표시
+            hangWallNormal = hit.normal;
+            hangPosition = hit.point;
 
-            // CreatureMover 비활성화
             if (creatureMover != null)
             {
-                creatureMover.enabled = false;
+                creatureMover.SetHangMode(true, hangWallNormal);
+                creatureMover.ResetKinetics(true, false, true);
             }
 
-            // 매달림 애니메이션 재생
-            if (animator != null)
+            Debug.Log($"[WallHang] 매달리기 시작! (쿨다운 활성화)");
+        }
+
+        private void HandleHangingInput()
+        {
+            // 점프 키로 벽에서 점프
+            if (Input.GetButtonDown("Jump"))
             {
-                animator.SetBool(hangParameterName, true);
+                JumpOffWall();
+                return;
             }
 
-            Debug.Log("벽에 매달렸습니다!");
+            // 아래 방향키로 매달림 해제
+            float verticalInput = Input.GetAxis("Vertical");
+            if (verticalInput < -0.5f)
+            {
+                ReleaseHang();
+                return;
+            }
+
+            // 벽에 살짝 밀착
+            Vector3 stickToWallVelocity = -hangWallNormal * 0.1f;
+            controller.Move(stickToWallVelocity * Time.deltaTime);
+
+            if (showDebug)
+            {
+                Debug.DrawLine(hangPosition, hangPosition + hangWallNormal * 0.5f, Color.red);
+                Debug.DrawLine(transform.position, hangPosition, Color.cyan);
+            }
         }
-    }
 
-    private void MaintainHangPosition()
-    {
-        controller.Move(Vector3.zero);
-        transform.position = hangPosition;
-    }
-
-    /// <summary>
-    /// 벽에서 점프 - CreatureMover 대신 직접 속도 부여
-    /// </summary>
-    private void JumpFromWall()
-    {
-        isHanging = false;
-        canHangAgain = false;
-
-        // 매달림 애니메이션 종료
-        if (animator != null)
+        private void JumpOffWall()
         {
-            animator.SetBool(hangParameterName, false);
+            if (creatureMover == null)
+            {
+                ReleaseHang();
+                return;
+            }
+
+            ReleaseHang();
+
+            Vector3 jumpDirection = (hangWallNormal + Vector3.up * 1.5f).normalized;
+            Vector3 jumpVelocity = jumpDirection * jumpForce;
+
+            creatureMover.Bounce(jumpVelocity);
+
+            Debug.Log($"[WallHang] 벽 점프!");
         }
 
-        // --- [핵심 수정] 점프 속도를 직접 계산 ---
-        // 위쪽 방향 + 벽 반대 방향(wallNormal)으로 속도 부여
-        jumpVelocity = Vector3.up * wallJumpUpwardForce + wallNormal * wallJumpBackwardForce;
-
-        Debug.Log($"벽에서 점프! 초기 속도: {jumpVelocity}");
-
-        // 약간의 딜레이 후 CreatureMover 재활성화
-        StartCoroutine(ReenableCreatureMoverAfterDelay());
-    }
-
-    /// <summary>
-    /// 점프 직후 잠깐 대기한 후 CreatureMover 재활성화
-    /// </summary>
-    private System.Collections.IEnumerator ReenableCreatureMoverAfterDelay()
-    {
-        // 0.1초 대기 (점프 모션이 시작될 시간 확보)
-        yield return new WaitForSeconds(0.1f);
-
-        if (creatureMover != null)
+        private void ReleaseHang()
         {
-            creatureMover.enabled = true;
-            Debug.Log("CreatureMover 재활성화!");
+            isHanging = false;
+
+            if (creatureMover != null)
+            {
+                creatureMover.SetHangMode(false, Vector3.zero);
+            }
+
+            Debug.Log("[WallHang] 매달림 해제");
         }
-    }
 
-    public bool IsHanging => isHanging;
+        private void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying)
+            {
+                Vector3 previewHandPos = transform.position + transform.rotation * handOffset;
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(previewHandPos, detectionRadius);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(previewHandPos, previewHandPos + transform.forward * hangDistance);
+            }
+            else if (isHanging)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(hangPosition, 0.2f);
+                Gizmos.DrawLine(transform.position, hangPosition);
+            }
+        }
 
-    private void OnDrawGizmos()
-    {
-        Vector3 rayOrigin = transform.position + wallCheckOffset;
-        Vector3 rayDirection = transform.forward * wallCheckDistance;
-
-        Gizmos.color = isHanging ? Color.green : Color.yellow;
-        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection);
-        Gizmos.DrawWireSphere(rayOrigin + rayDirection, 0.1f);
+        private void OnDestroy()
+        {
+            // Visual Sphere 정리
+            if (visualSphere != null)
+            {
+                Destroy(visualSphere);
+            }
+        }
     }
 }

@@ -273,7 +273,7 @@ public class GimmickSegment : MonoBehaviour
         yield return null; // 다음 프레임
         if (controller) controller.enabled = true;
 
-        if (mover) mover.ResetKinetics(stopSlide: true, stopClimb: true, clearGlide: true);
+        if (mover) mover.ResetKinetics(stopSlide: true, clearGlide: true);
 
         graceTimer = Mathf.Max(extraGrace, graceAfterRespawn);
         suppressGroundFailUntilStart = true;
