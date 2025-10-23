@@ -21120,17 +21120,17 @@ PrefabInstance:
     - target: {fileID: 6386355099127422353, guid: 9a5f28ee68d219b49a7eb10761acae27,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.20000002
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6386355099127422353, guid: 9a5f28ee68d219b49a7eb10761acae27,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6386355099127422353, guid: 9a5f28ee68d219b49a7eb10761acae27,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.20000002
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6386355099127422353, guid: 9a5f28ee68d219b49a7eb10761acae27,
         type: 3}
@@ -136222,7 +136222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1148796659
 MonoBehaviour:
   m_ObjectHideFlags: 0
