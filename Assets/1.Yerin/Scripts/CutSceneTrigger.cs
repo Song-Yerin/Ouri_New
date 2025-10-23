@@ -70,13 +70,11 @@ public class CutsceneTrigger : MonoBehaviour
             timeline.Play();
         }
 
-        if (playOnceThisSession) enabled = false; // 선택: 스크립트 자체도 비활성화
+        // if (playOnceThisSession) enabled = false; // 선택: 스크립트 자체도 비활성화
     }
 
     private void OnCutsceneStopped(PlayableDirector director)
     {
-        if (timeline) timeline.stopped -= OnCutsceneStopped;
-
         // 컷씬 종료 시 브레인 비활성화(있을 때만)
         if (cinemachineBrain) cinemachineBrain.SetActive(false);
     }
