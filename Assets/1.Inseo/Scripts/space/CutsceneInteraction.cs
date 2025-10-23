@@ -67,7 +67,7 @@ public class CutsceneInteraction : MonoBehaviour
     private void Update()
     {
         // 플레이어가 영역 안에 있고, 'E' 키를 눌렀을 때만 실행됩니다.
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && Input.GetKeyDown(KeyCode.R))
         {
             // 재생할 컷씬이 Inspector 창에 할당되었는지 확인합니다.
             if (cutsceneToPlay != null)
