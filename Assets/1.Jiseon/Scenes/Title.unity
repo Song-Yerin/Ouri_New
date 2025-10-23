@@ -100955,7 +100955,7 @@ MonoBehaviour:
   - sceneName: Title
     clip: {fileID: 8300000, guid: 43381184974d30a4f9d4a08674c00e2b, type: 3}
   - sceneName: FIrstCutScene
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 7fc42194b019ade4f8a5aba2f6eadde6, type: 3}
   - sceneName: YJ_Forest_Night
     clip: {fileID: 8300000, guid: 224022e4b424c4a469c9aa5aff3e9789, type: 3}
   - sceneName: PipeScene 1
@@ -100981,6 +100981,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7fc42194b019ade4f8a5aba2f6eadde6, type: 3}
   - sceneName: Virtual Camera1Timeline
     clip: {fileID: 8300000, guid: 610a770fb023d424e924b6dab234eb8c, type: 3}
+  - sceneName: OwlScene
+    clip: {fileID: 8300000, guid: 7cca003a780e77e40a81446e6e6d715b, type: 3}
   smoothTransition: 1
   fadeTime: 0.5
 --- !u!1001 &1033587263

@@ -83,6 +83,13 @@ public class DialogueTriggerZone : MonoBehaviour
         {
             nextsection();
             ApplyProgress();
+
+            // 마지막 대화 후 자동 재시작 방지
+            if (nightMapProgress == 8)
+            {
+                autoStartOnEnter = false;
+                hasTriggered = true;
+            }
         }
     }
 
