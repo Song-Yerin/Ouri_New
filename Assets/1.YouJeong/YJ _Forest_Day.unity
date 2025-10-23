@@ -37166,7 +37166,7 @@ MonoBehaviour:
   sfxEveryNChars: 1
   defaultPlayerName: "\uB2E4\uB78C\uC950"
   defaultNPCName: NPC
-  defaultNPCSprite: {fileID: 21300000, guid: 7a962e1c5dbaa1b4d897f8120c131052, type: 3}
+  defaultNPCSprite: {fileID: 21300000, guid: abae89b78a0f9e3489017ff32f2313d7, type: 3}
 --- !u!82 &341194963
 AudioSource:
   m_ObjectHideFlags: 0
@@ -80492,7 +80492,7 @@ MonoBehaviour:
   targetIndex: 0
   matchRotation: 0
   positionOffset: {x: 0, y: 0, z: 0}
-  npcSpriteForProgress2: {fileID: 21300000, guid: 6468b1d3dcd440444962621013a66538,
+  npcSpriteForProgress2: {fileID: 21300000, guid: abae89b78a0f9e3489017ff32f2313d7,
     type: 3}
   checkpointPoints:
   - {fileID: 0}
@@ -80544,8 +80544,8 @@ MonoBehaviour:
   interactionCount: 0
   alias: 
   overrideStartNode: -1
-  defaultNPCSprite: {fileID: 21300000, guid: 7a962e1c5dbaa1b4d897f8120c131052, type: 3}
-  defaultPlayerSprite: {fileID: 21300000, guid: 2dbe48afe15180f4a97701166bb27bad,
+  defaultNPCSprite: {fileID: 21300000, guid: abae89b78a0f9e3489017ff32f2313d7, type: 3}
+  defaultPlayerSprite: {fileID: 21300000, guid: 488cb12e35291b24cb8fbf78c9dc7bda,
     type: 3}
   targetManager: {fileID: 0}
   preload: 0
