@@ -85,6 +85,22 @@ public class PlayerFeedbackManager : MonoBehaviour
         }
     }
 
+    public void CarDamage(int damage)
+    {
+        if (currentHealth <= 0) return;
+
+        currentHealth -= damage;
+        Debug.Log($"플레이어가 {damage}의 피해를 입었습니다! 남은 생명: {currentHealth}");
+
+        TriggerShakeEffect();
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+    }
+
     private void ShowScratchUI()
     {
         if (scratchImage != null)
