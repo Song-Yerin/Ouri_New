@@ -55487,7 +55487,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.9702721, b: 0, a: 1}
-  m_Intensity: 27
+  m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -197732,7 +197732,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.17
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &1906559859
 BoxCollider:
@@ -197814,7 +197814,7 @@ Transform:
   m_GameObject: {fileID: 1906559855}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 434.12, y: 60.4, z: 379.65}
+  m_LocalPosition: {x: 434.12, y: 60.7, z: 380.23}
   m_LocalScale: {x: 0.23, y: 0.001, z: 0.21}
   m_ConstrainProportionsScale: 0
   m_Children:
