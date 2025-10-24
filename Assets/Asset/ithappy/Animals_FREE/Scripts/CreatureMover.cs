@@ -50,10 +50,6 @@ namespace Controller
         [SerializeField] private bool m_UseIk = true;
         [SerializeField] private float m_IkSmoothSpeed = 10f;
 
-        [Header("Visuals")]
-        [SerializeField] private Transform m_RootBone;
-        [SerializeField] private float m_VisualRotationSpeed = 15f;
-
         [Header("JumpMap Respawn")]
         [SerializeField] private Transform m_RespawnPoint;
         [SerializeField] private float m_DeathY = -30f;
@@ -111,6 +107,7 @@ namespace Controller
 
         private void Update()
         {
+            // 일반 이동 시 회전
             if (m_IsMoving && !m_IsSliding && !m_IsHanging)
             {
                 if (_currentMoveDirection.sqrMagnitude > 0.01f)
@@ -118,6 +115,11 @@ namespace Controller
                     Quaternion targetRotation = Quaternion.LookRotation(_currentMoveDirection, Vector3.up);
                     m_Transform.rotation = Quaternion.Slerp(m_Transform.rotation, targetRotation, Time.deltaTime * m_RotationSmoothing);
                 }
+            }
+            // 매달리기 시 벽을 바라보도록 회전
+            else if (m_IsHanging)
+            {
+                ApplyHangingRotation();
             }
         }
 
@@ -167,7 +169,6 @@ namespace Controller
         private void LateUpdate()
         {
             m_Animation.Animate(in _currentAnimAxis, m_IsRun ? 1f : 0f, _isActuallyGrounded, m_IsGlide, m_IsHanging, Time.deltaTime);
-            ApplyVisualRootBoneRotation();
             float smoothFactor = 1.0f - Mathf.Pow(0.5f, Time.deltaTime * m_IkSmoothSpeed);
             m_SmoothedLookAtPos = Vector3.Lerp(m_SmoothedLookAtPos, m_Target, smoothFactor);
         }
@@ -176,6 +177,19 @@ namespace Controller
         {
             if (!m_UseIk || m_IsSliding || m_IsHanging) { m_Animator.SetLookAtWeight(0); return; }
             m_Animation.AnimateIK(in m_SmoothedLookAtPos, m_LookWeight);
+        }
+
+        // [새 함수] 매달리기 시 벽을 바라보도록 회전
+        private void ApplyHangingRotation()
+        {
+            Vector3 lookDirection = -m_HangWallNormal;
+            lookDirection.y = 0;
+
+            if (lookDirection.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+                m_Transform.rotation = Quaternion.Slerp(m_Transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
         }
 
         public void Bounce(Vector3 bounceVelocity)
@@ -287,28 +301,6 @@ namespace Controller
                 m_IsGlide = false;
                 m_Movement.ResetVelocities();
             }
-        }
-
-        private void ApplyVisualRootBoneRotation()
-        {
-            if (m_RootBone == null) return;
-            Quaternion targetLocalRotation;
-
-            if (m_IsHanging)
-            {
-                Quaternion targetWorldRotation = Quaternion.LookRotation(Vector3.down, -m_HangWallNormal);
-                targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
-            }
-            else if (m_IsSliding)
-            {
-                Vector3 slideNormal = m_Movement.GetCurrentSlideNormal();
-                Vector3 slideForward = Vector3.ProjectOnPlane(transform.forward, slideNormal).normalized;
-                Quaternion targetWorldRotation = Quaternion.LookRotation(slideForward, slideNormal);
-                targetLocalRotation = Quaternion.Inverse(transform.rotation) * targetWorldRotation;
-            }
-            else { targetLocalRotation = Quaternion.identity; }
-
-            m_RootBone.localRotation = Quaternion.Slerp(m_RootBone.localRotation, targetLocalRotation, Time.deltaTime * m_VisualRotationSpeed);
         }
 
         public void ApplyTemporaryGravityMultiplier(float multiplier, float duration)

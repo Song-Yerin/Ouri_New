@@ -149,7 +149,7 @@ namespace Controller
             if (Physics.SphereCast(handPosition, detectionRadius, checkDirection, out RaycastHit hit, hangDistance, wallLayer))
             {
                 // [추가] Terrain 체크 - Terrain이면 무시
-                if (hit.collider.GetComponent<Terrain>() != null)
+                if (hit.collider.GetComponent<Terrain>() != null && !hit.collider.isTrigger)
                 {
                     if (showDebug)
                     {
@@ -219,8 +219,8 @@ namespace Controller
             }
 
             // 벽에 살짝 밀착
-            Vector3 stickToWallVelocity = -hangWallNormal * 0.1f;
-            controller.Move(stickToWallVelocity * Time.deltaTime);
+            //Vector3 stickToWallVelocity = -hangWallNormal * 0.1f;
+            //controller.Move(stickToWallVelocity * Time.deltaTime);
 
             if (showDebug)
             {
